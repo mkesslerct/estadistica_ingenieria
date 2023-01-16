@@ -1,0 +1,35 @@
+project:
+  type: book
+  output-dir: _book
+
+lang: es
+
+jupyter: estadistica
+code-fold: true
+
+book:
+  title: "Estadística para la Ingeniería"
+  author: "Mathieu Kessler"
+  search: true
+  repo-url: https://github.com/mkesslerct/estadistica_ingenieria
+  repo-actions: [edit]
+  downloads: [pdf, epub]
+
+  chapters:
+    - index.qmd
+    - 01-exploracion.qmd
+    - references.qmd
+
+bibliography: references.bib
+
+format:
+  html:
+    theme: 
+      light: flatly
+      dark: darkly
+  pdf:
+    documentclass: scrreprt
+    echo: false
+
+
+

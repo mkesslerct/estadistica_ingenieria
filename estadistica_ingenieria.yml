@@ -1,0 +1,13 @@
+name: estadistica
+channels:
+  - conda-forge
+dependencies:
+  - python
+  - numpy
+  - pandas
+  - scikit-learn
+  - matplotlib
+  - ipykernel
+  - jupyter
+  - jupyter-cache
+  - black

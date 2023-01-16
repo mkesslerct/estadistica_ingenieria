@@ -1,0 +1,17 @@
+# Prólogo {.unnumbered}
+
+Este manual se ha desarrollado a partir de los apuntes que el autor usa como soporte para sus clases en la asignatura de ``Estadística'' que ha impartido en numerosas ocasiones, tanto en la titulaciones de grados de la Escuela Técnica Superior de Ingeniería de Telecomunicación de la Universidad Politécnica de Cartagena. 
+Se pueden destacar tres objetivos para esta asignatura:
+\begin{itemize}
+\item capacitar al alumno para extraer, resumir y comunicar información a partir de conjuntos de datos experimentales,
+\item proporcionarle las herramientas para la construcción de modelos para estos datos a  través de variables aleatorias,
+\item finalmente, introducir al alumno en los conceptos de la inferencia estadística, permitiéndole llegar a conclusiones significativas a partir de una muestra.
+\end{itemize}
+
+El temario de la asignatura recorre estos objetivos, escogiendo deliberadamente  una presentación intuitiva de los conceptos e intentando en la medida de lo posible relacionarlos con la experiencia práctica o el sentido común de los alumnos.
+En la primera parte, se pone especial énfasis en el uso intensivo de gráficas para la exploración de datos.
+
+
+Todo el material ha sido elaborado como un libro Quarto, para más información puede visitar <https://quarto.org/docs/books>. El código correspondiente está disponible en un [repositorio](https://github.com/mkesslerct/fundamentos_ingenieria) de Github, con licencia [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+El autor agradece sugerencias y correcciones de errores que se pueden enviar realizando un Pull-Request al repositorio.

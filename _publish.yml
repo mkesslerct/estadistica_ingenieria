@@ -1,0 +1,4 @@
+- source: project
+  netlify:
+    - id: 188aa4b3-e7ac-4451-b89e-fdbd55c9f8ed
+      url: 'https://estadistica-ingenieria.netlify.app'
