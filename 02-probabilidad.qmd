@@ -1,0 +1,534 @@
+# Fundamentos de la teoría de la probabilidad.
+
+En el tema anterior, hemos estudiado algunos conjuntos de datos reales
+que presentan variabilidad aun cuando son generados por un experimento
+realizado en condiciones que nos esforzamos por mantener constantes. Es
+más, si consideramos el ejemplo de una reacción química de primer orden
+visto en la sección sobre ajuste de curvas, disponemos de una teoría
+química que describe la evolución de la concentración de los reactivos
+en función del tiempo como solución de un sistema de ecuaciones
+diferenciales y sin embargo, los datos provenientes de un experimento
+nunca se ajustan perfectamente a la curva teórica esperada. ¿Qué tipo de
+afirmaciones sobre el resultado de tal experimento podríamos entonces
+realizar? Estas afirmaciones tendrán que tener en cuenta la
+incertidumbre ligada al experimento. La teoría de la probabilidad es una
+teoría matemática que permite modelizar experimentos aleatorios, es
+decir experimentos cuyo resultado es imposible predecir de manera
+exacta. Son los cimientos sobre los que está construida toda la
+estadística.
+
+## Conceptos básicos relacionados con un experimento
+
+Empecemos por introducir unos términos y conceptos relacionados con un
+experimento
+
+### Experimento aleatorio
+
+Un experimento aleatorio es aquel que, aun realizado en las mismas
+condiciones, produce resultados posiblemente distintos.
+
+Se opone a la noción de experimento determinístico, en el que conociendo
+las condiciones iniciales, se puede prever de manera exacta el
+resultado. En la práctica, aunque muchos experimentos son verdaderamente
+aleatorios, en muchos casos se puede tener por despreciable la
+variabilidad en los resultados y el considerar el experimento como
+determinístico proporciona conclusiones satisfactorias. Sin embargo, hay
+muchas situaciones en las que es sólo al tener en cuenta el carácter
+aleatorio de un fenómeno que se llega a conclusiones válidas.
+
+Un ejemplo sencillo de experimento aleatorio consiste en tirar un dado.
+
+### Suceso elemental
+
+Un resultado posible del experimento se llama un suceso elemental.
+
+### Espacio muestral
+
+El conjunto $S$ de todos los resultados posibles de un experimento/aleatorio se llama el espacio muestral de este experimento.
+
+Si consideramos el experimento que consiste en tirar el dado, el espacio
+muestral es $\{1,2,3,4,5,6\}$.
+
+### Suceso
+
+Cualquiera colección de resultados posibles, es decir cualquier
+subconjunto de $S,$ se llama un suceso posible asociado al experimento
+considerado.
+
+Un suceso siempre se podrá describir de dos formas: utilizando palabras,
+o de forma matemática, utilizando el formalismo de los conjuntos:
+
+*Ejemplo*. Asociado al experimento que consiste en tirar un dado,
+podemos considerar el suceso $A:$ "Sacar un número par". $A$ se puede
+también describir como $A=\{2,4,6\}$.
+
+Consideremos un suceso $A,$ y llevamos a cabo una realización del
+experimento, se dice que "Ocurre $A$" si el resultado del experimento
+pertenece a $A.$ En el ejemplo anterior, donde $A$ es "sacar un número
+par", si llevamos a cabo el experimento y sale un 4, diremos que ha
+ocurrido $A$.
+
+Podemos para describir sucesos de interés, utilizar el formalismo de la
+teoría de conjuntos :
+
+#### Operaciones elementales con sucesos
+
+-   Unión de dos sucesos $A$ y $B$: la unión de $A$ y $B$ es el suceso
+    formado por todos los elementos de $A$ y todos los elementos de $B$.
+    $$A\cup B=\{x\in S:x\in A\ \mathrm{o}\ x\in B\},$$ Notar que "Ocurre
+    $A\cup B$" si y sólo si "Ocurre $A$" o "Ocurre $B$". Por ejemplo, si
+    $B$ es el suceso "Sale un número mayor o igual a 5", es decir
+    $B=\{5,6\}$, $A\cup B=\{2,4,5,6\}$.
+
+-   Intersección de dos sucesos $A$ y $B$: la intersección de $A$ y $B$
+    está formada por los elementos comunes a $A$ y a $B$.
+    $$A\cap B=\{x\in S:x\in A\ \mathrm{y}\ x\in B\}$$
+
+    "Ocurre $A\cap B$" si y sólo si "Ocurre $A$" y "Ocurre $B$". En el
+    ejemplo anterior, $A\cap B=\{6\}$
+
+Disponemos también de las propiedades siguientes de las operaciones con
+sucesos:
+
+::: center
+  --------------------------- -- -------------------------------------------
+  $\bullet$ Comutatividad        $A\cup B=B\cup A$
+                                 $A\cap B=B\cap A$
+  $\bullet$ Asociatividad        $A\cup (B\cup C)=(A\cup B)\cup C$
+                                 $A\cap (B\cap C)=(A\cap B)\cap C$
+  $\bullet$ Distributividad      $A\cup (B\cap C)=(A\cup B)\cap (A\cup C)$
+                                 $A\cap (B\cup C)=(A\cap B)\cup (A\cap C)$
+  --------------------------- -- -------------------------------------------
+:::
+
+#### Algunos términos más.
+
+-   El suceso seguro es $S$, el espacio muestral entero.
+
+-   El suceso imposible es el conjunto vacío $\empty$
+
+-   Diremos que dos sucesos $A$ y $B$ son incompatibles, si no pueden
+    ocurrir a la vez, es decir $A\cap B=\emptyset$ y diremos que los
+    sucesos $A_1,A_2,A_3,\ldots$ son incompatibles dos a dos, si para
+    todos $i\neq j,\,A_i\cap A_j=\emptyset .$
+
+-   Suceso complementario de $A$ ($A^c=\{x\in S:x\notin A\}$ ). Notar
+    que "Ocurre $A^c$" si y sólo si "No Ocurre $A$". En nuestro ejemplo,
+    $%
+    A^c=\{1,3,5\}$.
+
+### Diagrama de Venn
+
+Es una manera gráfica de representar los sucesos: un rectángulo
+representa $S$ el espacio muestral entero, y vamos agrupando los sucesos
+elementales en sucesos. Por ejemplo, volviendo al ejemplo del dado:
+
+![image](figures/viviendacarm.pdf){width=10cm} 
+
+### Leyes de Morgan
+
+Para dos sucesos $A$ y $B$, $$(A\cap B)^c=A^c\cup B^c,$$ es decir que,
+afirmar que"no ha ocurrido ($A$ y $B$)" es lo mismo que decir "o bien no
+ha ocurrido $A$ o bien no ha ocurrido $B$". $$(A\cup B)^c=A^c\cap B^c,$$
+es decir que, afirmar que"no ha ocurrido ($A$ o $B$)" es lo mismo que
+decir "no ha ocurrido $A$ y tampoco ha ocurrido $B$".
+
+## Concepto de Probabilidad
+
+Al llevar a cabo una realización de un experimento aleatorio, somos
+conscientes de que no podemos predecir el resultado, sin embargo tenemos
+a menudo información sobre las "posibilidades" que tiene un determinado
+suceso de ocurrir. Queremos cuantificar de alguna manera esta
+información que llamaríamos la probabilidad del suceso.
+
+### Definición informal de la probabilidad - propiedades.
+
+Más que formalizar una definición, preferimos indicar qué propiedades
+tendrá que tener la cantidad escogida para que refleje la creencia que
+tenemos de que un determinado suceso ocurra.
+
+Dados todos los sucesos asociados a un experimento aleatorio,
+asignaremos a cada suceso $A$, una cantidad que denotaremos por $\mathbb{P}(A)$
+y que llamaremos la "probabilidad del suceso $A.$" Pero al realizar esta
+asignación deberemos tener en cuenta que se deberá cumplir:
+
+1.  La probabilidad de un suceso es un número entre 0 y 1:
+    $$0\leq \mathbb{P}(A)\leq 1,$$
+
+2.  considerando que la probabilidad asociada al suceso imposible es
+    nula: $$\mathbb{P}(\emptyset )=0,$$ mientras que la probabilidad asociada al
+    suceso seguro es $1:$ $$\mathbb{P}(S)=1.$$
+
+3.  La probabilidad de que un suceso no ocurra es $1-$ la probabilidad
+    de que ocurra: $$\mathbb{P}(A)=1-\mathbb{P}(A^C).$$
+
+4.  Si un suceso tiene más resultados posibles que otro, su probabilidad
+    será mayor, es decir,
+
+    Si $A$ y $B$ son dos sucesos tales que $A\subset B,$ entonces
+    $$\mathbb{P}(A)\leq \mathbb{P}(B).$$
+
+5.  Reglas de adición:
+
+    1.  Si $A$ y $B$ son dos sucesos incompatibles, es decir que no
+        pueden ocurrir a la vez, la probabilidad de que ocurra uno o el
+        otro es la suma de las probabilidades de cada suceso:
+        $$\text{Si }A\cap B=\emptyset ,\,\,\,\,\,\,\mathbb{P}(A\cup B)=\mathbb{P}(A)+\mathbb{P}(B).$$
+
+        Esta fórmula seguirá válida si se trata de la unión de tres o
+        más sucesos.
+
+    2.  En cambio si $A$ y $B$ son dos sucesos cualesquiera (en
+        particular, podrían ocurrir a la vez), un diagrama de Venn nos
+        convence de que la fórmula correcta es
+        $$\mathbb{P}(A\cup B)=\mathbb{P}(A)+\mathbb{P}(B)-\mathbb{P}(A\cap B),$$ puesto que, al sumar
+        $\mathbb{P}(A)$ y $\mathbb{P}(B)$, hemos contabilizado dos veces la probabilidad
+        de la intersección $\mathbb{P}(A\cap B)$, y debemos restarla una vez
+        para obtener $\mathbb{P}(A\cup B)$.
+
+    3.  Esta última fórmula se puede generalizar a más de dos sucesos,
+        nos limitaremos a enunciar el caso de tres: 
+
+        \begin{align*}
+        \mathbb{P}(A\cup B\cup C) &=&\mathbb{P}(A)+\mathbb{P}(B)+\mathbb{P}(C) \\
+        &&-\mathbb{P}(A\cap B)-\mathbb{P}(A\cap C)-\mathbb{P}(B\cap C) \\
+        &&+\mathbb{P}(A\cap B\cap C).
+        \end{align*}
+
+En todo lo que sigue, entenderemos como probabilidad la asignación de un
+número a cada suceso posible asociado a un experimento aleatorio, que
+cumpla con las cinco propiedades que acabamos de enumerar.
+
+### El caso de un espacio muestral finito y la definición de Laplace.
+
+#### Espacio muestral finito
+
+En el caso en que hay un número finito de resultados posibles del
+experimento, es decir el caso de un espacio muestral finito, la
+definición de una probabilidad asociada al experimento pasará por la
+asignación de la probabilidad de cada suceso elemental. En particular,
+diremos que los sucesos elementales son *equiprobables* si todos tienen
+la misma probabilidad de ocurrir. Para cumplir con las propiedades
+anteriores, está claro que si hay $n$ sucesos elementales que son además
+equiprobables, la probabilidad de cada uno de ellos es $1/n.$ En este
+caso, la probabilidad de un suceso $A$ se podrá siempre calcular como
+(Regla de Laplace)
+$$\mathbb{P}(A)=\frac{\text{n${{}^o}$ de elementos en }A}{\text{n${{}^o}$ de
+elementos totales}}=\frac{\text{n${{}^o}$ de casos favorables}}{\text{n${{}^o%
+}$ de casos posibles.}}.$$
+
+*Para ilustrar esta manera de calcular la probabilidad de un suceso, nos
+preguntamos qué es más fácil acertar, el gordo de la lotería, la
+primitiva, o una quiniela de catorce resultados?*
+
+*El gordo de la lotería*, el experimento consiste en escoger al azar un
+número entre 100000 posibles, si $A$ designa el suceso "acierto", la
+probabilidad de acertar es de una entre 100000,
+$$\mathbb{P}(A)=\frac 1{100000.}$$
+
+*La primitiva*, el experimento consiste en extraer 6 números sin
+reposición entre 49. El número de casos posibles se calcula como las
+combinaciones sin repetición de 49 elementos tomados de 6 en 6 (en el
+anexo podéis encontrar un breve recordatorio sobre reglas de conteo), es
+$%
+\binom{49}6=13984000.$ La probabilidad de acertar es una entre casi 14
+millones: $$\mathbb{P}(A)=\frac 1{13984000.}\simeq 7.\,15\times 10^{-8}.$$
+
+*La quiniela*, el experimento consiste en escoger quince veces uno de
+los tres resultados posibles 1, X, 2. El número de casos posibles es $%
+3\times 3\times \cdots \times 3=3^{15}=14348907.$ La probabilidad de
+acertar es de una entre 14 millones.
+$$\mathbb{P}(A)=\frac 1{14348907}\simeq 6.\,97\times 10^{-8}.$$ Por supuesto,
+aquí no hemos tenido en cuenta que no se suele rellenar las quinielas
+escogiendo al azar una de las tres posibilidades 1, X, 2\...
+
+*Euro-millón*, el juego consiste en acertar 5 números de una tabla de 50
+(Del nº 1 al nº 50) y además acertar 2 números (estrellas) de una tabla
+de 9 (Del nº 1 al nº 9). Es decir, para tener derecho al primer premio
+hay que acertar 7 números (5 + 2). Para calcular el número de casos
+posibles, tenemos en cuenta que para escoger los 5 primeros números de
+la tabla de 50, tenemos $\binom{50}{5}$ posibilidades, y para cada una
+de estas combinaciones, tenemos $\binom{9} 2$ posibilidades para escoger
+las dos estrellas. En total tenemos por lo tanto
+$$\binom{50}{5}\times\binom{9}2=76275360$$ casos posibles, es decir que
+la probabilidad de acertar es de una entre más de 76 millones.
+
+En cuanto a premios,  el bote máximo para un acertante del euro-millón es de 
+ 250 millones de euros! El mayor premio que se ganó con la
+primitiva fue de más  de 101 millones de euros, y fue en el 2015, mientras
+que en la quiniela, el mayor premio fue de 9 millones de euros (fue en
+la temporada 05/06)
+
+Por último, hay un participante que siempre gana: el estado. En 2021 por
+ejemplo, Loterías y Apuestas del Estado, la sociedad que gestiona los
+juegos estatales, ingresó al Tesoro Público casi 3000 millones de euros
+(fuente: [Memoria anual de Loterías y Apuestas del Estado](https://www.selae.es/es/web-corporativa/responsabilidad-social/memoria-anual/memoria-anual). Hay que decir
+que los españoles se gastaron en juegos en 2005, sumando los de gestión
+privada (casino, bingo, máquinas), la ONCE, y los de gestión pública,
+¡una cantidad de 28 000 millones de euros!
+
+#### Interpretación "frecuentista" de la probabilidad
+
+En cuanto dejamos el marco de los sucesos elementales equiprobables, la
+asignación de una probabilidad a cada suceso es mucho más complicada.
+Muchas interpretaciones de resultados ligados a probabilidades están
+relacionadas con la definición de Laplace, llamada la "interpretación
+frecuentista" de la probabilidad:
+
+Para un suceso $A,$ realizamos un gran número de veces $n$ el
+experimento, y consideramos que
+$$\mathbb{P}(A)=\lim_{n\rightarrow \infty }\frac{\text{n${{}^o}$ de veces que ha
+ocurrido }A\text{ entre las }n\text{ realizaciones}}n.$$
+
+## La probabilidad condicionada.
+
+Corresponde a una re-asignación o actualización de la probabilidad de un
+suceso cuando tenemos información sobre el resultado del experimento.
+
+### Definición
+
+Si $A$ y $B$ son dos sucesos tales que $\mathbb{P}(B)>0,$ la probabilidad de $A$
+condicionada a $B$ se denota por $\mathbb{P}(A|B)$ y es igual a
+$$\mathbb{P}(A|B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}.$$ Su interpretación es: realizamos
+el experimento, y sabemos que ha ocurrido $B,$ cuál es la probabilidad
+de que haya ocurrido $A$ también? Por ejemplo, en una tirada de un dado
+he apostado por el "6". Tiran el dado sin que yo pueda ver el resultado,
+pero me dicen que ha salido un número par. Teniendo esta información,
+cuál es la probabilidad de que haya ganado la apuesta? Es intuitivamente
+claro que es de un tercio (un caso favorable, el "6" entre tres
+posibles, el "2,", el "4" y el "6".) Si introduzco los sucesos $A=$
+"sale un 6", y $B=$"sale un número par", quiero calcular $\mathbb{P}(A|B),$
+utilizo la definición para encontrar:
+$$\mathbb{P}(A|B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}=\frac{\mathbb{P}(\left\{ 6\right\} )}{\mathbb{P}(\left\{
+2,4,6\right\}) }=\frac{1/6}{3/6}=1/3,$$ lo que coincide con nuestra
+intuición.
+
+Al considerar el siguiente diagrama de Venn,
+
+![image](figures/venncond.jpg){width=10cm}
+
+nos convencemos de que la definición $\mathbb{P}(A|B)= \frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}$ es intuitivamente razonable: realizamos el
+experimento y sabemos que el resultado pertenece a $B$, y nos
+preguntamos cuál es la probabilidad de que el resultado pertenezca
+también a $A:$ $B$ es nuestro nuevo espacio muestral puesto que sabemos
+que los resultados posibles pertenecen a $B,$ y la probabilidad de que
+pertenezca a $A$ es el cociente $\mathbb{P}(A\cap B)/\mathbb{P}(B).$
+
+### Regla del producto.
+
+\(i\)
+
+:   Si $A$ y $B$ son dos sucesos con $\mathbb{P}(B)>0,$ 
+
+\begin{align}
+    \mathbb{P}(A\cap B) &=&\mathbb{P}(A|B)\mathbb{P}(B) \\
+    &=&\mathbb{P}(B|A)\mathbb{P}(A)
+\end{align}
+
+\(ii\)
+
+:   En el caso de tres sucesos, $A$, $B$ y $C$, tenemos
+    $$\mathbb{P} (A\cap B\cap C)=\mathbb{P} (A|B\cap C)\mathbb{P} (B|C)\mathbb{P}(C),$$ siempre que las
+    probabilidades que aparecen estén bien definidas, es decir
+    $\mathbb{P}(B\cap C)>0$ y $\mathbb{P}(C)>0$.
+
+### Propiedad
+
+Para un suceso $B$ fijado, la probabilidad condicionada a $B$, $\mathbb{P}(.|B)$
+satisface todas las propiedades de una probabilidad. En particular
+cumple por ejemplo, para cualquier suceso $A$, $0\leq \mathbb{P}(A|B)\leq 1$,
+$\mathbb{P}(A^c|B)=1-\mathbb{P}(A|B)$; y para dos sucesos $A$ y $C$, $\mathbb{P}(A\cup C|B)= \mathbb{P}(A|B)+\mathbb{P}(C|B)-\mathbb{P}(A\cap C|B)$.
+
+## Sucesos independientes
+
+Una de las situaciones más importantes en probabilidad aparece cuando,
+considerando dos sucesos, el hecho de que uno ocurra no influye en la
+probabilidad de que el otro ocurra. Este concepto se llama independencia
+de dos sucesos y pasamos a definirlo.
+
+### Definición para dos sucesos
+
+$A$ y $B$ son dos sucesos independientes si se cumple
+$$\mathbb{P}(A\cap B)=\mathbb{P}(A)\mathbb{P}(B).$$
+
+Notar que esta definición es equivalente, por la definición de la
+probabilidad condicionada, a que $\mathbb{P}(A|B)=\mathbb{P}(A)$ y $\mathbb{P}(B|A)=\mathbb{P}(B)$. Es decir $A$ y $B$ son independientes si el hecho de saber que,
+por ejemplo, $B$ ha ocurrido, no cambia la probabilidad que asignamos a
+$A$, y vice versa.
+
+Una buena ilustración de este concepto: "¿Sabéis por qué un matemático
+siempre se lleva una bomba cuando viaja en avión? - Porque es mucho
+menos probable que haya dos bombas en un mismo avión que sólo una\..."
+
+¿Qué os parece este argumento?
+
+### Definición para $n$ sucesos
+
+Los $n$ sucesos $A_1,\ A_2,\ldots,\ A_n$ son independientes si para
+cualquier subfamilia $A_{i_1},\ A_{i_2},\ldots, \ A_{i_k}$, se cumple
+$$\mathbb{P}(A_{i_1}\cap A_{i_2}\cap\cdots\cap A_{i_k})=\mathbb{P}(A_{i_1})%
+\mathbb{P}(A_{i_2})\cdots\mathbb{P}(A_{i_k}).$$ En particular se cumple que
+$\mathbb{P}(A_i\cap A_j)=\mathbb{P}(A_i)\mathbb{P}(A_j)$ para todo $i$ y $j$ entre 1 y $n$.
+
+## Ejemplos de probabilidades condicionadas en la vida diaria
+
+### Eslogan publicitario para la lotería
+
+En Francia, hubo hace unos años, un eslogan publicitario para un juego
+de lotería que rezaba:
+
+"*El 100% de los acertantes probaron suerte\...*"
+
+Los creadores de este eslogan jugaron con el efecto causado al usar una
+probabilidad condicionada: si $P$ denota el suceso "probar suerte" y $A$
+el suceso "acertar", el eslogan está diciendo $\mathbb{P}(P|A)=1$, pero la gente
+piensa en $\mathbb{P}(A|P)$ que es muchísima más baja por supuesto\...
+
+### Tabaquismo y cáncer de pulmón
+
+Del informe "La situación del cáncer en España, 2005", elaborado por el
+Centro nacional de Epidemiología, se deduce en particular los datos
+siguientes: el cáncer es la primera causa de muerte en términos
+absolutos (p9), y en particular. el cáncer de pulmón es el tumor de
+mayor incidencia y de mayor mortalidad entre los hombres.\
+Por otra parte, en la información publicada por la Asociación Española
+contra el Cáncer (AECC) en su página web, se indica que el 90% de los
+pacientes con cáncer de pulmón son fumadores.
+
+¿Se puede deducir de está última estadística de que el tabaquismo es un
+factor de riesgo para el cáncer de pulmón? En principio, parece que sí,
+pero en realidad ¡depende de la tasa de fumadores en la población!
+
+Traduzcamos estos datos con sucesos: consideramos el experimento
+"escoger una persona al azar en la población española". Introducimos los
+sucesos $T$="tiene un tumor asociado a un cáncer de pulmón", $F$="es
+fumador". Nos dicen que $$P(F|T)=0.9$$ pero en realidad, para saber si
+el hecho de ser fumador incrementa el riesgo de desarrollar un cáncer de
+pulmón, queremos saber si $\mathbb{P}(T|F)$ es mayor que $\mathbb{P}(T)$.
+
+Para relacionar $\mathbb{P}(T|F)$ y $\mathbb{P}(T)$, podemos utilizar la definición de
+la probabilidad condicionada:
+
+$$\mathbb{P}(T|F)=\frac {\mathbb{P}(T\cap F)}{\mathbb{P}(F)}=\frac{\mathbb{P}(F|T)\mathbb{P}(T)}{\mathbb{P}(F)}=\frac{\mathbb{P}(F|T)}{\mathbb{P}(F)}\times \mathbb{P}(T).$$
+Por lo tanto, el concluir si el tabaquismo incrementa el riesgo de
+desarrollar un cáncer de pulmón dependerá del cociente $\mathbb{P}(F|T)/\mathbb{P}(F)$.
+
+Según la Encuesta Nacional de Salud 2003, que se puede obtener del
+Instituto Nacional de Estadística, aproximadamente el 30% de la
+población española son fumadores diarios. El cociente $\mathbb{P}(F|T)/\mathbb{P}(F)$ es
+por lo tanto igual aproximadamente a 0.9/0.3=3. Deducimos que **el hecho
+de ser un fumador diario multiplica por tres el riesgo de padecer un
+cáncer de pulmón.**
+
+Pero, se puede enfatizar que la única afirmación "El 90% de los
+pacientes con cáncer de pulmón son fumadores" no implica de por sí que
+el tabaquismo sea un factor de riesgo para el cáncer de pulmón.
+
+### Tabaquismo y esperanza de vida
+
+Un dato clásico en epidemiología es muy sorprendente en primera lectura:
+
+::: {.callout-important appearance="minimal"}
+*Si nos limitamos a la gente mayor de 70 años, ¡la esperanza de vida de
+los fumadores es mayor que la de los no fumadores!*
+:::
+
+¿Cómo puede ser esto cierto? En realidad este dato no es tan
+sorprendente si uno se lo piensa un poco: muy poca gente llega a los 70
+años fumando\... De hecho, según la AECC, la edad media de fallecimiento
+por cáncer de pulmón es de 68 años para los hombres y 66 años para las
+mujeres. La gente que llega a los 70 años y son fumadores tienen un
+sistema inmunológico muy resistente y un mecanismo de control de células
+tumorosas muy eficiente, lo que implica que, de todas maneras, tendrían
+una vida muy larga\...
+
+## Fórmula de la probabilidad total y teorema de Bayes
+
+### Condiciones de aplicación
+
+-   Tenemos $n$ sucesos $A_1,\ A_2,\ldots,\ A_n$ que forman una
+    partición del espacio muestral $S$, es decir que son mutuamente
+    incompatibles ($A_i\cap
+    A_j=\emptyset,$ para $1\leq i,j\leq n$), y cuya unión es el espacio
+    muestral entero, i.e. $A_1\cup A_2\cup\cdots A_n=S$. Además conocemos la probabilidad de cada uno de ellos, es
+    decir $\mathbb{P}(A_1),\ \mathbb{P}(A_2),\ldots\mathbb{P}(A_n)$.
+
+::: {.callout-important}
+### Nota
+A menudo nos encontraremos con la situación en la que sólo son dos sucesos, i.e $n=2$, en este
+caso tenemos $A_1=A$ y $A_2=A^c$.
+:::
+
+-   Tenemos otro suceso $B$ y, para cada $i=1,\ldots,n$, conocemos, en
+    el caso de que ocurra $A_i$, la probabilidad de $B$, es decir
+    conocemos $\mathbb{P}(B|A_1),\ldots,\mathbb{P}(B|A_n)$.
+
+### Los resultados
+
+Si se cumplen las condiciones de aplicación del apartado anterior,
+
+::: {.callout-important appearance="minimal"}
+### Fórmula de la probabilidad total
+Se puede calcular $\mathbb{P}%
+    (B)$ descomponiendo $B$ sobre cada uno de los sucesos de la
+    partición: $$\mathbb{P}(B)=\mathbb{P}(B|A_1)\mathbb{P}(A_1)+\cdots+\mathbb{P}(B|A_n)\mathbb{P}(A_n).$$
+:::
+::: {.callout-important appearance="minimal"}
+### Teorema de Bayes
+Para cualquier $i=1,\ldots ,n$, tenemos
+    $$\mathbb{P}(A_i|B)=\frac{\mathbb{P}(B|A_i)\mathbb{P}(A_i)}{\mathbb{P}(B|A_1)\mathbb{P}%
+    (A_1)+\cdots +\mathbb{P}(B|A_n)\mathbb{P}(A_n)}.$$
+:::
+
+*Demostración.* Utilizamos, al formar $A_1,\ A_2,\ldots,\ A_n$ una
+partición del espacio muestral, la descomposición del suceso $B$
+$$B=(B\cap A_1)\cup (B\cap A_2)\cup\cdots (B\cap A_n).$$ Los sucesos
+$(B\cap A_1),\ldots,(B\cap A_n)$ son incompatibles dos a dos, y
+aplicamos la regla de la adición
+$$\mathbb{P}(B)=\mathbb{P}(B\cap A_1)+\mathbb{P}(B\cap A_2)+\cdots \mathbb{P}(B\cap A_n).$$ Utilizamos
+ahora la regla del producto $\mathbb{P}(B\cap A_i)=\mathbb{P}(B|A_i)\mathbb{P}(A_i)$ para todo
+$i=1,\ldots,n$ para la fórmula de la probabilidad total
+$$\mathbb{P}(B)=\mathbb{P}(B|A_1)\mathbb{P}(A_1)+\cdots+\mathbb{P}(B|A_n)\mathbb{P}(A_n).$$ Por otra parte por
+la definición de la probabilidad condicionada
+$\mathbb{P}(A_i|B)=\mathbb{P}(A_i\cap B)/\mathbb{P}(B)$, para todo $1\leq i\leq n$. Si
+sustituimos en el numerador $\mathbb{P}(A_i\cap B)$ por $\mathbb{P}(B|A_i)\mathbb{P}(A_i)$ y en
+el numerador $\mathbb{P}(B)$ por la fórmula de la probabilidad total, obtenemos
+el teorema de Bayes.
+
+### Ejemplo
+
+En un la transmisión de un mensaje por correo electrónico, la calidad de
+la recepción de un fichero depende de la sobrecarga de la red. Si la red
+está sobrecargada, la proporción de ficheros dañados es de 1%, mientras
+que si no lo está, esta proporción sólo es del 0.01%. Estimamos que la
+probabilidad de que la red esté sobrecargada es igual a 0.02. Cuál es la
+proporción total de ficheros dañados en la transmisión? Suponiendo que
+recibo un fichero dañado, cuál es la probabilidad de que la red
+estuviera sobrecargada durante la transmisión?
+
+Empecemos por introducir los sucesos convenientes para traducir los
+datos que se nos proporciona. Sea $RS$ el suceso "La red está
+sobrecargada", y $D$ el suceso "El archivo está dañado". Se nos pide
+calcular $\mathbb{P}(D)$ y $\mathbb{P}(RS|D)$. Nos damos cuenta de que si $A_1=RS$ y
+$A_2=RS^C$, los sucesos $A_1$ y $A_2$ son incompatibles y su reunión es
+el espacio muestral entero, por lo tanto forman una partición del
+espacio muestral. Además conocemos sus probabilidades: $\mathbb{P}(A_1)=0.02$ y
+$\mathbb{P}(A_2)=0.98$. Por otra parte conocemos $\mathbb{P}(D|A_1)$, y $\mathbb{P}(D|A_2)$,
+estamos por lo tanto en las condiciones de aplicación de la fórmula de
+la probabilidad total y del teorema de Bayes. Deducimos
+
+\begin{align}
+\mathbb{P}(D)&=&\mathbb{P}(D|RS)\mathbb{P}(RS)+\mathbb{P}(D|RS^C)\mathbb{P}(RS^C)\\
+&=&0.01\cdot0.02+0.0001\cdot0.98=0.000298\simeq 0.0003,
+\end{align}
+
+es decir que la proporción total de ficheros dañados es de 3 por 10000.
+Por otra parte, por el teorema de Bayes, 
+
+\begin{align}
+\mathbb{P}(RS|D)&=&\frac{\mathbb{P}(D|RS)\mathbb{P}(RS)}{\mathbb{P}(D|RS)\mathbb{P}(RS)+\mathbb{P}(D|RS^C)\mathbb{P}(RS^C)}\\
+&=&\frac{0.01\cdot0.02}{0.000298}\simeq 0.67,
+\end{align}
+
+ por lo tanto, sabiendo que recibo un fichero dañado, la probabilidad de que la
+red estuviera sobrecargada es igual a 0.67.

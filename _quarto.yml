@@ -18,6 +18,7 @@ book:
   chapters:
     - index.qmd
     - 01-exploracion.qmd
+    - 02-probabilidad.qmd
     - references.qmd
 
 bibliography: references.bib
