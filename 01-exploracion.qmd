@@ -94,7 +94,20 @@ absoluta o relativa, en forma de una barra. En el caso del @exm-sangre, obtenemo
 figura @fig-sangre. Cabe destacar que se suelen ordenar los valores
 de la variable por orden decreciente de frecuencias.
 
-![Diagrama de barras, frecuencias absolutas, para el @exm-sangre del grupo sanguíneo](figures/barras.pdf){#fig-sangre}
+```{python}
+#| label: fig-sangre
+#| fig-cap: "Diagrama de barras, frecuencias absolutas, para el @exm-sangre del grupo sanguíneo."
+
+import numpy as np
+import matplotlib.pyplot as plt
+x = np.linspace(1, 4, num=4)
+freq = np.array([70, 51, 19, 5])
+fig, ax = plt.subplots()
+ax.bar(x, freq, tick_label=["AB", "A", "B", "O"], alpha=0.5)
+ax.set_xlabel("Grupos sanguíneos")
+ax.set_ylabel("Frecuencias")
+plt.show()
+```
 
 #### Diagrama de sectores
 
@@ -111,8 +124,26 @@ $70/145\times 360=174^o$. Asimismo, el valor A ocupará $126^o$, el valor
 B $48^o$, mientras que el valor O ocupará solamente $12^o$. El diagrama
 de sectores correspondiente se representa en la @fig-sectores-sangre.
 
-![Diagrama de sectores para el ejemplo del grupo sanguíneo ](figures/sectores.pdf){#fig-sectores-sangre}
+::: {.callout-warning}
+## Cuidado
+No se suele recomendar el uso de un diagrama de sectores, porque puede llevar a una percepción errónea de las relaciones entre las frecuencias de los valores.
+:::
 
+```{python}
+#| label: fig-sectores-sangre
+#| fig-cap: "Diagrama de sectores para el ejemplo del grupo sanguíneo."
+import matplotlib.pyplot as plt
+
+# Diagrama de sectores, ver https://matplotlib.org/stable/gallery/pie_and_polar_charts/pie_features.html
+labels =["AB", "A", "B", "O"]
+freq = np.array([70, 51, 19, 5])
+
+fig1, ax1 = plt.subplots()
+ax1.pie(freq, labels=labels, autopct='%1.1f%%', startangle=90)
+ax1.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+plt.show()
+```
 
 ### Gráficas para una variable cuantitativa
 
@@ -145,10 +176,10 @@ en nitrato, ver @fig-conc-nitrato.
 
 import numpy as np
 import matplotlib.pyplot as plt
-x = np.linspace(0.45, 0.52, num=8)
-y = np.array([1,2,4,8,8,10,5,8])
+values = np.linspace(0.45, 0.52, num=8)
+freq = np.array([1, 2, 4, 8, 8, 10, 5, 8])
 fig, ax = plt.subplots()
-ax.stem(x, y)
+ax.stem(values, freq)
 ax.set_xlabel("Mediciones de nitrato")
 ax.set_ylabel("Frecuencias")
 plt.show()
@@ -276,10 +307,22 @@ histograma. En la @fig-newcomb, aparece el histograma para las mediciones de
 Newcomb. Se pueden representar histogramas de frecuencias absolutas,
 relativas, absolutas acumuladas o relativas acumuladas.
 
-::: center
-![ Histograma para las mediciones de Newcomb](figures/newcomb.pdf){#fig-newcomb}
-:::
+```{python}
+#| label: fig-newcomb
+#| fig-cap: "Histograma para las mediciones de Newcomb"
 
+from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+DATA_DIRECTORY = Path('data')
+newcomb = pd.read_csv(DATA_DIRECTORY / 'newcomb.txt', names=['t'])
+
+fig, ax = plt.subplots()
+ax.hist(newcomb['t'], bins=16, alpha=0.5, linewidth=1, edgecolor='white')
+ax.set_xlabel("t")
+ax.set_ylabel("Frecuencias")
+plt.show()
+```
 #### Cómo interpretar un histograma
 
 Las representaciones gráficas describen la distribución de la variable
@@ -333,6 +376,46 @@ histogramas.
 Distintas formas de histogramas
 :::
 
+```{python}
+#| label: fig-histogramas
+#| fig-cap: "Distintos patrones de histogramas"
+
+import numpy as np
+from numpy.random import default_rng
+import matplotlib.pyplot as plt
+
+rng = default_rng(31415)
+simulated_exp = rng.exponential(2.5, 1000)
+simulated_weibull =  rng.weibull(1, size=50)
+simulated_normal1 = rng.normal(3, 0.5, 1000)
+simulated_normal2 = rng.normal(6, 0.5, 2000)
+distributions = (
+    simulated_normal1,
+    simulated_exp,
+    simulated_weibull,
+    np.append(simulated_normal1, simulated_normal2)
+)
+titles = [
+    'Aprox.simétrico, unimodal, colas cortas',
+    'Asimétrico',
+    'Cola larga a la derecha',
+    'Bimodal'
+]
+fig, axs = plt.subplots(2, 2)
+for i, d in enumerate(distributions):
+    ax = axs.flatten()[i]
+    ax.hist(
+        d,
+        bins=8,
+        alpha=0.5,
+        linewidth=1, edgecolor='white'
+    )
+    ax.set_xlabel("Valores")
+    ax.set_ylabel("Frecuencias")
+    ax.set_title(titles[i])
+plt.tight_layout()
+plt.show()
+```
 ## Medidas numéricas
 
 
