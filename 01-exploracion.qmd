@@ -273,32 +273,30 @@ así como las frecuencias acumuladas absolutas y relativas. Para el
 ejemplo de las mediciones de Newcomb, la tabla completa se puede ver en
 la @tbl-newcombfrec más abajo.
 
-::: {#tbl-newcombfrec}
-  -------------- ------------- -------------- ------------------ --------------
-  Clase           Frecuencias                  Frec. Acumuladas  
-                   Absolutas    Relativas(%)      Absolutas       Relativas(%)
-  $]-45, -40]$         1            1.5               1               1.5
-  $]-40, -35]$         0            0.0               1               1.5
-  $]-35, -30]$         0            0.0               1               1.5
-  $]-30, -25]$         0            0.0               1               1.5
-  $]-25, -20]$         0            0.0               1               1.5
-  $]-20, -15]$         0            0.0               1               1.5
-  $]-15, -10]$         0            0.0               1               1.5
-  $]-10,  -5]$         0            0.0               1               1.5
-  $] -5,   0]$         1            1.5               2               3.0
-  $]0,     5]$         0            0.0               2               3.0
-  $]5,    10]$         0            0.0               2               3.0
-  $]  10, 15]$         0            0.0               2               3.0
-  $]  15, 20]$         4             6                6                9
-  $]  20, 25]$        17            25.7              23              34.7
-  $]  25, 30]$        26            39.3              49               74
-  $]  30, 35]$        10            15.3              59              89.3
-  $]  35, 40]$         7            10.7              66              100
-  TOTAL               66           100.0                         
-  -------------- ------------- -------------- ------------------ --------------
+ -------------- ------------- -------------- ------------------ --------------
+ Clase           Frecuencias                  Frec. Acumuladas  
+                  Absolutas    Relativas(%)      Absolutas       Relativas(%)
+ $]-45, -40]$         1            1.5               1               1.5
+ $]-40, -35]$         0            0.0               1               1.5
+ $]-35, -30]$         0            0.0               1               1.5
+ $]-30, -25]$         0            0.0               1               1.5
+ $]-25, -20]$         0            0.0               1               1.5
+ $]-20, -15]$         0            0.0               1               1.5
+ $]-15, -10]$         0            0.0               1               1.5
+ $]-10,  -5]$         0            0.0               1               1.5
+ $] -5,   0]$         1            1.5               2               3.0
+ $]0,     5]$         0            0.0               2               3.0
+ $]5,    10]$         0            0.0               2               3.0
+ $]  10, 15]$         0            0.0               2               3.0
+ $]  15, 20]$         4             6                6                9
+ $]  20, 25]$        17            25.7              23              34.7
+ $]  25, 30]$        26            39.3              49               74
+ $]  30, 35]$        10            15.3              59              89.3
+ $]  35, 40]$         7            10.7              66              100
+ TOTAL               66           100.0                         
+ -------------- ------------- -------------- ------------------ --------------
 
-  :  Tabla de frecuencias, mediciones de Newcomb.
-:::
+: Tabla de frecuencias, mediciones de Newcomb {#tbl-newcombfrec}
 
 Por otra parte, los datos tabulados se examinan con más comodidad a
 través de representaciones gráficas. En el eje Ox aparecen las clases y
@@ -363,19 +361,6 @@ distribución.
 En la figura  @fig-histogramas, presentamos varios patrones de
 histogramas.
 
-::: {#fig-histogramas layout-ncol=2}
-
-![Unimodal](figures/unimodal.pdf){width=6cm}
-
-![Asimétrico](figures/asimetrico.pdf){width=6cm}
-     
-![Cola larga a la derecha](figures/colalargadcha.pdf){width=6cm}
-
-![Bimodal](figures/bimodal.pdf){width=6cm}
-
-Distintas formas de histogramas
-:::
-
 ```{python}
 #| label: fig-histogramas
 #| fig-cap: "Distintos patrones de histogramas"
@@ -401,7 +386,9 @@ titles = [
     'Cola larga a la derecha',
     'Bimodal'
 ]
-fig, axs = plt.subplots(2, 2)
+
+px = 1/plt.rcParams['figure.dpi']  # pixel in inches
+fig, axs = plt.subplots(2, 2, figsize=(800*px, 800*px))  
 for i, d in enumerate(distributions):
     ax = axs.flatten()[i]
     ax.hist(
@@ -545,9 +532,45 @@ los datos:
 El diagrama de caja-bigotes presenta de manera gráfica estas
 informaciones, tal como está recogida en la figura @fig-boxplot.
 
-::: center
-![ Componentes del diagrama caja-bigotes](figures/boxplot.pdf){#fig-boxplot}
-:::
+```{python}
+#| label: fig-boxplot
+#| fig-cap: "Componentes del diagrama caja-bigotes"
+
+import numpy as np
+from numpy.random import default_rng
+import matplotlib.pyplot as plt
+
+rng = default_rng(31415)
+simulated_normal = rng.normal(3, 0.5, 100)
+fig, ax = plt.subplots()
+ax.boxplot(simulated_normal)
+ax.set_ylim(0, 6)
+max, q3, median, q1 = (
+    np.max(simulated_normal),
+    np.quantile(simulated_normal, 0.75),
+    np.quantile(simulated_normal, 0.5),
+    np.quantile(simulated_normal, 0.25),
+)
+whisker = q1 - (q1 - np.min(simulated_normal)) / 2
+v_offset = 0.5
+ax.annotate('Dato atípico', xy=(0.99, max ), xytext=(0.6, max + v_offset),
+            arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.annotate('Mediana', xy=(0.92, median), xytext=(0.6, median + v_offset),
+            arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.annotate('Bigote', xy=(0.99, whisker), xytext=(0.6, whisker - v_offset),
+            arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.annotate('Tercer cuartil', xy=(1.08, q3), xytext=(1.25, q3 + v_offset),
+            arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.annotate('Primer cuartil', xy=(1.08, q1), xytext=(1.25, q1 + v_offset),
+            arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.get_xaxis().set_visible(False)
+plt.show()
+```
 
 Los segmentos 1.5 RIC (llamados bigotes) se recortan hasta : el dato del
 conjunto inmediatamente superior a $Q_1-1.5\times RIC$ para el bigote
@@ -631,10 +654,50 @@ correspondientes están presentadas en la @fig-4nubes.
     de recesión en km/s. Fuente: Data and Stories Library,
     http://lib.stat.cmu.edu/DASL.
 
-::: center
-![ Cuatro ejemplos de conjuntos de datos ](figures/4nubes.jpg){#fig-4nubes}
-:::
+```{python}
+#| label: fig-4nubes
+#| fig-cap: "Cuatro ejemplos de conjuntos de datos"
 
+from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+DATA_DIRECTORY = Path('data')
+cemento = pd.read_csv(
+    DATA_DIRECTORY / 'cemento.txt',
+    sep=';',
+    names=['dias', 'resistencia'],
+    decimal=','
+)
+venecia = pd.read_csv(DATA_DIRECTORY / 'venecia.txt', encoding='latin-1')
+petroleo = pd.read_csv(DATA_DIRECTORY / 'petroleo.txt') 
+hubble = pd.read_csv(
+    DATA_DIRECTORY / 'hubble.txt',
+    sep=';',
+    names=['distancia', 'velocidad'],
+    decimal=','
+)
+
+px = 1/plt.rcParams['figure.dpi']  # pixel in inches
+fig, axs = plt.subplots(2, 2, figsize=(800*px, 600*px))  
+axs[0, 0].plot('dias', 'resistencia', 'o', alpha=0.6, data=cemento)
+axs[0, 0].set_xlabel('Días')
+axs[0, 0].set_ylabel('Resistencia')
+axs[0, 0].set_title('Resistencia del cemento')
+axs[0, 1].plot('año', 'nivel', 'o', alpha=0.6, data=venecia)
+axs[0, 1].set_xlabel('Años')
+axs[0, 1].set_ylabel('Nivel')
+axs[0, 1].set_title('Nivel máximo del mar en Venecia')
+axs[1, 0].plot('Year', 'Mbbl', 'o', alpha=0.6, data=petroleo)
+axs[1, 0].set_xlabel('Años')
+axs[1, 0].set_ylabel('Producción (MBBL)')
+axs[1, 0].set_title('Producción mundial de petroleo')
+axs[1, 1].plot('distancia', 'velocidad', 'o', alpha=0.6, data=hubble)
+axs[1, 1].set_xlabel('Distancia (megaparsecs)')
+axs[1, 1].set_ylabel('Velocidad (km/s)')
+axs[1, 1].set_title('Velocidad de recesión de 24 nebulosas')
+plt.tight_layout()
+plt.show()
+```
 ### Criterio de mínimos cuadrados {#sec-criterio-de-minimos}
 
 Para ilustrar las nociones nos limitamos primero al caso de una variable
@@ -655,10 +718,32 @@ nube de puntos, también llamada diagrama de dispersión, en el que
 representamos los pares $(x_i,y_i),\ i=1,\cdots,n$, en unos ejes
 $Ox,\ Oy$, ver figura @fig-nube.
 
-::: center
-![ Ejemplo de nube de puntos ](figures/nube.pdf){#fig-nube}
-:::
+```{python}
+#| label: fig-nube
+#| fig-cap: "Ejemplo de nube de puntos"
 
+from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+DATA_DIRECTORY = Path('data')
+nube = pd.read_csv(DATA_DIRECTORY / 'nube.txt', comment='#')
+
+fig, ax = plt.subplots()
+ax.plot('x', 'y', '*', data=nube)
+for i in range(4):
+    ax.annotate(
+        f'$(x_{i + 1}, y_{i + 1})$',
+        xy=(nube['x'][i], nube['y'][i]),
+        xytext=(5 * (1 - 2 * int(i == 3)), 5 * (2 * int(i == 3) -1) ),
+        textcoords='offset points',
+    )
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_xlim(0, 100)
+ax.set_ylim(0, 100)
+fig.tight_layout()
+plt.show()
+```
 Por conocimientos previos sobre el fenómeno que estudiamos o por la
 propia nube de puntos, decidimos ajustar a ésta una curva de una
 determinada forma funcional: podría ser por ejemplo una recta, de
@@ -684,17 +769,58 @@ tema es el de **mínimos cuadrados**.
 Definimos la suma de cuadrados asociada a una función de la familia como
 la suma de los cuadrados de las distancias verticales entre la curva
 correspondiente y los datos observados de la nube de puntos. Tal como
-viene reflejado en la figura #fig-nubeajuste, la distancia vertical entre por ejemplo el
-punto $(x_3,y_3)$ y la curva es $y_3-f(\theta,x_3)$, por lo tanto la
+viene reflejado en la figura @fig-nubeajuste, la distancia vertical entre por ejemplo el
+punto $(x_4,y_4)$ y la curva es $y_4-f(\theta,x_4)$, por lo tanto la
 suma de cuadrados se escribe
 $$SC(\theta)=(y_1-f(\theta,x_1))^2+(y_2-f(\theta,x_2))^2+\cdots+(y_n-f(\theta,x_n))^2.$${#eq-sumacuad}
 
-::: center
-![ Ajuste de una curva a la nube de puntos.](figures/nubeajuste.pdf){#fig-nubeajuste width="12cm"}
-:::
 
+```{python}
+#| label: fig-nubeajuste
+#| fig-cap: "Ajuste de una curva a una nube de puntos"
+
+from pathlib import Path
+from numpy.polynomial.polynomial import Polynomial as P
+import numpy.polynomial.polynomial as polynomial
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+
+DATA_DIRECTORY = Path('data')
+nube = pd.read_csv(DATA_DIRECTORY / 'nube.txt', comment='#')
+fitted_poly = P.fit(nube['x'], nube['y'], 2)
+x_fit, y_fit = fitted_poly.linspace(200, np.array([10, 100]))
+x0, y0 = nube['x'][3], nube['y'][3]
+yfit0 = fitted_poly.__call__(x0)
+fig, ax = plt.subplots()
+ax.plot('x', 'y', '*', data=nube)
+for i in range(2, 4):
+    ax.annotate(
+        f'$(x_{i + 1}, y_{i + 1})$',
+        xy=(nube['x'][i], nube['y'][i]),
+        xytext=(5 * (1 - 2 * int(i == 3)), 5 * (2 * int(i == 3) -1) ),
+        textcoords='offset points',
+    )
+ax.plot(x_fit, y_fit)
+ax.plot([x0, x0],[yfit0,y0])
+ax.annotate(
+    '$(x_4, f_\\theta (x_4))$',
+    xy=(x0, yfit0),
+    xytext=(5, - 5),
+    textcoords='offset points',
+)
+ax.annotate('Error nº4', xy=(x0, (y0 + yfit0) / 2), xytext=(-10, (y0 + yfit0) / 2 + 2),
+            arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.set_xlabel('X')
+ax.set_ylabel('Y')
+ax.set_xlim(-20, 100)
+ax.set_ylim(0, 100)
+fig.tight_layout()
+plt.show()
+```
 Buscamos el valor $\hat \theta$ de $\theta$ que minimiza la cantidad
-$\theta\mapsto\theta$, en muchos casos, es imposible encontrar este
+$\theta\mapsto SC(\theta)$, en muchos casos, es imposible encontrar este
 mínimo explícitamente y tenemos que recurrir a algoritmos numéricos. Nos
 centraremos en este tema en el caso en que la forma paramétrica de $f$
 es particularmente simple y permite el cálculo explícito de
@@ -929,7 +1055,7 @@ aproximadamente como la tangente en un punto $X$ central.
 Hay situaciones en las que pensamos recurrir a un ajuste lineal, pero
 sabemos por motivos físicos que un valor de $X$ nulo corresponde
 necesariamente a un valor de $Y$ nulo también. En este caso, no tenemos
-por que considerar todas las rectas, sino podemos restringirnos a las
+por qué considerar todas las rectas, sino podemos restringirnos a las
 rectas que pasan por el origen $(0,0)$. La ecuación de una recta forzada
 por el origen es $$y=ax.$$ Dos ejemplos de situaciones en las que un
 valor nulo de $X$ implica un valor nulo de $Y$:
@@ -1046,26 +1172,44 @@ $\overline{x'y'}$, para obtener $\hat{a'}$ y $\hat{b'}$:
 $y'=0.148x'+0.682$, es decir que $\ln(y)=0.148x+0.682$, lo que implica
 que $$y=e^{0.148x}e^{0.682}=1.18e^{0.148x}.$$
 
-El Ministerio de la Vivienda publica los datos de precios del metro
-cuadrado de las viviendas en España. En la gráfica siguiente, @fig-viviendacarm, se ha representado la evolución del
-precio del metro cuadrado en la Región de Murcia por cuatrimestres entre
-1995 y 2006. Aparece una tendencia exponencial, podemos representar
-también el logaritmo del precio para ver si la evolución es entonces
-lineal. La gráfica correspondiente aparece en la figura @fig-logviviendacarm. Notar que entre 1996 y 2002, la curva
-del logaritmo sigue presentando una curvatura, lo que implica que ¡la
-subida fue más que exponencial!
+Una ilustración de un crecimiento exponencial se puede encontrar en la llamada ley de Moore, que afirma que el número de transistores en los circuitos integrados (CPU o GPU) se multiplica por dos cada dos años aproximadamente. En este [enlace](https://chip-dataset.vercel.app/), se puede descargar el CHIP dataset, preparado por  Yifan Sun, Nicolas Bohm Agostini, Shi Dong, y David Kaeli. Usando estos datos, representamos en la @fig-chips el número de transistores por cada CPU o GPU lanzado al mercado por diferentes fabricantes.
 
-::: center
-![Evolución del precio en euros del metro cuadrado de la vivienda en la
-región de Murcia, datos cuatrimestrales,
-1995-2006.](figures/viviendacarm.pdf){#fig-viviendacarm width="12cm"}
-:::
+```{python}
+#| label: fig-chips
+#| fig-cap: "Evolución del número de transistores por chip"
 
-::: center
-![Evolución del logaritmo del precio en euros del metro cuadrado de la
-vivienda en la región de Murcia, datos cuatrimestrales,
-1995-2006.](figures/logviviendacarm.pdf){#fig-logviviendacarm width="12cm"}
-:::
+from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+
+DATA_DIRECTORY = Path('data')
+chips = pd.read_csv(
+    DATA_DIRECTORY / 'chip_dataset.csv',
+    parse_dates=['Release Date'],
+    index_col='Release Date',
+)
+fig, ax = plt.subplots()
+for t, chip_group in chips.groupby('Type'):
+    ax.plot('Transistors (million)', 'o', alpha=0.5, data=chip_group, label=t)
+ax.legend()
+plt.show()
+
+```
+
+Si ley de Moore es cierta, la relación entre el logaritmo del número de transistores y el año debe ser aproxidamente lineal. Para comprobarlo, podemos representar el logaritmo de la variable 'Transistors (million)' en función del año, o, de manera equivalente, usar una escala logarítmica para el eje de las ordenadas: consiste en representar el logaritmo, pero las etiquetas del eje $Oy$ contienen los valores de la variable original, sin transformar. 
+
+```{python}
+#| label: fig-logchips
+#| fig-cap: "Evolución del número de transistores por chip, representada con una escala logarítmica para $Oy$."
+
+fig, ax = plt.subplots()
+for t, chip_group in chips.groupby('Type'):
+    ax.plot('Transistors (million)', 'o', alpha=0.5, data=chip_group, label=t)
+ax.set_yscale('log')  
+ax.legend()
+plt.show()
+
+```
 
 ##### Modelo potencial
 
