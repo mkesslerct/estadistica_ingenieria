@@ -582,19 +582,35 @@ más conjuntos de datos.
 
 *Ejemplo*
 
-La puntuación de los equipos de la liga española al final de las
-temporadas 01/02 y 02/03 en primera división se pueden comparar con un
-diagrama caja-bigotes, como aparece en la figura @fig-liga.
+Consideremos un conjunto de mediciones del consumo eléctrico de una vivienda, obtenido de [https://archive.ics.uci.edu/ml/datasets/Individual+household+electric+power+consumption#], el UCI Machine Learning Repository (Lichman, M. (2013). UCI Machine Learning Repository [http://archive.ics.uci.edu/ml]. Irvine, CA: University of California, School of Information and Computer Science.) El conjunto de datos inicial es mucho más grande, se han agregado los valores por hora haciendo promedios, para hacerlo más manejable.
+En la @fig-household-boxplots, se aprovechan los diagramas de caja bigotes para comparar la potencia global consumida en la vivienda por hora. En lugar de representar sólo el promedio de la potencia consumida por hora, hemos optado por una visualización más rica con un diagrama caja-bigote por cada hora. 
 
-::: center
-![ Comparación puntuación final, temporadas 01/02 y 02/03](figures/liga.pdf){#fig-liga}
-:::
+```{python}
+#| label: fig-household-boxplots
+#| fig-cap: "Comparamos visualmente los valores de potencia global consumida por cada hora del día usando diagramas de caja bigotes."
 
-Comentarios: No hay datos atípicos, es decir que no hay equipo que se
-haya destacado por arriba o por abajo del resto de los equipos. Hay más
-diferencia de puntos entre el primer y el último clasificado para la
-liga 02/03 que en la liga anterior. Los equipos del tercer cuarto de la
-clasificación están muy apelotonados en la liga 02/03.
+from pathlib import Path
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+DATA_DIRECTORY = Path('data')
+vivienda = pd.read_csv(
+    DATA_DIRECTORY /  'household_hourly_power_consumption.txt',
+    skiprows=13,
+    parse_dates=['date_hour'],
+    index_col='date_hour',
+    sep=';',
+)
+vivienda['hour'] = vivienda.index.hour
+fig, ax = plt.subplots(figsize=(10, 4))
+sns.boxplot(data=vivienda, x='hour', y='global_active_power', orient='v')
+ax.set_xlabel('Hora')
+ax.set_ylabel('Potencia global consumida')
+plt.show()
+
+``` 
+
+Comentarios: observamos numerosos datos atípicos, pero las cajas indican claramente el patrón de presencia de la familia durante el día. Se suelen levantar entre las 7 y las 8, no están durante el día y regresan sobre las 19 horas.
 
 ## Ajuste por mínimos cuadrados
 

@@ -19,6 +19,7 @@ book:
     - index.qmd
     - 01-exploracion.qmd
     - 02-probabilidad.qmd
+    - 06-estimacion.qmd
     - references.qmd
 
 bibliography: references.bib

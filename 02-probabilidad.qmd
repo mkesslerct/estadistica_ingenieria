@@ -123,7 +123,50 @@ Es una manera gráfica de representar los sucesos: un rectángulo
 representa $S$ el espacio muestral entero, y vamos agrupando los sucesos
 elementales en sucesos. Por ejemplo, volviendo al ejemplo del dado:
 
-![image](figures/viviendacarm.pdf){width=10cm} 
+```{python}
+#| label: fig-venn
+#| fig-cap: "Diagrama de Venn para visualizar eventos asociados a un experimento aleatorio."
+
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+elementos = list('123456')
+x_elementos = [-0.65, -0.3, 0.7, -0.35, 0.4, 0]
+y_elementos = [0.5, 0.3, 0.45, -0.05, 0, -0.2]  
+h_offset = 0.03
+v_offset = 0.03
+
+set1 = set([e for e in elementos if int(e) % 2 == 0])
+set2 = set([e for e in elementos if int(e) >= 5])
+fig, ax = plt.subplots()
+circA = mpatches.Circle(
+    (-0.2, 0),
+    0.5,
+    linestyle='solid',
+    edgecolor='b',
+    facecolor='none'
+)
+circB = mpatches.Circle(
+    (0.25, -0.1),
+    0.45,
+    linestyle='solid',
+    edgecolor='b',
+    facecolor='none',
+)
+ax.add_patch(circA)
+ax.add_patch(circB)
+ax.plot(x_elementos, y_elementos, 'xb')
+for (x, y, e) in zip(x_elementos, y_elementos, elementos):
+    ax.text(x + h_offset, y + v_offset, e)
+ax.text(-0.8, 0.1, 'A', fontsize='large', fontweight='bold')
+ax.text(0.7, 0.1, 'B', fontsize='large', fontweight='bold')
+ax.set_xlim(-1, 1)
+ax.set_ylim(-1, 1)
+ax.set_aspect('equal')
+ax.get_xaxis().set_visible(False)
+ax.get_yaxis().set_visible(False)
+plt.show()
+```
 
 ### Leyes de Morgan
 
@@ -263,9 +306,9 @@ Por último, hay un participante que siempre gana: el estado. En 2021 por
 ejemplo, Loterías y Apuestas del Estado, la sociedad que gestiona los
 juegos estatales, ingresó al Tesoro Público casi 3000 millones de euros
 (fuente: [Memoria anual de Loterías y Apuestas del Estado](https://www.selae.es/es/web-corporativa/responsabilidad-social/memoria-anual/memoria-anual). Hay que decir
-que los españoles se gastaron en juegos en 2005, sumando los de gestión
+que, según el Anuario del Juego en España 2021, publicado por el Grupo Codere, [enlace a sus publicaciones](https://www.grupocodere.com/sala-de-prensa/documentacion/documentacion-sector/), los españoles se gastaron en juegos en 2020, sumando los de gestión
 privada (casino, bingo, máquinas), la ONCE, y los de gestión pública,
-¡una cantidad de 28 000 millones de euros!
+cerca de 21 000 millones de euros, lo que representa un gran descenso, debido a la pandemia, respecto a los casi 36 000 millones de euros que jugaron en 2019. 
 
 #### Interpretación "frecuentista" de la probabilidad
 
@@ -303,9 +346,65 @@ $$\mathbb{P}(A|B)=\frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}=\frac{\mathbb{P}(\le
 2,4,6\right\}) }=\frac{1/6}{3/6}=1/3,$$ lo que coincide con nuestra
 intuición.
 
-Al considerar el siguiente diagrama de Venn,
+Al considerar el diagrama de Venn de la @fig-venncond, 
 
-![image](figures/venncond.jpg){width=10cm}
+
+```{python}
+#| label: fig-venncond
+#| fig-cap: "Ilustración de la probabilidad condicionada: sabemos que ha ocurrido $B$, actualizamos la probabilidad de que ocurra $A$."
+
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+elementos = list('123456')
+x_elementos = [-0.65, -0.3, 0.7, -0.35, 0.4, 0]
+y_elementos = [0.5, 0.3, 0.45, -0.05, 0, -0.2]  
+h_offset = 0.03
+v_offset = 0.03
+
+set1 = set([e for e in elementos if int(e) % 2 == 0])
+set2 = set([e for e in elementos if int(e) >= 5])
+fig, ax = plt.subplots()
+circA = mpatches.Circle(
+    (-0.2, 0),
+    0.5,
+    linestyle='solid',
+    edgecolor='b',
+    facecolor='none'
+)
+circA_hatched = mpatches.Circle(
+    (-0.2, 0),
+    0.5,
+    linestyle='solid',
+    edgecolor='b',
+    facecolor='b',
+    alpha=0.3,
+    hatch='\\'
+    )
+circB = mpatches.Circle(
+    (0.25, -0.1),
+    0.45,
+    linestyle='solid',
+    edgecolor='b',
+    facecolor='none',
+    hatch="/"
+)
+ax.add_patch(circA)
+ax.add_patch(circB)
+circA_hatched.set_clip_path(circB)
+ax.add_patch(circA_hatched)
+ax.plot(x_elementos, y_elementos, 'xb')
+for (x, y, e) in zip(x_elementos, y_elementos, elementos):
+    ax.text(x + h_offset, y + v_offset, e)
+ax.text(-0.8, 0.1, 'A', fontsize='large', fontweight='bold')
+ax.text(0.7, 0.1, 'B', fontsize='large', fontweight='bold')
+ax.set_xlim(-1, 1)
+ax.set_ylim(-1, 1)
+ax.set_aspect('equal')
+ax.get_xaxis().set_visible(False)
+ax.get_yaxis().set_visible(False)
+plt.show()
+```
 
 nos convencemos de que la definición $\mathbb{P}(A|B)= \frac{\mathbb{P}(A\cap B)}{\mathbb{P}(B)}$ es intuitivamente razonable: realizamos el
 experimento y sabemos que el resultado pertenece a $B$, y nos
