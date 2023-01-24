@@ -14,6 +14,7 @@ book:
   repo-url: https://github.com/mkesslerct/estadistica_ingenieria
   repo-actions: [edit]
   downloads: [pdf, epub]
+  cover-image:  statsclouds.png
 
   chapters:
     - index.qmd

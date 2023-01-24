@@ -197,7 +197,7 @@ bien la función de densidad.
 Para un valor concreto de $(X_1,\ldots,X_n)$, que denotamos por
 $(x_1,\ldots,x_n)$, consideramos la función de $\theta$:
 $$L_n:\left\{\begin{array}{l}
-\mathcal{R}^p\to \mathcal{R}\\
+\mathbb{R}^p\to \mathbb{R}\\
 \theta\mapsto L_n(\theta)=f_{X_1,\ldots,X_n}(x_1,\ldots,x_n;\theta).
 \end{array}\right.$$ La función $L_n$ asocia a cada valor de $\theta$ el
 valor de la densidad (o de la función puntual de probabilidad) de las
