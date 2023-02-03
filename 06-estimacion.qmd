@@ -363,7 +363,7 @@ confianza para la media $\mu$ se realiza siguiendo los siguientes pasos.
 -   Dibujo en la densidad del estadístico
     $\frac {\bar{X}-\mu} {\sigma/\sqrt{n}}$, una región central que
     represente el $100(1-\alpha)\%$ del área total, tal como viene
-    ilustrado en la @fig-densidad-estadistico-Z
+    ilustrado en la @fig-densidad-estadistico-Z.
 
 ```{python}
 #| label: fig-densidad-estadistico-Z
@@ -383,7 +383,7 @@ ax.fill_between(x, norm.pdf(x), alpha=0.4, hatch='//', where=interval)
 ax.get_yaxis().set_visible(False)
 ax.set_xlabel('')
 ax.set_xticks([norm.ppf(alpha / 2), 0, norm.ppf(1 - alpha / 2)])
-ax.set_xticklabels(['$-z$', '0', '$z$'])
+ax.set_xticklabels([r'$-z_{1-\alpha/2}$', '0', r'$z_{1-\alpha/2}$'])
 plt.show()
 ```
 
@@ -441,34 +441,20 @@ es decir las que proporcionan intervalos equivocados.
 import numpy as np
 from numpy.random import default_rng
 from matplotlib import pyplot as plt
-from matplotlib.collections import LineCollection
 
 rng = default_rng(31415)
 m = 20
 n = 4
 mu = 2
 sigma = 1
-samples = 1 + np.concatenate(
-    [np.arange(m).reshape(-1, 1), np.arange(m).reshape(-1, 1)],
-    axis=1
-)
-means = rng.normal(mu, sigma/np.sqrt(n), size=(m, 1)) 
-ends = (
-    means +
-    np.array(
-        [-1.96 * sigma / np.sqrt(n), 1.96 * sigma / np.sqrt(n)]
-    ).reshape(1,-1)  
-)
-segs = np.zeros((m, 2, 2))
-segs[:, :, 1] = ends
-segs[:, :, 0] = samples
+samples = 1 + np.arange(m)
+means = rng.normal(mu, sigma/np.sqrt(n), size=m) 
+error = 1.96 * sigma / np.sqrt(n)
 fig, ax = plt.subplots()
 ax.set_xlim(0, m + 1)
-ax.set_ylim(ends.min() * 0.9, ends.max() * 1.1)
-line_segments = LineCollection(segs, linestyle='solid')
-ax.add_collection(line_segments)
+ax.set_ylim(np.min(means) - 1.5 * error, np.max(means) + 1.5 * error) 
 ax.axhline(mu, 0, m + 1, color='r', linestyle='dashed')
-ax.plot(samples, means, 'bo', markersize=8)
+ax.errorbar(samples, means, yerr=error, fmt='bo', markersize=8, capsize=2)
 ax.set_xlabel('Muestra')
 ax.set_ylabel('Valores')
 ax.set_xticklabels([])
@@ -552,7 +538,7 @@ basándonos en el estadístico $\frac {\bar{X}-\mu} {S/\sqrt{n}}$:
 
 -   Dibujo en la densidad del estadístico $T$ una región central que
     represente el $100(1-\alpha)\%$ del área total, tal como viene
-    ilustrado en la figura siguiente
+    ilustrado en la @fig-densidad-estadistico-T.
 
 ```{python}
 #| label: fig-densidad-estadistico-T
@@ -573,7 +559,7 @@ ax.fill_between(x, t.pdf(x, df), alpha=0.4, hatch='//', where=interval)
 ax.get_yaxis().set_visible(False)
 ax.set_xlabel('')
 ax.set_xticks([t.ppf(alpha / 2, df), 0, t.ppf(1 - alpha / 2, df)])
-ax.set_xticklabels(['$-t$', '0', '$t$'])
+ax.set_xticklabels([r'$-t_{n-1, 1-\alpha/2}$', '0', r'$t_{n-1, 1-\alpha/2}$'])
 plt.show()
 ```
 

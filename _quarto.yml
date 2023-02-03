@@ -3,6 +3,7 @@ project:
   output-dir: _book
 
 lang: es
+number-depth: 3
 
 jupyter: estadistica
 code-fold: true
@@ -20,6 +21,7 @@ book:
     - index.qmd
     - 01-exploracion.qmd
     - 02-probabilidad.qmd
+    - 03-variable.qmd
     - 06-estimacion.qmd
     - references.qmd
 

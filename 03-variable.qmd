@@ -1,0 +1,1213 @@
+# Variable aleatoria I
+
+Las nociones teóricas que hemos introducido responden a la necesidad de
+construir modelos matemáticos que den cuenta del carácter aleatorio de
+los fenómenos que nos interesan. Hemos puesto en el tema anterior las
+primeras piedras en este sentido describiendo experimento aleatorio,
+sucesos y probabilidad asociada a un suceso, pero nos falta la noción
+fundamental de variable aleatoria: en problemas concretos, estamos
+interesados en funciones definidas sobre el espacio de los resultados
+posibles del experimento aleatorio, y los sucesos que queremos estudiar
+se expresan a través de estas funciones. Puesto que nos es imposible
+predecir de manera exacta el valor de una variable aleatoria al realizar
+el experimento, nuestro modelo consistirá en describir las
+probabilidades asociadas a cualquier suceso relacionado con esta
+variable, descripción que conseguiremos gracias a la función de
+distribución.
+
+## Concepto de variable aleatoria
+
+Consideramos un experimento aleatorio y su espacio muestral asociado.
+
+### Definición
+
+::: {#def-va}
+Una variable aleatoria- de ahora en adelante v.a.- asocia un número o
+más generalmente una característica a todo resultado posible del
+experimento.
+:::
+
+Por ejemplo, si consideramos el experimento que consiste en realizar una
+medición de la concentración de un producto en una solución, nos
+interesa la v.a $X$= "valor medido de la concentración." Otro ejemplo de
+variable aleatoria se asocia, en un proceso de fabricación, al
+experimento de escoger un dispositivo producido, y considerar la v.a.
+$X$= "duración hasta el fallo".
+
+Finalmente ilustraremos algunos conceptos de este tema con un ejemplo
+sencillo: el experimento consiste en lanzar tres veces una moneda no
+trucada. Si denotamos por $+$ el resultado "cruz" y por $c$ el resultado
+"cara" al lanzar una moneda, el espacio muestral se describe como
+$$S=\{ccc,\ cc+,\ c+c,\ c++,\ +cc,\ +c+,\ ++c,\ +++\}.$$ Consideraremos
+la v.a. $X$= "número de veces que ha salido cruz en los tres
+lanzamientos". Puede tomar cualquiera de los valores 0, 1, 2 y 3.
+
+### Distribución de una variable aleatoria
+
+Conocer la distribución de los valores de una v.a. $X$ consiste en saber
+asignar a cualquier suceso relacionado con $X$ una probabilidad. Decidir
+de una distribución para una v.a de interés en un problema concreto es
+por lo tanto escoger un modelo para describir el comportamiento de esta
+variable.
+
+Para el ejemplo de los tres lanzamientos de una moneda, la distribución
+de $X$ = "número de veces que ha salido cruz en los tres lanzamientos"
+está completamente determinada por la lista de los valores posibles
+junto con la probabilidad con la que $X$ toma cada valor. Al ser la
+moneda no trucada, escogemos un modelo en el que los sucesos elementales
+de $S$ son equiprobables, calculamos $\mathbb{P}(X=i)$ para $i=0,\ 1,\ 2,\ 3$
+con la regla casos favorables / casos posibles y obtenemos
+
+::: center
+Valor | Probabilidad
+------- | ------
+0 | 1/8
+1 | 3/8
+2 | 3/8
+3 | 1/8
+:::
+
+Se puede representar de manera gráfica la distribución de $X$:
+
+```{python}
+#| label: fig-distX
+#| fig-cap: "Representación de la distribución de $X$, el número de veces que ha salido cruz en tres lanzamientos de una moneda."
+
+import numpy as np
+import matplotlib.pyplot as plt
+values = np.arange(4)
+prob = np.array([1, 3, 3, 1]) / 8
+fig, ax = plt.subplots()
+ax.stem(values, prob)
+ax.set_xlabel("Valores posibles")
+ax.set_ylabel("Probabilidad")
+plt.show()
+```
+
+
+Podremos fijarnos en las características principales de esta
+distribución (simetría, máximo, colas\...)
+
+##  Función de distribución de una v.a {#sec-func-de-distr}
+
+Se trata de una manera de describir la distribución de una variable $X$.
+
+### Definición
+
+:::{#def-F}
+La función de distribución de una v.a. $X$ es la función $F_X$ que
+asocia a cualquier número real $t$ la probabilidad de que $X$ sea menor
+o igual a $t$, i.e. $$F_X(t)=\mathbb{P}(X\leq t).$$
+:::
+
+### Cálculo para el ejemplo de las tres monedas
+
+Para calcular $F_X(t)=\mathbb{P}(X\leq t)$, debemos considerar los intervalos
+definidos por los valores posibles de $X$ es decir 0, 1, 2 y 3 que
+inducen los cinco intervalos para $t$: $t<0$, $0\leq t<1$, $1\leq t<2$,
+$2\leq t<3$ y $t>3$.
+
+Si $t<0$, el suceso $(X\leq t)$ es el suceso imposible puesto que todos
+los valores que puede tomar $X$ son mayores o igual que 0. Por lo tanto,
+$F_X(t)=%
+\mathbb{P}(X\leq t)=0$. Si $0\leq t<1$, el suceso $(X\leq t)$ se cumple si y
+solamente si $X$ toma el valor 0. Deducimos
+$F_X(t)=\mathbb{P}(X\leq t)=\mathbb{P}(X=0)=1/8$. Si $1\leq t<2$, el suceso $(X\leq t)$
+se cumple si y solamente si $X$ toma el valor 0 ó 1, es decir
+$F_X(t)=\mathbb{P}(X\leq t)=\mathbb{P}[(X=0)\cup (X=1)]=%
+\mathbb{P}[X=0]+\mathbb{P}[X=1]=1/8+3/8=1/2$. Si $2\leq t<3$, el suceso $(X\leq t)$ se
+cumple si y solamente si $X$ toma el valor 0, 1 ó 2, es decir
+$F_X(t)=\mathbb{P}(X\leq  t)=\mathbb{P}[X=0]+\mathbb{P}%
+[X=1]+\mathbb{P}[X=2]=1/2+3/8=7/8$. Finalmente, si $t>3$, el suceso $(X\leq t)$
+es el suceso seguro puesto que todos los valores que puede tomar $X$ son
+menores o igual que 3. Por lo tanto $F_X(t)=\mathbb{P}(X\leq t)=1$.
+
+La gráfica de $F_X$ en este ejemplo es
+
+```{python}
+#| label: fig-cdf
+#| fig-cap: "Función de distribución acumulada  de $X$, el número de veces que ha salido cruz en tres lanzamientos de una moneda."
+
+import numpy as np
+import matplotlib.pyplot as plt
+values = np.arange(4)
+prob = (np.array([1, 3, 3, 1]) / 8).cumsum()
+fig, ax = plt.subplots()
+ax.step(
+    np.insert(values, [0, 4], [-1, 4]),
+    np.insert(prob, [0, 4], [0, 1]),
+    where='post'
+)
+ax.plot(values, prob, 'ro')
+ax.set_xlabel("Valores posibles")
+ax.set_ylabel("Probabilidad acumulada")
+ax.set_xticks(values)
+plt.show()
+```
+
+### Propiedades
+
+La función de distribución de una v.a. $X$ cumple las propiedades
+siguientes:
+
+-   $0\leq F_X(t)\leq 1$, para todo $t\in \mathbb{R}$.
+
+-   $\lim_{t\to-\infty} F_X(t)=0$ mientras que $\lim_{t\to+\infty}
+    F_X(t)=1$.
+
+-   $F_X$ es una función creciente, puesto que si $a\leq b$, tenemos
+    $(X\leq a)\subset (X\leq b)$ lo que implica que
+    $\mathbb{P}(X\leq a)\leq \mathbb{P} (X\leq b).$
+
+-   $F_X$ es una función continua por la derecha.
+
+-   Finalmente la propiedad más importante que utilizaremos muy a
+    menudo: para todos números reales $a\leq b$,
+    $$\mathbb{P}(a<X\leq b)=F_X(b)-F_X(a).$$ La demostración de esta propiedad
+    es inmediata si utilizamos la descomposición
+    $(X\leq b)=(X\leq a)\cup (a<X\leq b)$ junto con la regla de la
+    adición.
+
+## Variable aleatoria discreta
+
+### Definición
+
+:::{#def-discreta}
+En el caso en que la v.a. $X$ puede tomar un número finito o infinito
+numerable [^1] de valores, decimos que $X$ es una variable discreta
+:::
+
+En el ejemplo de los tres lanzamientos de una
+moneda, la v.a. $X$= "Número de veces que ha salido cruz" es una v.a
+discreta puesto que sólo puede tomar cuatro valores.
+
+### Función puntual de probabilidad
+
+#### Definición
+
+:::{#def-fpp}
+Si $X$ es una v.a. discreta, y $x_1,x_2,\ldots,x_n,\ldots$ representan
+sus valores posibles, la función puntual de probabilidad de $X$ es la
+función $f_X$ que asocia a cada $x_i$ la probabilidad $\mathbb{P}(X=x_i)$, para
+$i=1,\ldots,n\ldots$ $$f_X:\ x_i\mapsto f_X(x_i)=\mathbb{P}(X=x_i).$$
+:::
+
+En el experimento del lanzamiento de las tres monedas, hemos calculado la
+distribución de $X$, el número de veces que ha salido cruz en el
+apartado 1.2. Los valores posibles de $X$ son 0, 1, 2 y 3; por lo tanto
+
+::: center
+   Valor   $f_X$
+  ------- -------
+     0      1/8
+     1      3/8
+     2      3/8
+     3      1/8
+:::
+
+#### Propiedades {#sec-condiciones-disc}
+
+-   La función puntual de probabilidad de una v.a. discreta permite
+    calcular la función de distribución: si notamos que
+    $$(X\leq t)=\cup_{x_i\leq t}(X=x_i),$$ obtenemos que
+    $$\mathbb{P}(X\leq t)=\sum_{x_i\leq t}\mathbb{P}(X=x_i)=\sum_{x_i\leq 
+    t}f_X(x_i).$$
+
+-   Además, si consideremos dada una función $f$ definida en un conjunto
+    discreto de valores $\{x_1,\ldots,x_n,\ldots\}$, se puede demostrar
+    que $f$ es una función puntual de probabilidad de una v.a. $X$ si y
+    solamente si cumple 
+
+\begin{align}
+    \bullet& 0\leq f(x)\quad \mbox{para }x=x_1,\ldots,x_n,\ldots\\
+    \bullet& \sum_{x_i}f_X(x_i)=1.
+\end{align}
+
+### Características de una variable discreta
+
+Al igual que en el tema 1 para un conjunto de datos, queremos disponer
+de herramientas para describir la distribución de valores de una v.a. De
+hecho, todos las medidas descriptivas de un conjunto de datos tienen su
+contra-parte para la distribución de una v.a. Nos limitaremos por
+razones de tiempo a una medida de centralización y otra de dispersión:
+la esperanza y la varianza.
+
+#### Esperanza
+
+Si queremos considerar el valor medio de la distribución de valores de
+una v.a., es natural calcular la suma de estos valores ponderados por la
+probabilidad que se le asigna.
+
+::: {#def-esperanza}
+La media, o esperanza, o valor esperado, o promedio, de una v.a.
+discreta $X$ se define como $$\mathbb{E}[X]=\sum_{x_i}x_i\mathbb{P}(X=x_i).$$
+:::
+
+Representa una medida de centralización de la distribución de valores de
+$X$ pero con la misma puntualización que en el tema 1: es representativa
+del centro de la distribución si ésta es aproximadamente simétrica pero
+puede ser una mala medida de centralización si la distribución es
+asimétrica y/o presenta colas pronunciadas.
+
+Por supuesto, la esperanza de una v.a. $X$ se expresa en las mismas
+unidades que $X$.
+
+Será útil para una distribución de valores ser capaz de calcular el
+valor medio no solamente de $X$ sino también de una función de $X$; está
+claro por ejemplo que el valor medio de la distancia al cuadrado de $X$
+a su media será una medida de dispersión de la distribución de valores
+de $X$. Por ello, definimos la esperanza de una función cualquiera
+$f(X)$ de $X$.
+
+::: {#def-esperanzaf}
+Sea $X$ una v.a. discreta y $f$ una
+función de $\mathbb{R}$ en $\mathbb{R}$. La esperanza de $f(X)$ es la suma de los
+valores de $f(X)$ ponderados por la probabilidad de que $X$ tome cada
+valor, es decir, $$\mathbb{E}[f(X)]=\sum_{x_i}f(x_i)\mathbb{P}(X=x_i).$$
+:::
+
+#### Varianza
+
+Para disponer de una medida numérica de la dispersión de valores de una
+v.a $X$, calcularemos el valor promedio de la distancia al cuadrado de
+$X$ a su media. Al igual que en el tema 1, llamamos esta cantidad la
+varianza de $X$.
+
+::: {#def-varianza}
+La varianza de una v.a. discreta $X$, designada por $\mathop{var} X$ o
+$\sigma^2_X$, está definida por $$\mathop{var}(X)=\mathbb{E}[(X-\mathbb{E}[X])^2].$$
+:::
+
+Por la definición @def-esperanzaf, deducimos que $\mathop{var}(X)$ se puede calcular como
+$$\mathop{var}(X)=\sum_{x_i}(x_i-\mathbb{E}[X])^2\mathbb{P}(X=x_i).$$ Por otra parte, se suele
+calcular la varianza utilizando la fórmula equivalente siguiente:
+
+**Fórmula equivalente para el cálculo de la varianza.** Tenemos
+$$\mathop{var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2.$$ : 
+
+\begin{align}
+\mathop{var}(X)&=&\sum_{x_i}(x_i-\mathbb{E}[X])^2\mathbb{P}(X=x_i)\\
+&=&\sum_{x_i}(x_i^2-2x_i\mathbb{E}[X]+\mathbb{E}[X]^2)\mathbb{P}(X=x_i)\\
+&=&\sum_{x_i}x_i^2\mathbb{P}(X=x_i)-\sum_{x_i}2x_i\mathbb{E}[X]\mathbb{P}(X=x_i)+\sum_{x_i}\mathbb{E}[X]^2\mathbb{P}(X=x_i)\\
+&=&\sum_{x_i}x_i^2\mathbb{P}(X=x_i)-2\mathbb{E}[X]\sum_{x_i}x_i\mathbb{P}(X=x_i)+\mathbb{E}[X]^2\sum_{x_i}\mathbb{P}(X=x_i)\\
+&=&\mathbb{E}[X^2]-2\mathbb{E}[X]\mathbb{E}[X]+\mathbb{E}[X]^2\\
+&=&\mathbb{E}[X^2]-\mathbb{E}[X]^2\\
+\end{align}
+
+Finalmente, la desviación típica se define como la raíz cuadrada de la
+varianza $$\sigma_X=\sqrt{\sigma_X^2}.$$ Será la medida que calcularemos
+para dar cuenta de la dispersión de la distribución: cuanto más pequeña
+sea la desviación típica, más concentrada estará la distribución
+alrededor de su media. En particular, si la desviación típica de $X$ es
+nula, deducimos por la primera fórmula para el cálculo de la varianza,
+que todos los valores de $X$ son iguales: $X$ sólo puede tomar un valor,
+y lo toma con probabilidad 1.
+
+Por otra parte, es bueno resaltar que la desviación típica se expresa en
+las mismas unidades que la variable $X$.
+
+::: {callout-note}
+En la fórmula equivalente para la varianza aparecen las cantidades
+$\mathbb{E}[X^2]$ y $\mathbb{E}[X]$. En general para un entero $k$, llamamos a
+$\mathbb{E}[X^k]$ el momento de orden $k$. Así la media es el momento de
+orden 1. También hablamos de momento centrado de orden $k$ para la
+cantidad $\mathbb{E}[(X-\mathbb{E}[X])^k]$. La varianza es por lo tanto el momento
+centrado de orden 2.
+:::
+
+#### Ejemplo
+
+Calculemos para el ejemplo del lanzamiento de tres monedas la esperanza
+y la varianza de la v.a $X$ "número de cruces".
+
+Por una parte, 
+
+\begin{align}
+\mathbb{E}[X]&=&\sum_{x_i}x_i\mathbb{P}(X=x_i)=0\, 1/8+1\, 3/8+2\,3/8+3\,1/8\\
+&=&3/2\\
+\end{align}
+
+ y por otra parte 
+
+\begin{align}
+\mathop{var}(X)&=&\mathbb{E}[X^2]-(\mathbb{E}[X])^2=\sum_{x_i}x^2_i\mathbb{P}(X=x_i)-(3/2)^2\\
+&=&0^2\, 1/8+1^2\, 3/8+2^2\,3/8+3^2\,1/8-(3/2)^2\\
+&=&3/4
+\end{align}
+
+ La desviación típica es por lo tanto
+$$\sigma_X=\sqrt{3}/2.$$
+
+### Modelos más usados de v.a. discretas
+
+No debemos olvidar que nuestro objetivo es modelizar un fenómeno.
+Proponer un modelo no consiste en proporcionar una descripción de la
+realidad, sino disponer de una aproximación que dé cuenta de los
+resultados observados del experimento para unas condiciones
+experimentales dadas. Ningún modelo se ajusta perfectamente al fenómeno
+observado, así que considerarlo adecuado o válido es equivalente a
+considerar que el grado de precisión conseguido es satisfactorio para el
+uso que queremos hacer del modelo.
+
+En este contexto, hay situaciones típicas de modelización que presentan
+las mismas características y para las cuales se han propuesto modelos de
+distribuciones bien estudiados y conocidos.
+
+#### Variable de Bernoulli
+
+Se trata de una variable que sólo puede tomar dos valores, 0 ó 1.
+Llamamos $p$ la probabilidad de que tome el valor 1. Varios valores de
+$p$, (comprendidos entre 0 y 1, puesto que $p$ es una probabilidad) dan
+varias distribuciones de Bernoulli. Para un valor $p$ concreto, hablamos
+de la distribución de Bernoulli de *parámetro* $p$.
+
+-   Valores posibles: $\{ 0,\ 1\}$,\
+    $\mathbb{P}(X=0)=1-p\quad \mathbb{P}(X=1)=p$.
+
+-   Esperanza: $$\mathbb{E}[X]=\sum x_i\mathbb{P}(X=x_i)=0\times (1-p) + 1\times p=p$$
+
+-   Varianza:\
+    Tenemos:
+    $\mathbb{E}[X^2]=\sum x^2_i\mathbb{P}(X=x_i)=0^2\times (1-p) + 1^2\times p=p$, por
+    lo tanto $$\mathop{var}(X)=p-p^2=p(1-p).$$
+
+Transmito un fichero por la red, en promedio 3 de cada 10000 ficheros
+transmitidos resultan dañados. Al experimento aleatorio: "transmitir un
+fichero por la red", asocio la variable $X$ que toma el valor 1 si el
+fichero se transmite correctamente y 0 si resulta dañado. La variable
+$X$ sigue una distribución de Bernoulli de parámetro $0.9997$.
+
+#### Distribución binomial
+
+##### Definición
+
+La distribución binomial aparece cuando se dan las condiciones
+siguientes:
+
+-   Tenemos un primer experimento aleatorio simple, con una situación
+    dicotómica, es decir una situación con dos sucesos posibles $A$ y
+    $A^c$ (o ocurre $A$ o no ocurre $A$).
+
+-   Repetimos este experimento simple $n$ veces de manera independiente.
+
+-   Consideramos la variable $X$="Número de veces que ha ocurrido $A$ en
+    las $n$ realizaciones del experimento simple.
+
+En esta situación, la variable $X$ sigue una distribución Binomial, de
+parámetros $n$ ( el número de veces que repetimos el experimento simple)
+y $p$ (la probabilidad de que, en una realización del experimento
+simple, ocurra $A$). Lo denotamos por $$X\sim {\mathcal{B}}(n,p),$$
+donde el símbolo $\sim$ se utiliza para "sigue una distribución"\...
+
+##### Ejemplo
+
+Una empresa produce piezas con 1% de defectuosas. Las piezas se
+empaquetan en cajas de 10 unidades. Si consideramos el experimento
+aleatorio que consiste en escoger al azar una caja entre la producción,
+¿cuál es la distribución de la variable $X$="número de piezas
+defectuosas en la caja".
+
+Para completar una caja, se ha repetido 10 veces el experimento
+aleatorio simple "escojo una pieza en la producción" al que va asociado
+una situación dicotómica: o bien ocurre $A$="la pieza escogida es
+defectuosa", o bien ocurre $A^c$= "la pieza escogida es correcta".
+Contar el número de piezas defectuosas en la caja es por lo tanto
+equivalente a contar el número de veces que ha ocurrido $A$ entre las 10
+realizaciones del experimento simple. Deducimos que la distribución de
+$X$ es una distribución Binomial con parámetros $n=10$, y $p=\mathbb{P}(A)$, la
+probabilidad de que ocurra $A$ en el experimento simple. Concluimos
+$$X\sim {\mathcal B}(10,0.01).$$
+
+##### Propiedades {#sec-propiedades-1}
+
+-   Valores posibles: $0,1,2,\ldots,n$.
+
+-   Distribución - Función puntual de probabilidad.
+    $i=0,1,\ldots,n\quad f_X(i)=\mathbb{P}(X=i).$ Para calcular estas
+    probabilidades, introduzcamos los sucesos:
+
+      --------  ---------------------------------------------------------------
+      $A_1=$   "ha ocurrido $A$ en la primera realización del exp. simple"
+      $A_2=$   "ha ocurrido $A$ en la segunda realización del exp. simple"
+      ⋮        ⋮
+      $A_n=$   "ha ocurrido $A$ en la $n$-ésima realización del exp. simple"
+      -------- ---------------------------------------------------------------
+
+    Estos sucesos son independientes.
+
+    Empecemos por calcular $\mathbb{P}(X=0)$:\
+    El suceso $X=0$ se puede escribir
+    $A^c_1\cap A^c_2\cap\cdots\cap A^c_n$, por lo tanto
+    $$\mathbb{P}(X=0)=\mathbb{P}(A^c_1\cap A^c_2\cap\cdots\cap A^c_n)=\mathbb{P}(A_1^c)\cdots\mathbb{P}(A_n^c)=(1-p)^n,$$
+    por la regla del producto para sucesos independientes.\
+    De manera similar, calculamos $\mathbb{P}(X=1):$\
+    El suceso $(X=1)$ se escribe como $$\begin{split}
+    (X=1)&=(A_1\cap A^c_2\cap\cdots\cap A^c_n)\cup(A^c_1\cap A_2\cap\cdots\cap A^c_n)\cup\ldots\\
+    &\cup(A^c_1\cap A^c_2\cap\cdots\cap A_n)
+    \end{split}$$ Aplicando la regla de la adición para sucesos
+    incompatibles y a continuación la regla del producto para sucesos
+    independientes, obtenemos $$\begin{split}
+    \mathbb{P}(X=1)&=\mathbb{P}(A_1\cap A^c_2\cap\cdots\cap A^c_n)+ \mathbb{P}(A^c_1\cap A_2\cap\cdots\cap A^c_n)+\cdots\\
+    &+\mathbb{P}(A^c_1\cap A^c_2\cap\cdots\cap A_n)\\
+    &=p(1-p)^{n-1}+p(1-p)^{n-1}+\ldots+p(1-p)^{n-1}=np(1-p)^{n-1}\\
+    \end{split}$$ De la misma manera, podemos demostrar que, para un $i$
+    cualquiera entre $0$ y $n$, la probabilidad $\mathbb{P}(X=i)$ se descompone
+    como la suma de términos todos iguales, siendo el primero de ellos
+    $\mathbb{P}(A_1\cap A_2\cap\ldots\cap A_i\cap A^c_{i+1}\cap\ldots\cap A^c_n)$,
+    que es igual a $p^i(1-P)^{n-i}$. Sólo nos queda determinar el número
+    de términos en esta suma, corresponde al número de maneras de
+    escoger $i$ sucesos diferentes entre $n$: es una cantidad básica en
+    combinatoria, se llama el número de combinaciones de $n$ elementos
+    tomados de $i$ en $i$, y se denota por $( \begin{array}{c} n\\ i 
+      \end{array})$. En resumen, para $i=0,1,\ldots,n$,
+    $$f_X(i)=\mathbb{P}(X=i)=( \begin{array}{c}n \\ i 
+      \end{array}) p^i (1-p)^{n-i},$$ donde $$( \begin{array}{c} n\\ i 
+      \end{array})=\frac {n!}{i!\cdot(n-i)!},$$ y se utiliza la
+    convención $0!=1$.\
+    Nota: ¿se cumple que $\sum_{i=1}^n ( \begin{array}{c} n\\ i 
+      \end{array})p^i(1-p)^{n-i}=1$? La respuesta es sí, por el binomio
+    de Newton: $(a+b) ^n=\sum_{i=1}^n ( \begin{array}{c} n\\ i 
+      \end{array})a^i(b)^{n-i}$, y por lo tanto
+    $$\sum_{i=1}^n ( \begin{array}{c} n\\ i 
+      \end{array})p^i(1-p)^{n-i}=(p+1-p)^n=1.$$
+
+-   Esperanza y varianza:\
+    Es posible demostrar que, si $X\sim {\mathcal B}(n,p)$,
+    $$\mathbb{E}[X]=n\cdot p,\quad \mathop{var}(X)=n\cdot p\cdot(1-p).$$
+
+#### Distribución Geométrica
+
+##### Definición
+
+Es el modelo más sencillo para un tiempo de espera discreto:
+consideramos, al igual que para una distribución binomial, un
+experimento simple con una situación dicotómica, ocurre $A$ o $A^C$ con
+probabilidades $p$ y $1-p$ respectivamente. Estamos dispuestos a
+realizar este experimento simple un cierto número de veces hasta que
+ocurra $A$. Introducimos la variable $X$:"Número de veces que debemos
+realizar el experimento simple hasta que ocurra $A$ por primera vez".\
+La variable $X$ sigue una distribución geométrica de parámetro $p$.
+Escribimos $$X\sim \mathcal{G}eo(p)$$
+
+##### Propiedades {#sec-propiedades-2}
+
+.
+
+-   $X$ puede tomar los valores $1,2,\ldots$.
+
+-   Función puntual de probabilidad de $X$: queremos calcular $\mathbb{P}(X=i)$
+    para $i\in \mathbb{N}^*$.\
+    Introducimos los sucesos: $A_1$="ocurre $A$ en la primera
+    realización del experimento simple", $A_2$="ocurre $A$ en la segunda
+    realización del experimento simple", etc\....
+
+    Está claro que
+    $$\mathbb{P}(X=i)=\mathbb{P}(A_1^c\cap A_2^c\cap \cdots A_{i-1}^c\cap A_i),$$ y, por
+    la regla del producto para sucesos independientes, deducimos
+    $$\mathbb{P}(X=i)=(1-p)^{i-1}p.$$
+
+-   Esperanza y varianza de $X\sim \mathcal{G}eo(p)$.\
+    Utilizando resultados clásicos sobre suma de series geométricas,
+    obtenemos 
+
+\begin{align}
+      \mathbb{E}[X]&=&1/p,\\
+    Var(X)&=&\frac{1-p}{p^2}.
+\end{align}
+
+#### Distribución de Poisson
+
+##### Definición
+
+La distribución de Poisson aparece en situaciones en las que se cuenta
+el número de apariciones de un determinado suceso o bien en un intervalo
+de tiempo dado (como el número de partículas emitidas en un segundo por
+un material radioactivo, o el número de clientes que llegan a una cola
+en un intervalo de tiempo dado) o bien en un recinto físico (como el
+número de fallos en un metro de alambre de hierro producido.
+
+Si $\lambda$ es el número medio de apariciones del suceso de interés por
+intervalo de tiempo, la variable $X$= "número de veces que ha aparecido
+el suceso en un intervalo de tiempo escogido al azar", sigue una
+distribución de Poisson de parámetro $\lambda$. Escribimos
+$$X\sim {\mathcal P}(\lambda).$$
+
+##### Propiedades {#propiedades-3}
+
+-   Valores posibles: $0,1,\ldots,n,\ldots$, es decir todos los números
+    enteros\...
+
+-   Función puntual de probabilidad: para $i=0,1,\ldots,$
+    $$f_X(i)=\mathbb{P}(X=i)=\frac{\lambda^i e^{-\lambda}}{i!}.$$ Podemos
+    comprobar que
+    $\sum_{i=0}^{+\infty} \frac{\lambda^i e^{-\lambda}}{i!}=1$, si
+    utilizamos el hecho de que la suma de la serie de potencias
+    $\sum_{i=0}^{+\infty}\frac{x^i}{i!}=e^x$.
+
+-   Esperanza y varianza.\
+    Es fácil comprobar repitiendo cálculos similares a los del punto
+    anterior, que la esperanza de una distribución de Poisson de
+    parámetro $\lambda$, es, tal como se anunció en la definición,
+    $\lambda$. Por otra parte, se puede demostrar que su varianza es
+    $\lambda$ también: si $X\sim{\mathcal P}(\lambda)$
+    $$\mathbb{E}[X]=\lambda,\quad \mathop{var}(X)=\lambda.$$
+
+## Variable continua
+
+### Definición
+
+:::{#def-continua}
+Si una v.a $X$ puede tomar un número infinito no numerable de valores,
+se le llama v.a continua.
+:::
+
+### Función de densidad
+
+#### Presentación
+
+Queremos disponer de una manera de describir la distribución de una v.a
+continua, es decir que nos permita calcular la probabilidad asignada a
+cualquier suceso relacionado con $X$. Para una v.a discreta, hemos visto
+que utilizamos la función puntual de probabilidad que asocia a cada
+valor posible la probabilidad de que X tome este valor: el cálculo de la
+probabilidad de un suceso involucra entonces una suma de valores de la
+función puntual de probabilidad. Puesto que una v.a continua puede tomar
+un número infinito no numerable de valores, no asignaremos una
+probabilidad a cada valor posible, sino que definiremos una "densidad"
+de probabilidad, que indique en qué zonas del espacio de los valores
+posibles de $X$ es más probable que se encuentre $X$.
+
+#### Definición
+
+Para una v.a continua $X$ existe una función $f_X$ positiva, tal que,
+para todos $a$ y $b$, $a\leq b$,
+$$\mathbb{P}(a\leq X\leq b)=\int_a^b f_X(x)dx.$$ La función $f_X$ se llama la
+función de densidad de la v.a $X$. Notar que se trata de una
+terminología coherente con la analogía mencionada anteriormente entre
+probabilidad y peso: para un cuerpo no homogéneo, el peso de una parte
+de este cuerpo se calcula integrando la densidad en el volumen
+correspondiente.
+
+**Nota:**
+
+-   Al ser $f_X$ una función positiva, y
+    $\mathbb{P}(a\leq X\leq b)=\int_a^b f_X(x)dx.$, la probabilidad de que $X$
+    esté entre $a$ y $b$ corresponde al área debajo de la curva de $f_X$
+    comprendida entre $a$ y $b$, tal como está ilustrado en la figura
+    siguiente:
+
+```{python}
+#| label: fig-curvadensidad
+#| fig-cap: La probabilidad de que $X$ esté entre $a$ y $b$ corresponde al área debajo de la curva de $f_X$.
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(norm.ppf(0.001), norm.ppf(0.999), 100)
+interval = (x >= norm.ppf(0.6)) & (x <= norm.ppf(0.9))
+ax.plot(x, norm.pdf(x))
+ax.fill_between(x, norm.pdf(x), alpha=0.4, hatch='//', where=interval)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([norm.ppf(0.6), norm.ppf(0.9)])
+ax.set_xticklabels([r'$a$', r'$b$'])
+plt.show()
+```
+
+
+-   Si disponemos de un conjunto de datos con una variable $X$,
+    generados a partir de realizaciones de un experimento, y si nuestra
+    descripción del mecanismo de generación de los datos a través de un
+    modelo para $X$, es adecuada, la función de densidad de $X$ tiene
+    mucha relación con el histograma. En efecto, la probabilidad de que
+    $X$ pertenezca a una clase debe explicar la frecuencia de datos que
+    aparecen en esta clase, y por lo tanto la forma del histograma debe
+    corresponder a la forma de la densidad, tal como viene reflejado en
+    la figura:
+
+```{python}
+#| label: fig-densidadhist
+#| fig-cap: La forma del histograma se aproxima, si hay suficientes datos, a la forma de la densidad.
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+from numpy.random import default_rng
+rng = default_rng(31415)
+data = rng.normal(3, 2, size=500)
+fig, ax = plt.subplots()
+ax.hist(data, density=True)
+x = np.linspace(norm.ppf(0.001, 3, 2), norm.ppf(0.999, 3, 2), 100)
+ax.plot(x, norm.pdf(x, 3, 2))
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+plt.show()
+```
+-   El área total debajo de la curva de $f_X$ debe corresponder a la
+    probabilidad de que $X$ tome un valor real, y es igual a 1:
+    $$\int_{-\infty}^{+\infty} f_X(x)dx=1.$$
+
+-   Si $X$ es una v.a continua, la probabilidad de que tome un valor
+    dado $a$ es nula, puesto que la integral de $f_X$ entre $a$ y $a$ es
+    cero: la distribución de una v.a continua sólo asigna probabilidades
+    positivas a intervalos de valores y no a puntos individuales. En
+    particular deducimos por la regla de la adición que, si $X$ es una
+    v.a continua,
+    $$\mathbb{P}(a\leq X\leq b)=\mathbb{P}(a<X\leq b)=\mathbb{P}(a<X<b)=\mathbb{P}(a\leq X <b).$$ ¡Por
+    supuesto este tipo de igualdades no es válida en general para una
+    v.a discreta!
+
+#### Propiedades {#sec-propiedades-4}
+
+##### Relaciones entre $f_X$ y $F_X$.
+
+La función de distribución acumulada de $X$ es, ver sección
+@sec-func-de-distr, calcula para todo real $t$ la
+probabilidad de que $X$ tome un valor menor o igual que $t$:
+$F_X(t)=\mathbb{P}(X\leq t)$. Por la definición de la función de densidad $f_X$
+deducimos que $$F_X(t)=\int_{-\infty}^{t} f_X(x)dx.$$ Por lo tanto,
+$F_X$ es una primitiva de $f_X$, o equivalentemente, $f_X$ se puede
+calcular como la derivada, en los puntos donde existe, de la función de
+distribución acumulada $t\mapsto F_X(t)$.
+
+##### Condiciones para que una función $f$ sea la función de densidad de una v.a continua $X$. {#sec-condiciones-densidad}
+
+Está claro que, para que una función $f$ sea la función de densidad de
+una v.a continua $X$, es necesario que se cumplan las dos condiciones:
+
+1.  $f(x)\geq 0,\quad\mbox{para todo $x\in \mathbb{R}$},$
+
+2.  $\int_{-\infty}^{+\infty} f(x)dx=1.$
+
+Se puede demostrar que son también condiciones suficientes para que
+exista una v.a $X$ con función de densidad igual a $f$.
+
+#### Ejemplo {#sec-ejemplo_dura}
+
+El tiempo de vida expresado en miles de horas de un dispositivo
+electrónico escogido al azar en la producción de una fábrica es una v.a
+$X$. Después de un estudio, se opta por modelizar esta v.a como una v.a
+continua con una función de densidad dada por
+$$f_X(x)=\left\{ \begin{array}{ll}
+ e^{-x}&\text{si $x>0$}\\
+0&\text{en otro caso.}
+\end{array} \right.$${#eq-exf}
+La representación gráfica de $f_X$ se puede encontrar en la @fig-densidadexp.
+
+```{python}
+#| label: fig-densidadexp
+#| fig-cap: Representación de la densidad [-@eq-exf].
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import expon
+from matplotlib import pyplot as plt
+import numpy as np 
+fig, ax = plt.subplots()
+x = np.linspace(0, 5, 100)
+ax.plot(x, expon.pdf(x))
+ax.set_xlabel('')
+plt.show()
+```
+
+Notar que por la gráfica de esta función de densidad, comprobamos que la
+probabilidad de que $X$ pertenezca a un intervalo de números negativos,
+por ejemplo $[-2,-3]$ es nula (la densidad de probabilidad es nula en
+$\mathbb{R}^{-}$), o que es mucho menos probable que un dispositivo dure entre
+4000 y 5000 horas que dure entre 1000 y 2000h.
+
+Si nos preguntamos precisamente cuál es la proporción de dispositivos en
+la producción que duran entre 1000 y 2000h, debemos calcular
+$$\mathbb{P}(1\leq X\leq 2)=\int_1^2 f_X(x)dx=\int_1^2 e^{-x}dx=[-e^{-x}]_1^2\simeq0.235.$$
+Según nuestro modelo, alrededor del 23% de la producción tendrá una
+duración entre 1000 y 2000 horas.
+
+### Medidas numéricas asociadas a una v.a continua
+
+De la misma manera que para distribuciones de variables en un conjunto
+de datos, se pueden resumir algunas características de las
+distribuciones de variables asociadas a experimentos aleatorios.
+
+####  Esperanza
+
+Sea $X$ una variable con densidad $f$, definimos la media de $X$,
+también llamada esperanza o valor esperado, como
+$$\mu_X=\mathbb{E}[X]=\int_{-\infty}^{+\infty} x\cdot f(x)dx.$$ Es una medida de
+centro de la distribución si ésta es relativamente simétrica, se
+interpreta como el centro de gravedad de la distribución, ver figura
+@fig-esperanza.
+Otra vez es coherente con la analogía entre el peso y la probabilidad.
+
+
+```{python}
+#| label: fig-esperanza
+#| fig-cap: La esperanza es el centro de gravedad.
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import norm, gamma
+from matplotlib import pyplot as plt
+from matplotlib.patches import Polygon
+import numpy as np 
+def plot_density(rv, ax):
+    x = np.linspace(rv.ppf(0.001), rv.ppf(0.999), 100)
+    ax.set_ylim(-0.1, np.max(rv.pdf(x)) * 2)
+    ax.fill_between(x, rv.pdf(x))
+    ax.axis('off')
+    base = 0.15
+    triangle_top = np.array([rv.stats('m'), 0])
+    y = np.array(
+        [
+            triangle_top,
+            triangle_top + np.array([base, -base]),
+            triangle_top + np.array([-base, -base]),
+            triangle_top
+        ]
+    )
+    triangle = Polygon(y, facecolor = 'C0')
+    ax.add_patch(triangle)
+    ax.text(
+        triangle_top[0],
+        triangle_top[1] - 1.5 * base,
+        'E[X]',
+        fontsize='large',
+        fontweight='bold',
+        ha='center'
+    )
+
+fig, axes = plt.subplots(2, 1)
+plot_density(norm(), axes[0])
+plot_density(gamma(2), axes[1])
+plt.show()
+```
+Tal como lo hicimos para una v.a discreta, es conveniente definir para
+una función $g$ de $X$ la esperanza de $g(X)$:
+$$\mathbb{E}[g(X)]=\int_{-\infty}^{+\infty}g(x)f_X(x)dx.$$
+
+#### Varianza - Desviación típica
+
+La varianza se define como el promedio de la distancia al cuadrado entre
+$X$ y su media:
+$$\sigma^2_X=\mathop{var}(X)=\mathbb{E}[(X-{\mu_X})^2]=\int_{-\infty}^{+\infty} (x-\mu_X)^2f(x)dx.$$
+Al desarrollar la integral, es fácil obtener la fórmula alternativa, más
+práctica para el cálculo:
+$$\sigma^2_X=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=\int_{-\infty}^{+\infty}x^2\cdot f_X(x)dx-(\mathbb{E}[X])^2.$$
+y la desviación típica es $\sigma_X=\sqrt{\sigma_X^2}$.
+
+La desviación típica mide la dispersión de la distribución de los
+valores de $X$ respecto a su media.
+
+#### Un ejemplo
+
+Calculemos la duración media y la desviación típica en el ejemplo de la
+duración de los dispositivos electrónicos de la sección
+@sec-ejemplo_dura. Tenemos que 
+
+\begin{align}
+\mathbb{E}[X]=\int_{-\infty}^{+\infty}x\cdot f_X(x)dx&=\int_{-\infty}^{0}x\cdot f_X(x)dx+\int_{0}^{+\infty}x\cdot f_X(x)dx\\
+&=0+\int_{0}^{+\infty}x\cdot e^{-x}dx\\
+&=1,
+\end{align}
+
+ hemos descompuesto la integral inicial según los
+intervalos de definición de $f_X$, sustituido la expresión de $f_X$ en
+las integrales resultantes, y calculado por partes la última integral
+que aparece. La duración media de los dispositivos es por lo tanto de
+1000h.
+
+De la misma manera, calculamos la varianza de $X$:
+$$\mathop{var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2=0+\int_{0}^{+\infty}x^2\cdot e^{-x}dx-1=1.$$
+
+### Modelos más comunes de v.a continua
+
+Algunas situaciones de modelización presentan rasgos comunes y se han
+establecido modelos "estándar" que resultan adecuados para distintos
+contextos.
+
+#### Variable aleatoria uniforme
+
+El modelo de v.a. continua más sencillo corresponde a la situación en la
+que $X$ puede tomar cualquier valor entre dos números $a$ y $b$, sin que
+favorezca ninguna zona del intervalo $[a,b]$. La probabilidad de que $X$
+esté entre $a$ y $b$ será igual a 1, mientras que la probabilidad de que
+esté en un subintervalo de $[a,b]$ será sencillamente proporcional a su
+longitud. Intuitivamente, queremos que la función de densidad de $X$ sea
+nula fuera de $[a,b]$, y constante en el intervalo $[a,b]$. Para que el
+área total debajo de la curva de densidad sea igual a 1, esta constante
+deberá ser igual a $1/(b-a)$. La función de densidad será por lo tanto
+dada por: $$f_X(x)=\left\{ \begin{array}{ll}
+ \frac 1 {(b-a)}&\text{si $a\leq x\leq b$,}\\
+0&\text{en otro caso.}
+\end{array} \right.$$ La representación gráfica de $f_X$ se encuentra en
+la figura @fig-uniforme. Una v.a $X$ que tenga esta función de
+densidad se llama una v.a uniforme entre $a$ y $b$. Lo denotaremos por
+$$X\sim {\mathcal U}([a,b]).$$
+
+::: center
+![ Densidad de una v.a uniforme](figures/densidadunif.png){#fig-uniforme}
+:::
+
+El comando "RANDOM" de varios lenguajes de programación, que también
+aparece en casi todas las calculadoras científicas, simula una variable
+uniforme entre 0 y 1. ¿Puede ser realmente una v.a uniforme?
+
+Por otra parte calculemos la esperanza y la varianza de una v.a
+$X\sim {\mathcal U}([a,b])$. Antes de llevar a cabo los cálculos, y
+examinando la gráfica de la densidad de $X$, ¿cuánto piensa que vale
+$\mathbb{E}[X]$?. 
+
+\begin{align}
+\mathbb{E}[X]=\int_{-\infty}^{+\infty}x\cdot f_X(x)dx&=0+\int_{a}^{b}x\cdot \frac 1 {b-a} dx+0\\
+&=\frac { b^2-a^2}{2} \cdot \frac 1 {b-a}=\frac {a+b} 2
+\end{align}
+
+ ¿Corresponde con su intuición?. Se deja en ejercicio al
+lector comprobar que la varianza de una v.a $X\sim {\mathcal U}([a,b])$
+es $$\mathop{var} (X)=\frac {(b-a)^2} {12},$$ es decir que la desviación
+típica es sencillamente proporcional a $(b-a)$, otro resultado natural,
+¿no?
+
+#### Modelo exponencial
+
+##### Definición
+
+En el mismo contexto que para una v.a de Poisson (ocurrencias de sucesos
+aleatorios en el tiempo), denotando por $\lambda$ el número medio de
+ocurrencias por intervalo de tiempo, consideramos la v.a $X$ que mide el
+tiempo entre dos ocurrencias consecutivas del suceso, la distribución de
+la v.a $X$ se llama distribución exponencial de parámetro $\lambda$ y se
+denota por $$X\sim {\mathcal Exp}(\lambda).$$
+
+Dos ejemplos corresponden al tiempo entre dos emisiones consecutivas de
+una partícula por un material radioactivo, o entre dos llegadas de
+clientes en una cola.
+
+##### Propiedades {#sec-propiedades-5}
+
+-   La función de densidad de una v.a $X\sim {\mathcal Exp}(\lambda)$ es
+    $$f_X(x)=\left\{ \begin{array}{ll}
+     \lambda e^{-\lambda x}&\text{si $x>0$}\\
+    0&\text{en otro caso.}
+    \end{array} \right.$$ Su gráfica es parecida a la del ejemplo de la
+    sección @sec-ejemplo_dura. De hecho, resulta que la densidad de
+    este ejemplo es la densidad de una distribución exponencial de
+    parámetro $\lambda$.
+
+-   *Función de distribución acumulada*. Para todo $t$,
+    $$F_X(t)=\int_{-\infty}^{t} f_X(x)dx.$$ Deducimos que, si $t<0$,
+    $F_X(t)$ es nula, mientras que, si $t\geq 0$,
+    $$F_X(t)=0+\int_{0}^{t}\lambda e^{-\lambda x}dx=1-e^{-\lambda t}.$$
+    En particular, tenemos que $\mathbb{P}(X > t)=e^{-\lambda t}$.
+
+-   *Esperanza y varianza*. Demostramos de la misma manera que para el
+    ejemplo de la sección
+    @sec-ejemplo_dura, utilizando la integración por partes
+    que $$\mathbb{E}[X]=1/\lambda,\quad\quad \mathop{var}(X)=1/\lambda^2.$$
+
+-   *Propiedad de falta de memoria de la distribución exponencial.* La
+    distribución exponencial tiene una propiedad particular: "olvida su
+    pasado"\... Más concretamente, supongamos que
+    $X\sim{\mathcal Exp}(\lambda)$ y modeliza el tiempo entre dos
+    llegadas sucesivas de clientes en una cola. Llega un cliente, y
+    espero hasta que llegue el siguiente cliente\... Han pasado tres
+    minutos y no ha llegado, la probabilidad de que tenga que esperar
+    por lo menos otro minuto más (es decir que el tiempo transcurrido
+    entre las dos llegadas sea mayor que cuatro minutos) es la misma que
+    la probabilidad de que $X$ sea mayor que 1 minuto: ¡el hecho de
+    saber que ya he esperado 3 minutos no cambia la probabilidad de que
+    todavía tenga que esperar otro minuto más! Es decir, para todos
+    $t_1>0,\ t_2>0$, $$\mathbb{P}(X>t_1+t_2| X> t_1)=\mathbb{P}(X>t_2).$$ Por la
+    definición de la probabilidad condicionada,
+    $$\mathbb{P}(X>t_1+t_2| X> t_1)=\frac {\mathbb{P}((X>t_1+t_2) \cap (X> t_1))}{\mathbb{P}(X> t_1)}.$$
+    Por otra parte, puesto que el suceso $(X> t_1+t_2)$ está incluido en
+    el suceso $(X> t_1)$, el denominador es sencillamente
+    $\mathbb{P}(X> t_1+t_2)$. Pero al calcular un poco más arriba la función de
+    distribución acumulada de una distribución exponencial, hemos notado
+    que $\mathbb{P}(X>t)=e^{-\lambda t}$. Por lo tanto
+    $$\mathbb{P}(X>t_1+t_2| X> t_1)=\frac{e^{-\lambda(t_1+t_2)}}{e^{-\lambda t_1}}=e^{-\lambda t_2}=\mathbb{P}(X>t_2).$$
+
+#### La distribución Normal
+
+##### Definición
+
+Sea $\mu$ un número real y $\sigma^2$ un número real positivo, la v.a
+$X$ sigue una distribución Normal de parámetros $\mu$ y $\sigma^2$ si su
+densidad es
+$$f(x)=\frac 1 {\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}},$$
+cuya representación gráfica es la famosa "campana de Gauss", ver Figura
+@fig-densnorm.
+
+::: center
+![ Densidad Normal](figures/densidadnorm.png){#fig-densnorm width="7cm"}
+:::
+
+Si $X$ sigue una distribución Normal de parámetros $\mu$ y $\sigma^2$,
+escribiremos $X\sim {\mathcal N}(\mu,\sigma^2)$.
+
+La distribución Normal es, sin dudas, la distribución más utilizada en
+situaciones prácticas: aparece en la inmensa mayoría de los
+procedimientos estadísticos que se llevan a cabo de manera rutinaria
+(control de calidad, mediciones, etc\...) En particular, está
+típicamente presente cuando se modeliza los valores proporcionados por
+un aparato de medición. De hecho, si consideramos los datos de las
+mediciones de la luz por S. Newcomb que estudiamos en el primer tema, ver
+sección @sec-ejempl-newcomb, podemos comprobar que las frecuencias
+de aparición de los datos experimentales se ajustan bastante bien a un
+modelo Normal. En la figura @fig-newcombfit, se ha ajustado una curva Normal al
+histograma de los datos recogidos por Newcomb, después de omitir los dos
+datos atípicos $-44$ y $-2$. Para ello, hemos fijado el valor de $\mu$ y
+$\sigma^2$ basándonos en el centro y la dispersión de la distribución de
+los datos experimentales.
+
+::: center
+![ Ajuste de una densidad Normal al histograma de
+Newcomb](figures/newcombfit.png){#fig-newcombfit}
+:::
+
+##### Propiedades {#sec-propiedadesnormal}
+
+-   La curva de la densidad Normal es simétrica respecto al eje vertical
+    $x=\mu$. En particular deducimos que
+    $\mathbb{P}(X\geq \mu)=\mathbb{P}(X\leq \mu)=1/2.$
+
+-   La curva de la densidad Normal nunca se cruza con el eje $Ox$.
+
+-   *Esperanza y varianza:* Es posible comprobar que, si
+    $X\sim {\mathcal N}(\mu,\sigma^2)$,
+    $$\mathbb{E}[X]=\mu,\quad \quad \mathop{var}(X)=\sigma^2.$$
+
+-   *Función de distribución acumulada.* La función $f_X$ no admite
+    primitiva en una forma cerrada, y por lo tanto no hay expresión
+    simple para calcular la probabilidad de que una variable Normal
+    pertenezca a un intervalo dado, o en general para su función de
+    distribución. Se debe por lo tanto recurrir por lo tanto a
+    aproximaciones numéricas de la integral
+    $$\int_a^b \frac 1 {\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}dx,$$
+    para obtener $\mathbb{P}(a<X\leq b)$. Los programas informáticos de análisis
+    de datos como R disponen de algoritmos que permitan calcular para
+    cualquier $t$ la probabilidad $\mathbb{P}(X\leq t)$. También existen
+    calculadoras estadísticas.
+
+    A pesar de que no exista una expresión simple para las
+    probabilidades asociadas a una distribución Normal, es muy útil
+    conocer la regla siguiente: si $X$ es una Normal
+    ${\cal N}(\mu,\sigma^2)$, tenemos
+
+\begin{align}
+    \mathbb{P}(\mu-\sigma\leq X\leq \mu+\sigma)\simeq&0.68\\
+    \mathbb{P}(\mu-2\sigma\leq X\leq \mu+2\sigma)\simeq& 0.95\\
+    \mathbb{P}(\mu-3\sigma\leq X\leq \mu+3\sigma)\simeq &0.997,\\
+\end{align}
+
+ lo que queda reflejado en la figura
+    @fig-normal: el
+    68% del área debajo de la curva Normal está comprendida entre
+    $\mu-\sigma$ y $\mu+\sigma$, el 95% entre $\mu-2\sigma$ y
+    $\mu+2\sigma$, y el 99.7% entre $\mu-3\sigma$ y $\mu+3\sigma$.
+
+    ::: center
+    ![ Regla del 68% - 95% - 99.7%](figures/normal.png){#fig-normal}
+    :::
+
+##### ¿Cómo calcular probabilidades asociadas a una distribución Normal
+
+\(i\)
+
+:   Para una distribución $Z\sim{\mathcal N}(0,1)$.\
+    La distribución Normal con parámetros $\mu=0$ y $\sigma^2=1$ se
+    llama distribución Normal estándar. Su función de distribución
+    acumulada se denota por $\phi$ y los valores de $\phi$ están
+    tabulados. La tabla para valores de $\phi$ está incluida en el
+    apéndice de este tema.
+
+    Notar que en la tabla sólo aparece valores de $\phi(t)$ para valores
+    positivos de $t$. Para deducir $\phi(t)$ para valores negativos de
+    $t$, utilizamos la simetría de la distribución normal que implica
+    que, para todo $t$, $$\phi(-t)=1-\phi(t).$$ Comprobar con la tabla
+    que sabeis calcular las probabilidades siguientes:\
+
+----------------------------------- | -------------------------------------- | --------------------------------- 
+$\mathbb{P}(Z\leq 2.68)\simeq 0.9963$ | $\mathbb{P}(Z\leq 1.12)\simeq 0.8686$ | $\mathbb{P}(Z\leq -0.9)\simeq 0.1841$
+$\mathbb{P}(1.1\leq Z\leq 1.3)\simeq 0.04$ | $\mathbb{P}(-0.9\leq Z\leq -0.5)\simeq 0.13$ | $\mathbb{P}(-1\leq Z\leq 1)\simeq 0.68$
+------------------------------------ | -------------------------------------- | ---------------------------------
+
+\(ii\)
+
+:   Para una distribución $X\sim{\mathcal N}(\mu,\sigma^2)$.\
+    El cálculo de probabilidades para una distribución Normal con
+    parámetros $\mu$ y $\sigma^2$ se basa en la siguiente propiedad que
+    no demostraremos:
+
+    Si $X\sim {\mathcal N}(\mu,\sigma^2)$, la variable
+    $$Z=\frac {X-\mu}{\sigma}$$ sigue una distribución Normal con media
+    0 y varianza 1.
+
+    Pasar de $X\sim {\mathcal N}(\mu,\sigma^2)$ a
+    $Z=\frac {X-\mu}{\sigma}\sim{\mathcal N}(0,1)$ se llama tipificar la
+    variable $X$, y la variable $Z$ se llama la v.a $X$ tipificada.
+
+    Para calcular una probabilidad relacionada con $X$, reescribiremos
+    el suceso de interés, tipificando la v.a.
+
+    Supongamos por ejemplo que $X\sim{\mathcal N}(\mu=1,\sigma^2=0.25)$.
+    Tenemos
+    $$\mathbb{P}(X\leq 1.25)= \mathbb{P}(\frac {X-\mu}{\sigma}\leq \frac {1.25-\mu}{\sigma})=\mathbb{P}(Z\leq \frac {1.25-1}{0.5})=\mathbb{P}(Z\leq 0.5)\simeq 0.69.$$
+    y 
+
+\begin{align}
+    \mathbb{P}(0.5\leq X\leq 1.5)= \mathbb{P}(\frac {0.5-\mu}{\sigma}\leq \frac {X-\mu}{\sigma}\leq \frac {1.5-\mu}{\sigma})&=\mathbb{P}(\frac {0.5-1}{0.5}\leq Z\leq \frac {1.5-1}{0.5})\\
+    &=\mathbb{P}(-1\leq Z\leq 1)\simeq 0.68.
+\end{align}
+
+#### Aproximación de una distribución Binomial por una distribución Normal
+
+En el caso en que sólo disponemos de una calculadora sencilla, el
+cálculo de probabilidades asociadas a una distribución Binomial $X$
+puede resultar laborioso si éstas requieren evaluar la función puntual
+de $X$ en muchos valores. Por ejemplo, supongamos que
+$X\sim {\mathcal B}(100,0.1)$, el cálculo de $\mathbb{P}(X\geq 15)$ implica que
+calculemos 86 probabilidades individuales
+($\mathbb{P}(X=16),\ \mathbb{P}(X=17),\ldots,\mathbb{P}(X=100)$) o pasando al suceso
+complementario 15 probabilidades, que siguen siendo muchos cálculos\...
+
+Para algunas combinaciones de valores de $n$ y $p$, resulta que la
+distribución Binomial se puede aproximar de manera satisfactoria por una
+distribución normal, es decir que para calcular la probabilidad de un
+suceso relacionado con una v.a Binomial $X\sim {\mathcal B}(n,p)$,
+podremos hacer como si $X$ tuviera una distribución normal.
+
+Consideramos una v.a $X\sim {\mathcal B}(n,p)$. Si $n\cdot p\geq 5$ y
+$n(1-p)\geq 5$, se puede aproximar de manera satisfactoria la
+distribución de $X$ por la distribución de
+$W\sim {\mathcal N}(\mu,\sigma)$, con $\mu=n\cdot p$ y
+$\sigma=n\cdot p(1-p)$, con la fórmula
+$$\mbox{ para todo $x$,}\quad\mathbb{P}(X\leq x)\simeq \mathbb{P}(W\leq x+0.5).$$ El
+término "+0.5" que aparece en el término de la derecha de la fórmula
+corresponde a la llamada "corrección por continuidad": aproximamos la
+distribución de una v.a discreta, $X$, que sólo puede tomar valores
+enteros por una v.a continua $W$ que puede tomar cualquier valor real.
+Para conseguir una equivalencia, podemos considerar que un valor entero
+$x$ para la v.a. Binomial $X$ corresponde al intervalo $]x-0.5,x+0.5]$
+para la v.a Normal $W$, tal como está ilustrado en la Figura
+@fig-binnormal,
+para unos pocos valores de $X$.
+
+::: center
+![ Aproximación de una distribución Binomial por una distribución
+Normal](figures/binnormal.png){#fig-binnormal}
+:::
+
+En particular deducimos de esta figura que aproximaremos las
+probabilidades relacionadas con $X$ de la manera siguiente:
+
+\begin{align}
+\mathbb{P}(X=15)&\simeq\mathbb{P}(14.5 < W\leq 15.5)\\
+\mathbb{P}(X >15)&\simeq\mathbb{P}(W\geq 15.5)\\
+\mathbb{P}(X \geq 15)&\simeq\mathbb{P}(W\geq 14.5)\\
+\mathbb{P}(X\leq 16)&\simeq \mathbb{P}(W\leq 16.5)\\
+\mathbb{P}(X < 16)&\simeq \mathbb{P}(W\leq 15.5)\\
+\mathbb{P}(13\leq X< 15)&\simeq \mathbb{P}(12.5\leq W\leq 14.5)\\
+\end{align}
+
+## Algunas propiedades útiles de la esperanza y la varianza
+
+Acabamos el capítulo con una sección "cajón de sastre" en la que
+mencionamos algunos resultados sobre esperanza y varianza.
+
+Sean $a$ y $b$ dos números reales, y $X$ una variable aleatoria. No es
+difícil demostrar, utilizando las definiciones de esperanza y varianza
+tanto para v.a discreta como para v.a continua que se cumplen las
+siguientes propiedades: 
+
+\begin{align}
+\mathbb{E}[aX+b]&=a\mathbb{E}[X]+b\\
+\mathop{var}(aX+b)&=a^2\mathop{var}(X)\\
+\sigma_{aX+b}&=|a|\sigma_X
+\end{align}
+
+ Intuitivamente son resultados naturales: si multiplico
+todos los valores de una v.a por a y traslado el resultado de $b$
+unidades, el centro de gravedad de los datos (la esperanza) se
+multiplica por $a$ y se traslada de $b$ unidades, mientras que la
+dispersión (la desviación típica) sólo se multiplica por $|a|$, puesto
+que la traslación de los datos no cambia su dispersión.
+
+Finalizamos con un último resultado asociado a la varianza de una
+variable: la desigualdad de Chebichev:
+
+:::{#prp-chebichev}
+Sea cual sea la distribución de $X$, si conocemos el
+valor de la varianza de $X$, tenemos la siguiente cota para la
+probabilidad de que $X$ esté en un intervalo centrado en su media
+$\mu_X$:
+$$\mbox{Para cualquier $a>0$, }\mathbb{P}(|X-\mu_X|\leq a)\geq 1-\frac {Var(X)}{a^2}.$$
+Deducimos también una cota para el suceso complementario:
+$$\mbox{Para cualquier $a>0$, }\mathbb{P}(|X-\mu_X|\geq a)\leq \frac {Var(X)}{a^2}.$$
+:::
+
+La primera desigualdad se interpreta de la manera siguiente: sabemos que
+una proporción de los datos de al menos $Var(X)/a^2$ se encuentra en el
+intervalo $\mu_X\pm a$, mientras que la segunda desiguald se lee: una
+proporción de los datos de como mucho $Var(X)/a^2$ se encuentra fuera
+del intervalo $\mu_X\pm a$.
+
+## Distribución Normal: {.unnumbered}
+$$\mathbb{P}(Z\leq t)=\phi(t)=\int_{-\infty}^t\frac 1 {\sqrt{2\pi}}e^{\frac {-x^2} 2}dx$$
+
+::: center
+$t$  |$\phi(t)$| $t$ | $\phi(t)$ | $t$ | ${\phi(t)}$ | $t$ | ${\phi(t)}$
+---- | ------ | ---- | ------ | ---- | ------ | ---- | ------
+0.00 | 0.5000 | 0.80 | 0.7881 | 1.60 | 0.9452 | 2.40 | 0.9918
+0.02 | 0.5080 | 0.82 | 0.7939 | 1.62 | 0.9474 | 2.42 | 0.9922
+0.04 | 0.5160 | 0.84 | 0.7995 | 1.64 | 0.9495 | 2.44 | 0.9927
+0.06 | 0.5239 | 0.86 | 0.8051 | 1.66 | 0.9515 | 2.46 | 0.9931
+0.08 | 0.5319 | 0.88 | 0.8106 | 1.68 | 0.9535 | 2.48 | 0.9934
+0.10 | 0.5398 | 0.90 | 0.8159 | 1.70 | 0.9554 | 2.50 | 0.9938
+0.12 | 0.5478 | 0.92 | 0.8212 | 1.72 | 0.9573 | 2.52 | 0.9941
+0.14 | 0.5557 | 0.94 | 0.8264 | 1.74 | 0.9591 | 2.54 | 0.9945
+0.16 | 0.5636 | 0.96 | 0.8315 | 1.76 | 0.9608 | 2.56 | 0.9948
+0.18 | 0.5714 | 0.98 | 0.8365 | 1.78 | 0.9625 | 2.58 | 0.9951
+0.20 | 0.5793 | 1.00 | 0.8413 | 1.80 | 0.9641 | 2.60 | 0.9953
+0.22 | 0.5871 | 1.02 | 0.8461 | 1.82 | 0.9656 | 2.62 | 0.9956
+0.24 | 0.5948 | 1.04 | 0.8508 | 1.84 | 0.9671 | 2.64 | 0.9959
+0.26 | 0.6026 | 1.06 | 0.8554 | 1.86 | 0.9686 | 2.66 | 0.9961
+0.28 | 0.6103 | 1.08 | 0.8599 | 1.88 | 0.9699 | 2.68 | 0.9963
+0.30 | 0.6179 | 1.10 | 0.8643 | 1.90 | 0.9713 | 2.70 | 0.9965
+0.32 | 0.6255 | 1.12 | 0.8686 | 1.92 | 0.9726 | 2.72 | 0.9967
+0.34 | 0.6331 | 1.14 | 0.8729 | 1.94 | 0.9738 | 2.74 | 0.9969
+0.36 | 0.6406 | 1.16 | 0.8770 | 1.96 | 0.9750 | 2.76 | 0.9971
+0.38 | 0.6480 | 1.18 | 0.8810 | 1.98 | 0.9761 | 2.78 | 0.9973
+0.40 | 0.6554 | 1.20 | 0.8849 | 2.00 | 0.9772 | 2.80 | 0.9974
+0.42 | 0.6628 | 1.22 | 0.8888 | 2.02 | 0.9783 | 2.82 | 0.9976
+0.44 | 0.6700 | 1.24 | 0.8925 | 2.04 | 0.9793 | 2.84 | 0.9977
+0.46 | 0.6772 | 1.26 | 0.8962 | 2.06 | 0.9803 | 2.86 | 0.9979
+0.48 | 0.6844 | 1.28 | 0.8997 | 2.08 | 0.9812 | 2.88 | 0.9980
+0.50 | 0.6915 | 1.30 | 0.9032 | 2.10 | 0.9821 | 2.90 | 0.9981
+0.52 | 0.6985 | 1.32 | 0.9066 | 2.12 | 0.9830 | 2.92 | 0.9982
+0.54 | 0.7054 | 1.34 | 0.9099 | 2.14 | 0.9838 | 2.94 | 0.9984
+0.56 | 0.7123 | 1.36 | 0.9131 | 2.16 | 0.9846 | 2.96 | 0.9985
+0.58 | 0.7190 | 1.38 | 0.9162 | 2.18 | 0.9854 | 2.98 | 0.9986
+0.60 | 0.7257 | 1.40 | 0.9192 | 2.20 | 0.9861 | 3.00 | 0.9987
+0.62 | 0.7324 | 1.42 | 0.9222 | 2.22 | 0.9868 | 3.10 | 0.9990
+0.64 | 0.7389 | 1.44 | 0.9251 | 2.24 | 0.9875 | 3.20 | 0.9993
+0.66 | 0.7454 | 1.46 | 0.9279 | 2.26 | 0.9881 | 3.30 | 0.9995
+0.68 | 0.7517 | 1.48 | 0.9306 | 2.28 | 0.9887 | 3.40 | 0.9997
+0.70 | 0.7580 | 1.50 | 0.9332 | 2.30 | 0.9893 | 3.50 | 0.9998
+0.72 | 0.7642 | 1.52 | 0.9357 | 2.32 | 0.9898 | 3.60 | 0.9998
+0.74 | 0.7704 | 1.54 | 0.9382 | 2.34 | 0.9904 | 3.80 | 0.9999
+0.76 | 0.7764 | 1.56 | 0.9406 | 2.36 | 0.9909 | 4.00 | 1.0000
+0.78 | 0.7823 | 1.58 | 0.9429 | 2.38 | 0.9913 | 4.50 | 1.0000
+:::
+
+[^1]: Un conjunto infinito numerable es un conjunto del que se puede
+ enumerar todos los elementos. $\mathbb{N}$, $\mathbb{Z}$ y
+ $\mathbb{Q}$ son ejemplos de conjuntos infinitos numerables. En
+ cambio un conjunto infinito no numerable es un conjunto que no se
+ puede poner en biyección con $\mathbb{N}$, es decir para el cual es
+ imposible enumerar los elementos. El intervalo de números reales
+ $[0,1]$ es infinito no numerable por ejemplo.
