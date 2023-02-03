@@ -29,7 +29,7 @@ Consideramos un experimento aleatorio, con una v.a $X$, y un modelo para
 la distribución de $X$. Este modelo incluye parámetros desconocidos.
 Disponemos de una muestra de la distribución de $X$.
 
-::: definicion
+::: {#def-estadistico}
 Cualquier estadístico (es decir, cualquier función de las observaciones
 de la muestra) diseñado para aproximar el valor de un parámetro $\theta$
 del modelo, se llama estimador puntual del parámetro $\theta$.
@@ -211,12 +211,27 @@ secuencia de valores siguiente: 0, 0, 1, 0, 1, 1, 1, 1, 1, 1. La
 verosimilitud asocia a cada valor posible de $p$, la cantidad
 $$\mathbb{P}(X_1=0;\ X_2=0;\ X_3=1;\ X_4=0;\ X_5=1;\ X_6=1;\ X_7=1;\ X_8=1;\ X_9=1;\ X_{10}=1).$$
 Deducimos que $L_n(p)=(1-p)(1-p)p(1-p)(1-p)^6=(1-p)^3\cdot p^7.$ Se
-representa la gráfica de la función $L_n(p)$ en la Figura
+representa la gráfica de la función $L_n(p)$ en la 
 @fig-verosimilitud 
 
-![Verosimilitud correspondiente al ejemplo de 10 tiradas de una
-moneda.](figures/verosimilitud.png){#fig-verosimilitud width="10cm"}
 
+```{python}
+#| label: fig-verosimilitud
+#| fig-cap: "Verosimilitud correspondiente al ejemplo de 10 tiradas de una moneda."
+
+import numpy as np
+import matplotlib.pyplot as plt
+p = np.linspace(0, 1, num=1001)
+n = 10
+n1 = 7
+l = (1 - p)**(n - n1) * p**n1
+
+fig, ax = plt.subplots()
+ax.plot(p, l)
+ax.set_xlabel("p")
+ax.set_ylabel("Verosimilitud")
+plt.show()
+```
 
 La verosimilitud nos indica para qué valor de $p$, la probabilidad de
 haber observado la secuencia 0, 0, 1, 0, 1, 1, 1, 1, 1, 1 es la más
@@ -348,9 +363,29 @@ confianza para la media $\mu$ se realiza siguiendo los siguientes pasos.
 -   Dibujo en la densidad del estadístico
     $\frac {\bar{X}-\mu} {\sigma/\sqrt{n}}$, una región central que
     represente el $100(1-\alpha)\%$ del área total, tal como viene
-    ilustrado en la figura siguiente
+    ilustrado en la @fig-densidad-estadistico-Z
 
-    ![image](figures/constr_ic.png){width="8cm"}
+```{python}
+#| label: fig-densidad-estadistico-Z
+#| fig-cap: Región central con un área $1 - \alpha$ en la densidad de una Normal estándar. 
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+alpha = 0.05
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(norm.ppf(0.001), norm.ppf(0.999), 100)
+interval = (x <= norm.ppf(1 - alpha / 2)) & (x >= norm.ppf(alpha / 2))
+ax.plot(x, norm.pdf(x))
+ax.fill_between(x, norm.pdf(x), alpha=0.4, hatch='//', where=interval)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([norm.ppf(alpha / 2), 0, norm.ppf(1 - alpha / 2)])
+ax.set_xticklabels(['$-z$', '0', '$z$'])
+plt.show()
+```
 
 -   Deducimos
     $$\mathbb{P}(-z_{1-\alpha/2}\leq \frac {\bar{X}-\mu} {\sigma/\sqrt{n}}\leq z_{1-\alpha/2})=1-\alpha.$$
@@ -385,22 +420,61 @@ me equivoque. Sin embargo, esta probabilidad $\alpha$, el riesgo de
 equivocarme, se fija en general bastante pequeño, por ejemplo
 $\alpha=0.05$.
 
-Para ilustrar esta interpretación, he simulado 20 veces el proceso de
-extraer una muestra de tamaño 4 de una distribución
-$X\sim \mathcal{N}(\mu_X,1)$. He representado en la Figura
-@fig-ics en el eje Ox
+Para ilustrar esta interpretación, se han simulado 20 veces el proceso de
+extraer al azar una muestra de tamaño 4 de una distribución
+$X\sim \mathcal{N}(\mu_X,1)$. Se representan en la  @fig-intervalos en el eje Ox
 el número de la muestra y en el eje Oy el intervalo de confianza
 asociado. Además una línea horizontal representa el valor de $\mu$ que
 se pretende estimar, en este caso $\mu=2$. La gran mayoría de los
 intervalos capturan el valor correcto de $\mu$, pero hay un intervalo,
-el correspondiente a la muestra número 13 que no lo hace: este intervalo
+el correspondiente a la muestra número 7 que no lo hace: este intervalo
 es erróneo, y esta muestra forma parte del 5% de las muestras "malas",
 es decir las que proporcionan intervalos equivocados.
 
-![Los intervalos de confianza al 95% correspondientes a 20 muestras de
-tamaño 4. La media que se busca estimar es $\mu=2$.](figures/ics.png){#fig-ics
-width="8cm"}
 
+```{python}
+#| label: fig-intervalos
+#| fig-cap: Los intervalos de confianza al 95% correspondientes a 20 muestras de tamaño 4. La media que se busca estimar es $\mu=2$.
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+import numpy as np
+from numpy.random import default_rng
+from matplotlib import pyplot as plt
+from matplotlib.collections import LineCollection
+
+rng = default_rng(31415)
+m = 20
+n = 4
+mu = 2
+sigma = 1
+samples = 1 + np.concatenate(
+    [np.arange(m).reshape(-1, 1), np.arange(m).reshape(-1, 1)],
+    axis=1
+)
+means = rng.normal(mu, sigma/np.sqrt(n), size=(m, 1)) 
+ends = (
+    means +
+    np.array(
+        [-1.96 * sigma / np.sqrt(n), 1.96 * sigma / np.sqrt(n)]
+    ).reshape(1,-1)  
+)
+segs = np.zeros((m, 2, 2))
+segs[:, :, 1] = ends
+segs[:, :, 0] = samples
+fig, ax = plt.subplots()
+ax.set_xlim(0, m + 1)
+ax.set_ylim(ends.min() * 0.9, ends.max() * 1.1)
+line_segments = LineCollection(segs, linestyle='solid')
+ax.add_collection(line_segments)
+ax.axhline(mu, 0, m + 1, color='r', linestyle='dashed')
+ax.plot(samples, means, 'bo', markersize=8)
+ax.set_xlabel('Muestra')
+ax.set_ylabel('Valores')
+ax.set_xticklabels([])
+ax.set_xticks(np.arange(1, 21))
+plt.show()
+```
 #### Ejemplo
 
 Supongamos que queremos estimar la longitud media de un artículo
@@ -427,81 +501,99 @@ $\mu=20.02\pm 0.04$.
 
 ### Comentarios importantes
 
-a\)
+#### Si $X$ no es Normal
 
-:   La construcción del intervalo de confianza está basada en la
-    hipótesis de que la distribución de la v.a. $X$ es Normal, puesto
-    que utilizamos
-    $$\frac {\bar{X}-\mu} {\sigma/\sqrt{n}}\sim \mathcal{N}(0,1).$$ Si
-    la distribución de $X$ no es Normal, el intervalo no es válido, es
-    decir que no podemos garantizar que la confianza especificada sea
-    cierta. Sin embargo, en el caso en que la muestra es grande, podemos
-    recurrir al Teorema Central del Límite, ver
-    [\[tcl\]](#tcl){reference-type="ref" reference="tcl"}, y sabemos que
-    $$\mbox{aproximadamente, }\frac {\bar{X}-\mu} {\sigma/\sqrt{n}}\sim \mathcal{N}(0,1),$$
-    lo que posibilita que los intervalos sean aproximadamente válidos:
-    la confianza especificada no será exacta pero casi\...
+La construcción del intervalo de confianza está basada en la
+hipótesis de que la distribución de la v.a. $X$ es Normal, puesto
+que utilizamos
+$$\frac {\bar{X}-\mu} {\sigma/\sqrt{n}}\sim \mathcal{N}(0,1).$$ Si
+la distribución de $X$ no es Normal, el intervalo no es válido, es
+decir que no podemos garantizar que la confianza especificada sea
+cierta. Sin embargo, en el caso en que la muestra es grande, podemos
+recurrir al Teorema Central del Límite, ver @thm-tcl y sabemos que
+$$\frac {\bar{X}-\mu} {\sigma/\sqrt{n}}\sim \mathcal{N}(0,1),\mbox{ aproximadamente}$$
+lo que posibilita que los intervalos sean aproximadamente válidos:
+la confianza especificada no será exacta pero casi\...
 
-    ¿A partir de cuantas observaciones consideramos una muestra como
-    grande? No hay respuesta universal, depende mucho de lo alejado que
-    está la distribución de $X$ de una distribución Normal. En general,
-    se suele considerar en práctica que $n\geq 30$ es suficiente para
-    que los intervalos construidos sean aproximadamente válidos.
+¿A partir de cuantas observaciones consideramos una muestra como
+grande? No hay respuesta universal, depende mucho de lo alejado que
+está la distribución de $X$ de una distribución Normal. En general,
+se suele considerar en práctica que $n\geq 30$ es suficiente para
+que los intervalos construidos sean aproximadamente válidos.
 
-b\)
+#### Factores que afectan a la precisión de la estimación.
 
-:   Factores que afectan a la precisión de la estimación.\
-    Recordar que en la estimación por un intervalo, el margen de error
-    es $\pm z_{1.\alpha/2}\sigma/\sqrt{n}$. Deducimos en particular que
+Recordar que en la estimación por un intervalo, el margen de error
+es $\pm z_{1.\alpha/2}\sigma/\sqrt{n}$. Deducimos en particular que
 
-    -   cuanto mayor sea $n$, más precisa será la estimación, es decir
-        que más pequeño será el intervalo de confianza.
+-   cuanto mayor sea $n$, más precisa será la estimación, es decir
+    que más pequeño será el intervalo de confianza.
 
-    -   cuanto menor sea $\sigma$, mayor precisión en la estimación.
+-   cuanto menor sea $\sigma$, mayor precisión en la estimación.
 
-    -   cuanto mayor sea la confianza, peor será la precisión de la
-        estimación: si queremos garantizar con gran confianza que el
-        intervalo proporcionado captura $\mu$, no hay más remedio que
-        proporcionar un intervalo grande\...
+-   cuanto mayor sea la confianza, peor será la precisión de la
+    estimación: si queremos garantizar con gran confianza que el
+    intervalo proporcionado captura $\mu$, no hay más remedio que
+    proporcionar un intervalo grande\...
 
-c\)
+####  Si $\sigma$ es desconocida 
+La hipótesis de que $\sigma$ es conocida no es realista: en general
+también hay que estimarla a partir de la muestra. La distribución
+del estadístico que resulta de sustituir $\sigma$ por $S$, la
+desviación típica muestral, $\frac {\bar{X}-\mu} {S/\sqrt{n}}$ es
+una t de Student con $n-1$ grados de libertad. Podemos repetir los
+pasos de construcción del intervalo de confianza para $\mu$
+basándonos en el estadístico $\frac {\bar{X}-\mu} {S/\sqrt{n}}$:
 
-:   La hipótesis de que $\sigma$ es conocida no es realista: en general
-    también hay que estimarla a partir de la muestra. La distribución
-    del estadístico que resulta de sustituir $\sigma$ por $S$, la
-    desviación típica muestral, $\frac {\bar{X}-\mu} {S/\sqrt{n}}$ es
-    una t de Student con $n-1$ grados de libertad. Podemos repetir los
-    pasos de construcción del intervalo de confianza para $\mu$
-    basándonos en el estadístico $\frac {\bar{X}-\mu} {S/\sqrt{n}}$:
+-   Nos fijamos el "nivel de riesgo", $\alpha$.\
 
-    -   Nos fijamos el "nivel de riesgo", $\alpha$.\
+-   Escogemos el estadístico
+    $$T=\frac{\bar{X}-\mu}{S/\sqrt{n}}\sim t_{n-1}$$
 
-    -   Escogemos el estadístico
-        $$T=\frac{\bar{X}-\mu}{S/\sqrt{n}}\sim t_{n-1}$$
+-   Dibujo en la densidad del estadístico $T$ una región central que
+    represente el $100(1-\alpha)\%$ del área total, tal como viene
+    ilustrado en la figura siguiente
 
-    -   Dibujo en la densidad del estadístico $T$ una región central que
-        represente el $100(1-\alpha)\%$ del área total, tal como viene
-        ilustrado en la figura siguiente
+```{python}
+#| label: fig-densidad-estadistico-T
+#| fig-cap: Región central con un área $1 - \alpha$ en la densidad de una t de Student. 
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import t
+from matplotlib import pyplot as plt
+import numpy as np 
+alpha = 0.05
+df = 10
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(t.ppf(0.001, df), t.ppf(0.999, df), 100)
+interval = (x <= t.ppf(1 - alpha / 2, df)) & (x >= t.ppf(alpha / 2, df))
+ax.plot(x, t.pdf(x, df))
+ax.fill_between(x, t.pdf(x, df), alpha=0.4, hatch='//', where=interval)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([t.ppf(alpha / 2, df), 0, t.ppf(1 - alpha / 2, df)])
+ax.set_xticklabels(['$-t$', '0', '$t$'])
+plt.show()
+```
 
-        ![image](figures/constr_ict.png){width="8cm"}
+-   Deducimos
+$$\mathbb{P}(-t_{n-1,1-\alpha/2}\leq \frac {\bar{X}-\mu} {S/\sqrt{n}}\leq t_{n-1,1-\alpha/2})=1-\alpha,$$
+donde hemos utilizado la notación $t_{n-1,1-\alpha/2}$ para
+denotar el cuantil $1-\alpha/2$ de la distribución $t_{n-1}$, es
+decir el punto que deja un área igual a $1-\alpha/2$ a su
+izquierda. Los valores de los cuantiles más usados de la
+distribución t están recogidos en una tabla en el apéndice de
+este capítulo.
 
-    -   Deducimos
-        $$\mathbb{P}(-t_{n-1,1-\alpha/2}\leq \frac {\bar{X}-\mu} {S/\sqrt{n}}\leq t_{n-1,1-\alpha/2})=1-\alpha,$$
-        donde hemos utilizado la notación $t_{n-1,1-\alpha/2}$ para
-        denotar el cuantil $1-\alpha/2$ de la distribución $t_{n-1}$, es
-        decir el punto que deja un área igual a $1-\alpha/2$ a su
-        izquierda. Los valores de los cuantiles más usados de la
-        distribución t están recogidos en una tabla en el apéndice de
-        este capítulo.
+Despejamos $\mu$ en las desigualdades y obtenemos
+$$\mathbb{P}(\bar{X}-t_{n-1,1-\alpha/2}{S/\sqrt{n}}\leq \mu \leq \bar{X}+ t_{n-1,1-\alpha/2}{S/\sqrt{n}})=1-\alpha.$$
 
-        Despejamos $\mu$ en las desigualdades y obtenemos
-        $$\mathbb{P}(\bar{X}-t_{n-1,1-\alpha/2}{S/\sqrt{n}}\leq \mu \leq \bar{X}+ t_{n-1,1-\alpha/2}{S/\sqrt{n}})=1-\alpha.$$
-
-    -   El intervalo de confianza al $100(1-\alpha)\%$ para $\mu$ es
-        $$\mu \in [\bar{X}-t_{n-1,1-\alpha/2}{S/\sqrt{n}}; \bar{X}+ t_{n-1,1-\alpha/2}S/\sqrt{n}].$$
-        Se escribe también
-        $$\mu = \bar{X}\pm t_{n-1,1-\alpha/2}{S/\sqrt{n}},$$ el término
-        $t_{n-1,1-\alpha/2}{S/\sqrt{n}}$ es el término de error.
+-   El intervalo de confianza al $100(1-\alpha)\%$ para $\mu$ es
+$$\mu \in [\bar{X}-t_{n-1,1-\alpha/2}{S/\sqrt{n}}; \bar{X}+ t_{n-1,1-\alpha/2}S/\sqrt{n}].$$
+Se escribe también
+$$\mu = \bar{X}\pm t_{n-1,1-\alpha/2}{S/\sqrt{n}},$$ el término
+$t_{n-1,1-\alpha/2}{S/\sqrt{n}}$ es el término de error.
 
 ### Determinación del tamaño muestral
 
