@@ -848,9 +848,26 @@ la figura @fig-uniforme. Una v.a $X$ que tenga esta función de
 densidad se llama una v.a uniforme entre $a$ y $b$. Lo denotaremos por
 $$X\sim {\mathcal U}([a,b]).$$
 
-::: center
-![ Densidad de una v.a uniforme](figures/densidadunif.png){#fig-uniforme}
-:::
+```{python}
+#| label: fig-uniforme
+#| fig-cap: Densidad de una v.a. uniforme
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import uniform
+from matplotlib import pyplot as plt
+import numpy as np 
+rv = uniform(1, 2)
+fig, ax = plt.subplots()
+x = np.linspace(-1, 4, 100)
+ax.set_ylim(-0.1, np.max(rv.pdf(x)) * 2)
+ax.plot(x, rv.pdf(x))
+ax.set_xticks([1, 3])
+ax.set_xticklabels(['a', 'b'])
+ax.set_yticks([0.5])
+ax.set_yticklabels(['1 / (b - a)'])
+plt.show()
+``` 
 
 El comando "RANDOM" de varios lenguajes de programación, que también
 aparece en casi todas las calculadoras científicas, simula una variable
@@ -942,9 +959,22 @@ $$f(x)=\frac 1 {\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}},$$
 cuya representación gráfica es la famosa "campana de Gauss", ver Figura
 @fig-densnorm.
 
-::: center
-![ Densidad Normal](figures/densidadnorm.png){#fig-densnorm width="7cm"}
-:::
+```{python}
+#| label: fig-densnorm
+#| fig-cap: Densidad Normal
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+rv = norm(5, 3)
+fig, ax = plt.subplots()
+x = np.linspace(rv.ppf(0.000001), rv.ppf(0.999), 500)
+ax.set_ylim(0, np.max(rv.pdf(x)) * 2)
+ax.plot(x, rv.pdf(x))
+plt.show()
+``` 
 
 Si $X$ sigue una distribución Normal de parámetros $\mu$ y $\sigma^2$,
 escribiremos $X\sim {\mathcal N}(\mu,\sigma^2)$.
@@ -964,10 +994,33 @@ datos atípicos $-44$ y $-2$. Para ello, hemos fijado el valor de $\mu$ y
 $\sigma^2$ basándonos en el centro y la dispersión de la distribución de
 los datos experimentales.
 
-::: center
-![ Ajuste de una densidad Normal al histograma de
-Newcomb](figures/newcombfit.png){#fig-newcombfit}
-:::
+```{python}
+#| label: fig-newcomb
+#| fig-cap: "Histograma para las mediciones de Newcomb"
+
+from pathlib import Path
+from scipy.stats import norm
+import pandas as pd
+import matplotlib.pyplot as plt
+DATA_DIRECTORY = Path('data')
+newcomb = pd.read_csv(DATA_DIRECTORY / 'newcomb.txt', names=['t'])
+mu, sigma = norm.fit(newcomb.loc[newcomb['t'] > 0, 't'])
+rv = norm(mu, sigma)
+fig, ax = plt.subplots()
+ax.hist(
+    newcomb['t'],
+    bins=16,
+    alpha=0.5,
+    linewidth=1,
+    edgecolor='white',
+    density=True,
+)
+x = np.linspace(rv.ppf(0.001), rv.ppf(0.999), 500)
+ax.plot(x, rv.pdf(x))
+ax.set_xlabel("t")
+ax.set_ylabel("Frecuencias")
+plt.show()
+```
 
 ##### Propiedades {#sec-propiedadesnormal}
 
@@ -1010,9 +1063,50 @@ Newcomb](figures/newcombfit.png){#fig-newcombfit}
     $\mu-\sigma$ y $\mu+\sigma$, el 95% entre $\mu-2\sigma$ y
     $\mu+2\sigma$, y el 99.7% entre $\mu-3\sigma$ y $\mu+3\sigma$.
 
-    ::: center
-    ![ Regla del 68% - 95% - 99.7%](figures/normal.png){#fig-normal}
-    :::
+```{python}
+#| label: fig-normal
+#| fig-cap: Regla del 68% - 95% - 99.7%
+#| warning: false
+
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+rv = norm()
+v_offset = 0.025
+fig, ax = plt.subplots()
+x = np.linspace(rv.ppf(0.001), rv.ppf(0.999), 500)
+ax.set_xlim(-3.5, 3.5)
+ax.set_ylim(-0.4, 0.5)
+ax.plot(x, rv.pdf(x))
+ax.axhline()
+ax.text(0, 0.05, '$\mu$', ha='center')
+x_v = np.array([-3, -2, -1, 1, 2, 3])
+y_min = np.array([-0.3, -0.2, -0.1, -0.1, -0.2, -0.3])
+y_max = rv.pdf(x_v)
+ax.vlines(x_v, y_min, y_max)
+mu_voffset = -  0.05
+arrowstart = - 0.4
+head_width = 0.03
+for i, p in enumerate([99.7, 95, 68]):
+    ax.text(0, y_min[i], f'{p}%', ha='center', va='center')
+    ax.text(x_v[i], y_min[i] + mu_voffset, f'$\mu - {3 - i}\sigma$', ha='center')
+    ax.text(x_v[5 - i], y_min[i] + mu_voffset, f'$\mu + {3 - i}\sigma$', ha='center')
+    ax.arrow(arrowstart,
+             y_min[i],
+             x_v[i] - arrowstart + 3 * head_width,
+             0,
+             head_width=head_width
+    )  
+    ax.arrow(- arrowstart,
+             y_min[i],
+             x_v[5 - i] + arrowstart - 3 * head_width,
+             0,
+             head_width=head_width,
+    )  
+ax.axis('off')
+plt.show()
+
+``` 
 
 ##### ¿Cómo calcular probabilidades asociadas a una distribución Normal
 
@@ -1029,14 +1123,14 @@ Newcomb](figures/newcombfit.png){#fig-newcombfit}
     positivos de $t$. Para deducir $\phi(t)$ para valores negativos de
     $t$, utilizamos la simetría de la distribución normal que implica
     que, para todo $t$, $$\phi(-t)=1-\phi(t).$$ Comprobar con la tabla
-    que sabeis calcular las probabilidades siguientes:\
+    que sabéis calcular las probabilidades siguientes:
 
------------------------------------ | -------------------------------------- | --------------------------------- 
-$\mathbb{P}(Z\leq 2.68)\simeq 0.9963$ | $\mathbb{P}(Z\leq 1.12)\simeq 0.8686$ | $\mathbb{P}(Z\leq -0.9)\simeq 0.1841$
-$\mathbb{P}(1.1\leq Z\leq 1.3)\simeq 0.04$ | $\mathbb{P}(-0.9\leq Z\leq -0.5)\simeq 0.13$ | $\mathbb{P}(-1\leq Z\leq 1)\simeq 0.68$
------------------------------------- | -------------------------------------- | ---------------------------------
+|------|------|------|
+|$\mathbb{P}(Z\leq 2.68)\simeq 0.9963$ | $\mathbb{P}(Z\leq 1.12)\simeq 0.8686$ | $\mathbb{P}(Z\leq -0.9)\simeq 0.1841$|
+|$\mathbb{P}(1.1\leq Z\leq 1.3)\simeq 0.04$ | $\mathbb{P}(-0.9\leq Z\leq -0.5)\simeq 0.13$ | $\mathbb{P}(-1\leq Z\leq 1)\simeq 0.68$|
+|------|------|------|
 
-\(ii\)
+ \(ii\)
 
 :   Para una distribución $X\sim{\mathcal N}(\mu,\sigma^2)$.\
     El cálculo de probabilidades para una distribución Normal con
@@ -1097,10 +1191,48 @@ para la v.a Normal $W$, tal como está ilustrado en la Figura
 @fig-binnormal,
 para unos pocos valores de $X$.
 
-::: center
-![ Aproximación de una distribución Binomial por una distribución
-Normal](figures/binnormal.png){#fig-binnormal}
-:::
+```{python}
+#| label: fig-binnormal
+#| fig-cap: "Aproximación de una distribución Binomial por una distribución Normal"
+
+from matplotlib import pyplot as plt
+import numpy as np
+fig, ax = plt.subplots()
+x = np.linspace(12.5, 16.5, num=9)
+y = np.insert(np.tile([0, 1], 4), 8, 0)
+v_offset = np.insert(np.tile([-0.3, 0.2], 4), 8, -0.3)
+ax.set_xlim(12, 17)
+ax.set_ylim(-1, 2)
+ax.plot(x, y, '|-', color='k', markersize=12, lw=1)
+ax.plot([12.25, 16.8], [0, 0], color='k')
+ax.plot([12.25, 16.8], [1, 1], color='k')
+for i in range(len(x)):
+    ax.text(
+        x[i],
+        y[i] + v_offset[i],
+        str(x[i]), 
+        fontsize='large',
+        fontweight='bold',
+        ha='center',
+    )
+    ax.text(12,
+        0,
+        'W',
+        fontsize='large',
+        fontweight='bold',
+        va='center'
+    )
+    ax.text(12,
+        1,
+        'X',
+        fontsize='large',
+        fontweight='bold',
+        va='center'
+    )
+ax.axis('off')
+plt.show()
+
+```
 
 En particular deducimos de esta figura que aproximaremos las
 probabilidades relacionadas con $X$ de la manera siguiente:
