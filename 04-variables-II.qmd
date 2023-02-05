@@ -1,0 +1,682 @@
+# Variable Aleatoria II
+
+## Introducción
+
+Es frecuente que haya más de una variable aleatoria de interés asociada
+a un experimento aleatorio. Supongamos por ejemplo que consideramos $n$
+variables $X_1$, $X_2$, $\ldots$ $X_n$, formaremos el vector aleatorio
+$\mathbb{X}=(X_1,X_2,\ldots,X_n)$. Diremos que $\mathbb{X}$ es una
+variable aleatoria multidimensional. Para el caso particular en que
+$n=2$, hablaremos de variable aleatoria bidimensional.
+
+Describir la distribución de una v.a. multidimensional consiste en
+asignar una probabilidad a sucesos conjuntos, es decir sucesos que
+involucren $X_1$, $X_2$, $\ldots$, $X_n$. En este caso hablamos de
+**distribución conjunta** de $(X,Y)$, mientras que si consideramos las
+distribuciones de $X$ e $Y$ por separadas, hablamos de **distribuciones
+marginales** de $X$ y de $Y$ respectivamente.
+
+Un ejemplo de suceso asociado a la distribución conjunta de $X$ e $Y$ es
+$(X+Y>3)$ o $(X=1\, \cap Y>2)$ mientras que el suceso $(X>5)$ y el
+suceso $(Y=4)$ hacen referencia a las distribuciones marginales de $X$ y
+de $Y$ respectivamente.
+
+En este tema nos centraremos sobre todo en el caso de una variable
+bidimensional.
+
+## Variable bidimensional discreta
+
+Si tanto $X$ como $Y$ son variables discretas, basta con describir la
+probabilidad de los sucesos $(X=x)\cap (Y=y)$. Lo realizaremos a través
+de la función puntual de probabilidad conjunta de $X$ e $Y$:
+
+### Función puntual de probabilidad conjunta
+
+#### Definición {#sec-definicionfpp}
+
+:::{#def-fppconjunta}
+La función puntual de probabilidad conjunta de $(X,Y)$ asocia a
+cualquier par de valores $(x,y)$ la probabilidad del suceso
+$\left((X=x)\cap (Y=y)\right)$. La denotamos
+$$f_{XY}(x,y)=\mathbb{P} \left((X=x)\cap (Y=y)\right).$$
+:::
+
+Los valores que toma una función puntual de probabilidad conjunta se
+pueden presentar en una tabla:
+
+::: center
+$X$/$Y$ | 120 | 130 | 140 | 150
+----- | ------ | ------ | ------ | -----
+0 | 0.03 | 0.1 | 0.15 | 0.2
+1 | 0.05 | 0.06 | 0.1 | 0.1
+2 | 0.21 | 0 | 0 | 0
+----- | ------ | ------ | ------ | -----
+:::
+
+Deducimos en particular de esta tabla que la probabilidad que $X$ tome
+el valor 0 y a la vez $Y$ tome el valor 140 es igual a 140.
+
+#### Propiedad
+
+Para que una función $f:(x,y)\mapsto f(x,y)$ sea la función puntual de
+probabilidad conjunta de una variable bidimensional discreta $(X,Y)$ es
+necesario y suficiente que cumpla
+
+1.  $f_{XY}(x_i,y_j)\geq 0,\ \forall x_i,\ y_j.$
+
+2.  $\sum_{x_i}\sum_{y_j} f_{XY}(x_i,y_j)=1$.
+
+#### Relación entre funciones puntuales de probabilidad conjunta y marginales
+
+Si conocemos la distribución conjunta de $(X,Y)$ a través de una tabla
+como la descrita en el apartado
+@sec-definicionfpp, podemos calcular la distribución de $X$
+o de $Y$ por separado: éstas se llaman las distribuciones marginales. En
+efecto, para calcular $\mathbb{P}(X=0)$ por ejemplo, basta con utilizar
+
+\begin{align}
+\mathbb{P}(X=0)=\mathbb{P}(X=0\cap Y=120)&+\mathbb{P}(X=0\cap Y=130)\\
+&+\mathbb{P}(X=0\cap Y=140)+\mathbb{P}(X=0\cap Y=150)=0.48.
+\end{align}
+
+Tenemos por lo tanto las relaciones siguientes: 
+
+\begin{align}
+\forall x_i,\quad f_X(x_i)&=&\sum_{y_j}f_{XY}(x_i,y_j),\\
+\forall y_j,\quad f_Y(y_j)&=&\sum_{x_i}f_{XY}(x_i,y_j).
+\end{align}
+
+Se suele representar en la misma tabla de la f.p.p. conjunta de la
+manera siguiente:
+
+::: center
+|-----|-----|-----|-----|-----|-----|
+|     |     |     |     |     |$f(X)$|
+|-----|-----|-----|-----|-----|-----|
+|$X/Y$|120  |130  |140  |150  |
+|-----|-----|-----|-----|-----|-----|
+|0    |0.03 |0.1  |0.15 |0.2  |0.48 |
+|1    |0.05 |0.06 |0.1  |0.1  |0.31 |
+|2    |0.21 |0    |0    |0    |0.21 |
+|---- |---- |-----|-----|-----|-----|
+|$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
+|---- |---- |-----|-----|-----|-----|
+:::
+
+### Esperanza
+
+Sea $g: (x,y)\mapsto g(x,y)$ una función de dos variables que toma sus
+valores en $\mathbb{R}$. Definimos la esperanza ( o media, o valor esperado, o
+valor promedio) de $g(X,Y)$ como 
+
+\begin{align}
+\mathbb{E}[g(X,Y)]&=&\sum_{x_i}\sum_{y_j} g(x_i,y_j)\mathbb{P}(X=x_i\cap Y=y_j)\\
+&=&\sum_{x_i}\sum_{y_j} g(x_i,y_j)f_{XY}(x_i,y_j).
+\end{align}
+
+## Variable bidimensional continua
+
+Consideramos ahora el par $(X,Y)$ donde $X$ e $Y$ son ambas v.a
+continuas. Para describir la distribución conjunta de $(X,Y)$,
+introducimos la función de densidad conjunta.
+
+### Función de densidad conjunta
+
+####  Definición.
+
+:::{#def-densidadconjunta}
+La función de densidad conjunta de $(X,Y)$ es una función $f_{XY}$ que
+permite calcular la probabilidad de cualquier suceso de la forma
+$(a\leq X \leq b)\cap (c\leq Y\leq d)$ a través de la fórmula:
+$$\mathbb{P}\left( (a\leq X \leq b)\cap (c\leq Y\leq d)\right)=\int_{x\in [a,b]}\int_{y\in [c,d]} f_{XY}(x,y)dxdy.$$
+:::
+
+#### Ejemplo {#sec-ejemplo}
+
+Consideremos un experimento que consista en producir dos componentes de
+dos tipos, y denotamos por $X$ e $Y$ el tiempo de vida en miles de horas
+del primer y segundo componente respectivamente. Modelizamos su
+distribución conjunta a través de la función de densidad siguiente
+
+$$f_{XY}(x,y)=\left\{\begin{array}{l}
+2 e^{-x} e^{-2y}\quad\mbox {si $x>0$ y $y>0$,}\\
+\mbox{0 en otro caso.}
+\end{array}\right.$$
+
+Para calcular la probabilidad de que ambos componentes duren menos de
+1000 horas, por ejemplo, 
+
+\begin{align}
+\mathbb{P}(( X < 1)\cap (Y\leq 1))&=\int_{-\infty}^{1}\int_{-\infty}^1 f_{XY}(x,y)dxdy\\
+&=\int_{0}^{1}\int_{0}^1 2 e^{-x} e^{-2y}dxdy=(1-e^{-1})(1-e^{-2})\simeq 0.54.
+\end{align}
+
+#### Propiedades
+
+Para que una función $f: (x,y)\mapsto f(x,y)$ con valores en $\mathbb{R}$ sea la
+función de densidad conjunta de una v.a bidimensional continua, es
+necesario y suficiente que cumpla
+
+1.  $f(x,y)\geq 0,\quad \forall x,\ y,$
+
+2.  $$\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} f(x,y)dxdy=1.$$
+
+#### Relación entre funciones de densidad conjunta y marginales {#sec-relac-entre-func}
+
+Al igual que para una v.a discreta, se puede obtener de la función de
+densidad conjunta las funciones marginales, pero ahora en lugar de
+sumar, debemos integrar respecto de la otra variable.
+
+Tenemos por lo tanto las relaciones siguientes: 
+
+\begin{align}
+\forall x,\quad f_X(x)&=&\int_{-\infty}^{+\infty}f_{XY}(x,y)dy,\\
+\forall y,\quad f_Y(y)&=&\int_{-\infty}^{+\infty}f_{XY}(x,y)dx.
+\end{align}
+
+Calculemos para ilustrar estas fórmulas las densidades marginales de $X$
+y de $Y$ para el ejemplo del apartado
+@sec-ejemplo.
+La función de densidad conjunta es $$f_{XY}(x,y)=\left\{\begin{array}{l}
+2 e^{-x} e^{-2y}\quad\mbox {si $x>0$ y $y>0$,}\\
+\mbox{0 en otro caso.}
+\end{array}\right.$$ Deducimos la densidad marginal de $X$:
+$$\forall x,\quad f_X(x)=\int_{-\infty}^{+\infty}f_{XY}(x,y)dy.$$ Si
+$x\leq 0$, $f_{XY}(x,y)=0$ para todo $y$, y por lo tanto $f_X(x)=0$
+también.\
+Si $x>0$, 
+
+\begin{align}
+f_X(x)&=&\int_{0}^{+\infty} 2 e^{-x} e^{-2y} dy=e^{-x}\left[-e^{-2x}\right]_0^{+\infty}\\
+&=&e^{-x}.
+\end{align}
+
+### Esperanza
+
+Al disponer de una función de densidad conjunta $f_{XY}$ para la v.a.
+bidimensional $(X,Y)$, podemos calcular el valor esperado de una función
+de las dos variables $X$ e $Y$: Sea una función $g:R^2\to \mathbb{R}$, la
+esperanza de $g(X,Y)$ se define como
+$$\mathbb{E}[g(X,Y)]=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} g(x,y)f_{XY}(x,y)dxdy.$$
+En particular podemos calcular por ejemplo la esperanza de la suma de
+dos variables:
+
+\begin{align}
+\mathbb{E}[X+Y]&=&\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} (x+y)f_{XY}(x,y)dxdy\\
+&=&\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} x\, f_{XY}(x,y)dxdy+\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} y\,f_{XY}(x,y)dxdy\\
+&=&\int_{-\infty}^{+\infty} x \left(\int_{-\infty}^{+\infty} f_{XY}(x,y)dy\right)dx+\int_{-\infty}^{+\infty} y \left(\int_{-\infty}^{+\infty} f_{XY}(x,y)dx\right)dy\\
+&=&\int_{-\infty}^{+\infty} x f_X(x)dx+\int_{-\infty}^{+\infty} y f_Y(y)dy=\mathbb{E}[X]+\mathbb{E}[Y],
+\end{align}
+
+ donde hemos utilizado para el último paso la relación
+entre funciones de densidades marginales y conjunta del apartado
+@sec-relac-entre-func. Hemos por lo tanto demostrado una
+relación por otra parte muy intuitiva: la media de la suma de dos
+variables aleatorias es la suma de las dos medias...
+
+## Distribuciones condicionadas
+
+Consideremos un experimento al que va asociada una v.a bidimensional
+$(X,Y)$. Por algún motivo, al realizar el experimento, sólo observamos
+el valor de $Y$ y no él de $X$. ¿Qué información puedo deducir,
+basándome en el valor de $Y$, sobre la distribución de los posibles
+valores de $X$?
+
+Un contexto típico en ingeniería en la que se da esta situación es el
+siguiente: me interesa un señal $X_1,X_2,\ldots, X_n$, pero no puedo
+observar directamente los valores de $X$ sino a través de un aparato de
+medición que induce una perturbación aleatoria, que denotaremos por
+$\mathop{var}epsilon$. Como resultado observo 
+
+\begin{align}
+Y_1&=&X_1+\mathop{var}epsilon_1,\\
+\vdots&\vdots&\vdots\\
+Y_n&=&X_n+\mathop{var}epsilon_n.
+\end{align}
+
+ Disponiendo de los valores de $Y_1,\ldots,Y_n$, persigo
+deducir la distribución de $X_1,\ldots,X_n$ condicionada a
+$Y_1,\ldots,Y_n$. Obtener esta distribución condicionada se llama
+realizar el filtrado de la señal $Y_1,\ldots,Y_n$. De los filtros
+basados en modelos probabilísticos, el más usado en práctica se llama el
+filtro de Kalman.
+
+### V.a bidimensional discreta
+
+Sea $(X,Y)$ una v.a. bidimensional discreta.
+
+#### Definición de la función puntual de probabilidad condicionada
+
+:::{#def-fppcond}
+Sea $y$ un valor de $Y$ tal que $\mathbb{P}(Y=y)>0$, la función puntual de
+probabilidad de $X$ condicionada a $Y=y$ asocia a cada valor posible $x$
+de $X$ la probabilidad del suceso $X=x$ condicionada a $(X=x)$.
+$$f_{X|Y=y}(x)=\mathbb{P}(X=x|Y=y)=\frac{f_{XY}(x,y)}{f_Y(y)}.$$
+:::
+
+Para ilustrar este concepto, calculemos para el ejemplo de v.a
+bidimensional introducido anteriormente la función puntual de
+probabilidad de $X$ condicionada a $Y=130$. Recordemos que la tabla de
+las f.p.p conjunta y marginales de $(X,Y)$ era
+
+::: center
+|-----|-----|-----|-----|-----|-----|
+|     |     |     |     |     |$f(X)$|
+|-----|-----|-----|-----|-----|-----|
+|$X/Y$|120  |130  |140  |150  |
+|0    |0.03 |0.1  |0.15 |0.2  |0.48 |
+|1    |0.05 |0.06 |0.1  |0.1  |0.31 |
+|2    |0.21 |0    |0    |0    |0.21 |
+|---- |---- |-----|-----|-----|-----|
+|$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
+|---- |---- |-----|-----|-----|-----|
+:::
+
+Por lo tanto $f_{X|Y=130}$ toma los valores:
+
+::: center
+Valores  posibles  de  $X$ | 0 | 1 | 2 | 
+------------------------- | ---|---|---|
+$f_{X|Y=130}$ | $0.1/0.16=0.625$ | $0.06/0.16=0.375$ | $0/0.16=0$ | 
+:::
+
+### Para una v.a bidimensional continua
+
+Consideramos ahora una v.a. bidimensional continua $(X,Y)$.
+
+#### Definición {#sec-def-densidadcond}
+
+Sea $(X,Y)$ una v.a continua con densidad conjunta $f_{XY}$.
+Consideramos un valor $y$ para el cual $f_Y(y)>0$. La función de
+densidad de $X$ condicionada a $Y=y$ está definida por
+$$f_{X|Y=y}(x)=\frac {f_{XY}(x,y)}{f_Y(y)}.$$ 
+:::{.callout-note}
+La densidad de $Y$
+condicionada a $X$ se obtiene intercambiando los papeles de $X$ e $Y$ en
+la fórmula anterior.
+:::
+
+#### Ejemplo {#sec-ex-densidacond}
+
+Consideremos el ejemplo de la subsección
+@sec-ejemplo.
+Calculemos, para un valor $y>0$ genérico, la función de densidad de $X$
+condicionada a $Y=y$. Obtuvimos que la densidad marginal de $Y$, si
+$y>0$ es $f_Y(y) 2 e^{-2y}.$ Deducimos que la densidad que buscamos es
+$$f_{X|Y=y}(x)=\left\{\begin{array}{l}
+\frac{2 e^{-x}e^{-2y}}{2 e^{-2y}}=e^{-x}\quad\mbox {si $x>0$,}\\
+\mbox{0 en otro caso.}
+\end{array}\right.$$ Observamos que, en este caso, coincide con la
+densidad marginal de $X$.
+
+### Esperanza condicionada
+
+Es fácil comprobar que, para un valor $y$ tal que $f_Y(y)>0$,
+$x\mapsto f_{X|Y=y}(x)$ cumple con los dos requisitos (ver secciones
+@sec-condiciones-disc y @sec-condiciones-densidad que permiten deducir que se trata
+de una función de densidad (caso continuo) o puntual de probabilidad
+(caso discreto). Por ello, hablamos de distribución de $X$ condicionada
+a $Y=y$, aunque sólo podemos interpretar las probabilidades asociadas
+como probabilidades condicionadas en el caso de una v.a discreta.
+
+También podemos por lo tanto definir la esperanza condicionada de una
+función $g(X)$ dado $Y=y$.
+
+:::{#def-espcondg}
+Sea una función $g:\mathbb{R}\to\mathbb{R}$, la esperanza condicionada de $g(X)$ dado
+$Y=y$ se define como
+
+-   Si $(X,Y)$ es una v.a. discreta
+    $$\mathbb{E}[g(X)|Y=y]=\sum_{x}g(x)f_{X|Y=y}(x).$$
+
+-   Si $(X,Y)$ es una v.a continua
+    $$\mathbb{E}[g(X)|Y=y]=\int_{-\infty}^{+\infty}g(x)f_{X|Y=y}(x)dx.$$
+:::
+
+La noción de esperanza condicionada permite en particular obtener
+resúmenes de las características principales de la distribución
+condicionada de $X$ dado $Y=y$. Si consideramos el problema de predecir
+el valor de $X$ dado que hemos observado el valor $y$ para $Y$, se puede
+demostrar que la esperanza condicionada de $X$ dado $Y=y$ es el mejor
+predictor posible en el sentido siguiente:
+
+Llamamos predictor a cualquier función de $Y$, $h(Y)$ diseñada para
+aproximar el valor de $X$ que no hemos observado. Denotamos, para todo
+$y$, por $h^*(y)$ la esperanza condicionada $\mathbb{E}[X|Y=y]$. Consideramos la
+función de $Y$, $h^*(Y)$, se trata de un predictor de $X$. Se puede
+probar que para cualquier predictor $h(Y)$ de $X$ se cumple
+$$\mathbb{E}[(X-h(Y))^2]\geq \mathbb{E}[(X-h^*(Y))^2],$$ es decir que el error
+cuadrático medio que se comete al predecir $X$ por $h^*(Y)$ es el menor
+de los errores posibles.
+
+## Variables independientes
+
+En el tema 2 hemos definido el concepto de sucesos independientes.
+Introducimos ahora el concepto de variables aleatorias independientes:
+
+### Definición {#sec-def-varindep}
+
+::: {#def-varindep}
+Dos variables $X$ e $Y$ son independientes si se cumple
+$$\mbox{para todo $x$ e $y$,}\quad f_{XY}(x,y)=f_X(x)f_Y(y).$$ Las
+funciones $f_{XY}$, $f_X$ y $f_Y$ se refieren a funciones de densidad o
+funciones puntuales de probabilidad según si la v.a. $(X,Y)$ es continua
+o discreta respectivamente.
+:::
+
+Deducimos en particular que, si $X$ e $Y$ son independientes, la
+distribución condicionada de $X$ (resp. $Y$) no depende del valor de $Y$
+(resp. $X$): el hecho de conocer el valor de una de las variables no
+proporciona información sobre la distribución de valores de la otra. En
+particular, deducimos que si $X$ e $Y$ son independientes, podemos
+describir completamente su distribución conjunta si conocemos sus dos
+distribuciones marginales.
+
+En el ejemplo de la v.a discreta de la sección
+@sec-definicionfpp, notamos que
+$f_{XY}(0,120)=0.03\neq f_X(0)f_Y(120)$. Por lo tanto $X$ e $Y$ no son
+independientes. En cambio, es fácil comprobar para el ejemplo de v.a
+continua de la sección @sec-ejemplo, que se cumple que, para todo $x$ e $y$,
+$f_{XY}(x,y)=f_X(x)f_Y(y)$: en este caso, las variables $X$ e $Y$ sí son
+independientes.
+
+### Consecuencias prácticas
+
+-   Si $X$ e $Y$ son independientes, es fácil comprobar que cualquier
+    suceso asociado con $X$ es independiente de cualquier suceso
+    asociado con $Y$. Es decir que
+    $$\mathbb{P} (a\leq X \leq b)\cap (c\leq Y\leq d)=\mathbb{P}(a\leq X \leq b)\mathbb{P} (c\leq Y\leq d).$$
+
+-   Si $X$ e $Y$ son independientes, se puede calcular de manera
+    sencilla la esperanza de una función de $X$ y de una función de $Y$:
+    $$\mathbb{E}[g(X)h(Y)]=\mathbb{E}[g(X)]\mathbb{E}[h(Y)].$$
+
+La noción de variables independientes se generaliza a más de dos
+variables de manera natural: $X_1$, $X_2$, $\ldots$, $X_n$ son v.a
+independientes si los sucesos asociados son independientes.
+
+## Medidas numéricas para una v.a bidimensional
+
+Al disponer de un modelo para la distribución conjunta de $X$ e $Y$, es
+útil poder recurrir a alguna medida numérica que nos permita por ejemplo
+cuantificar el grado de asociación entre las dos variables.
+
+### Definiciones
+
+#### Covarianza
+
+:::{#def-cov}
+La covarianza de $X$ e $Y$ se define como
+$$cov(X,Y)=\mathbb{E}[(X-\mathbb{E}[X])(Y-\mathbb{E}[Y])].$$
+:::
+
+Utilizando la definición de la
+esperanza de una función de $X$ e $Y$ en el caso discreto y en el caso
+continuo, obtenemos la fórmula equivalente para la covarianza
+$$cov(X,Y)=\mathbb{E}[XY]-\mathbb{E}[X]\mathbb{E}[Y].$$ Notar que el cálculo de $cov(X,Y)$ se
+realiza por lo tanto de la manera siguiente
+
+-   $(X,Y)$ v.a discreta:
+    $$cov(X,Y)=\sum_x\sum_y x y f_{XY}(x,y)-\mathbb{E}[X]\mathbb{E}[Y],$$ donde los
+    sumatorios se realizan sobre los valores posibles de $X$ e $Y$.
+
+-   $(X,Y)$ es una v.a. continua:
+    $$cov(X,Y)=\int_{-\infty}^{+\infty}\int_{-\infty}^{+\infty} x y f_{XY}(x,y)dxdy-\mathbb{E}[X]\mathbb{E}[Y].$$
+
+Notar también que la covarianza de una variable $X$ consigo mismo es
+igual a la varianza de $X$: $cov(X,X)=\sigma^2_X$.
+
+#### Correlación
+
+La correlación de $X$ e $Y$ se define como
+$$\rho_{XY}=\frac{cov(X,Y)}{\sigma_X\sigma_Y}.$$ La correlación de $X$ e
+$Y$ corresponde por lo tanto a la covarianza de las versiones
+tipificadas de $X$ e $Y$. En particular la correlación de una variable
+$X$ consigo mismo es igual a 1.
+
+#### Ejemplo para una v.a. $(X,Y)$ discreta
+
+Volvamos al ejemplo de la sección
+@sec-definicionfpp, su función puntual de probabilidad es
+
+::: center
+|-----|-----|-----|-----|-----|-----|
+|     |     |     |     |     |$f(X)$|
+|-----|-----|-----|-----|-----|-----|
+|$X/Y$|120  |130  |140  |150  |
+|0    |0.03 |0.1  |0.15 |0.2  |0.48 |
+|1    |0.05 |0.06 |0.1  |0.1  |0.31 |
+|2    |0.21 |0    |0    |0    |0.21 |
+|---- |---- |-----|-----|-----|-----|
+|$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
+|---- |---- |-----|-----|-----|-----|
+:::
+
+Para calcular la covarianza de $X$ e $Y$ necesitamos por una parte
+$\mathbb{E}[X]$ y $\mathbb{E}[Y]$ y por otra parte $\mathbb{E}[XY]$. Obtenemos utilizando las
+distribuciones marginales de $X$ e $Y$: 
+
+\begin{align}
+\mathbb{E}[X]&=&0\, 0.48+1\, 0.31+2\,0.21=0.73\\
+\mathbb{E}[Y]&=&120\,0.29+130\, 0.16+140\,0.25+150\,0.3=135.6
+\end{align}
+
+ Nos queda calcular $\mathbb{E}[XY]$. 
+
+\begin{align}
+\mathbb{E}[XY]&=&0\cdot 120\cdot 0.03+0\cdot 130\cdot 0.1+0\cdot 140\cdot 0.15+0\cdot 150\cdot 0.2\\
+&+&1\cdot 120\cdot 0.05+1\cdot 130\cdot 0.06+1\cdot 140\cdot 0.1+1\cdot 150\cdot 0.1\\
+&+&2\cdot 120\cdot 0.21+2\cdot 130\cdot 0+2\cdot 140\cdot 0+2\cdot 150\cdot 0\\
+&=&93.2
+\end{align}
+
+ Deducimos que $cov(X,Y)=93.2-0.73\cdot 135.6=-5.78.$
+Para calcular la correlación de $X$ e $Y$ nos hacen falta además las
+desviaciones típicas de $X$ e $Y$. Se comprueba que $\sigma^2_X=0.617$
+mientras que $\sigma^2_Y=142.64$. Por lo tanto
+$$\rho_{XY}=\frac{-5,78}{\sqrt{0.617}\sqrt{142.64}}=-0.62.$$
+
+#### Matriz de covarianzas y matriz de correlación
+
+En el caso en que consideramos varias variables aleatorias
+$X_1,X_2,\ldots,X_n$, podemos calcular las covarianzas y las
+correlaciones de cada par posible de variables, se suele presentar los
+resultados en forma de una matriz: la matriz de covarianzas de
+$X_1,\ldots,X_n$ es la matriz $n\times n$,$\Sigma$ cuyo elemento
+$\Sigma_{ij}$ es igual a la covarianza de $X_i$ y $X_j$, mientras que la
+matriz de correlaciones de $X_1,\ldots,X_n$ es la matriz $n\times n$,
+$Corr$ cuyo elemento $Corr_{ij}$ es igual a la correlación de $X_i$ y
+$X_j$.
+
+### Propiedades
+
+1.  Se puede demostrar (ver problema número 14 de la hoja de problemas
+    de este tema) que $$|cov(X,Y)|\leq \sigma_X\sigma_Y,$$ es decir que,
+    para dos variables cualesquiera $X$ e $Y$,
+    $$-1\leq \rho_{XY}\leq 1.$$
+
+2.  Si $X$ e $Y$ son independientes,
+    $$cov(X,Y)=\mathbb{E}[(X-\mathbb{E}[X])]\mathbb{E}[(Y-\mathbb{E}[Y])]=0.$$ También implica que
+    $\rho_{XY}=0.$ En cambio si $\rho_{XY}=\pm 1$, se puede demostrar
+    que existe dos constantes $a$ y $b$ tal que $Y=ax+b$: existe una
+    relación lineal determinista entre $X$ e $Y$. De ahí que la
+    correlación es una medida del grado de asociación lineal entre dos
+    variables.
+
+3.  Usando la propiedad de linealidad de la esperanza es fácil obtener
+    que $$Var(X+Y)=Var(X)+Var(Y)+2cov(X,Y).$$ En el caso particular en
+    el que $X$ e $Y$ son independientes, esta relación se simplifica,
+    dando lugar a la fórmula de propagación de los errores:
+    $$Var(X+Y)=Var(X)+Var(Y),$$ puesto que $cov(X,Y)=0$.
+
+## Algunos modelos de v.a. multidimensional
+
+### Modelo multinomial
+
+El modelo multinomial aparece como una generalización del modelo
+binomial: consideremos
+
+-   Tenemos un primer experimento aleatorio simple, con un $k$ sucesos
+    posibles $A_1,\ldots,A_k$, que forman una partición del espacio
+    muestral. Denotamos por $p_1=\mathbb{P}(A_1),\ldots p_k=\mathbb{P}(A_k)$.
+
+-   Repetimos este experimento simple $n$ veces de manera independiente.
+
+-   Consideramos la variable $X_1$="Número de veces que ha ocurrido
+    $A_1$ en las $n$ realizaciones del experimento simple, $X_2$="Número
+    de veces que ha ocurrido $A_2$ en las $n$ realizaciones del
+    experimento simple, etc hasta $X_k$="Número de veces que ha ocurrido
+    $A_k$ en las $n$ realizaciones del experimento simple.
+
+:::{#prp-multinomial}
+Se cumple que, para todos $n_1,\ldots, n_k$ enteros positivos o nulos
+tal que $n_1+n_2+\cdots+n_k=n$,
+$$\mathbb{P}(X_1=n_1,X_2=n_2,\ldots X_k=n_k)=\frac{n!}{n_1!\ldots n_k!}p_1^{n_1}\ldots p_k^{n_k}.$$
+Se dice que $(X_1,\ldots,X_k)$ sigue una distribución multinomial de
+parámetros $p_1,\ldots,p_k$ y $n$.
+:::
+
+Es fácil comprobar que todos las distribuciones marginales de una
+multinomial son binomiales, ¿con qué parámetros?
+
+### El modelo Normal multidimensional
+
+#### Caso bidimensional
+
+:::{#def-normalbi}
+Consideremos un par de números reales $\vec{\mu}=(\mu_1,\mu_2)\in\mathbb{R}^2$ y
+una matriz $\Sigma$ $2\times 2$ simétrica y definida positiva (es decir
+que, para todo $x$ en $\mathbb{R}^2$, $x^T\Sigma x\geq 0$). La variable
+$(X_1,,X_2)$ sigue una distribución Normal bidimensional con parámetros
+$(\mu_1,\mu_2)$ y $\Sigma$ si su densidad es
+$$x=(x_1,x_2)\mapsto \frac 1 {2\pi|\Sigma| }e^{-\frac 1 2 (x-\vec{\mu})^T\Sigma^{-1}(x-\vec{\mu})}.$$
+:::
+
+En este caso escribimos $(X_1,X_2)\sim{\cal N}(\vec{\mu},\Sigma)$.
+
+Se puede comprobar que, si $(X_1,X_2)\sim{\cal N}(\vec{\mu},\Sigma)$,
+$$\mathbb{E}[X_1]=\mu_1,\quad \mathbb{E}[X_2]=\mu_2,\quad \mbox{$\Sigma$ es la matriz de covarianzas de $(X_1,X_2)$.}$$
+De la forma de la densidad Normal bidimensional, deducimos en particular
+la siguiente propiedad:
+
+Si $(X_1,X_2)$ sigue una distribución normal bidimensional, se cumple
+que $X_1$ y $X_2$ son independientes, si y solamente si su covarianza es
+nula.
+
+Las curvas de nivel de la densidad bidimensional Normal son muy
+ilustrativas a la hora de visualizar las campanas de Gauss asociadas
+(estas campanas son en tres dimensiones). En la figura
+@fig-curvanormal1, las dos componentes $X_1$ y $X_2$ son
+independientes y además sus varianzas son iguales, más concretamente
+$\mu_1=1$, $\mu_2=3$, $\Sigma_{11}=1$, $\Sigma_{22}=1$ y
+$\Sigma_{12}=0$.
+
+En la figura @fig-curvanormal2, las dos componentes $X_1$ y $X_2$ siguen
+siendo independientes pero ahora sus varianzas son distintas, más
+concretamente $\mu_1=1$, $\mu_2=3$, $\Sigma_{11}=1$, $\Sigma_{22}=0.25$
+y $\Sigma_{12}=0$. Las curvas de nivel aparecen como elipses, cuyos ejes
+coinciden con los ejes del sistema de coordenadas.
+
+Finalmente, si las dos componentes no son independientes, las curvas de
+nivel siguen formando elipses pero sus ejes presenten un ángulo respecto
+a los ejes del sistema de coordenada. En la figura
+@fig-curvanormal3, se representan las curvas de nivel para
+la densidad Normal bidimensional si $\mu_1=1$, $\mu_2=3$,
+$\Sigma_{11}=1.125$, $\Sigma_{22}=0.5$ y $\Sigma_{12}=0.375$. Esto
+implica en particular que su correlación es $\rho_{X_1 X_2}=0.5$.
+
+```{python}
+#| label: fig-curvanormal1
+#| fig-cap: "Curvas de nivel de la densidad Normal bidimensional si los dos componentes son independientes con varianzas iguales, $\\mu_1=1$, $\\mu_2=3$, $\\Sigma_{11}=1$, $\\Sigma_{22}=1$ y $\\Sigma_{12}=0$."
+
+import numpy as np
+from scipy import stats
+from scipy.stats import multivariate_normal
+from matplotlib import pyplot as plt
+mu = [3, 2]
+rv = multivariate_normal(mean=mu)
+x = np.linspace(0, 6, 100)
+y = np.linspace(-1, 5, 100)
+X, Y = np.meshgrid(x, y)
+Z = rv.pdf(np.dstack((X, Y)))
+fig, ax = plt.subplots()
+plt.contour(X, Y, Z, 20, cmap='RdGy')
+ax.set_aspect('equal')
+plt.show()
+
+```
+
+```{python}
+#| label: fig-curvanormal2
+#| fig-cap: "Curvas de nivel de la densidad Normal bidimensional si los dos componentes son independientes, pero sus varianzas son distintas, $\\mu_1=1$, $\\mu_2=3$, $\\Sigma_{11}=1$, $\\Sigma_{22}=0.25$ y $\\Sigma_{12}=0$."
+
+import numpy as np
+from scipy import stats
+from scipy.stats import multivariate_normal
+from matplotlib import pyplot as plt
+mu = [3, 2]
+rv = multivariate_normal(mu, stats.Covariance.from_diagonal([1, 0.25]))
+x = np.linspace(0, 6, 100)
+y = np.linspace(-1, 5, 100)
+X, Y = np.meshgrid(x, y)
+Z = rv.pdf(np.dstack((X, Y)))
+fig, ax = plt.subplots()
+plt.contour(X, Y, Z, 20, cmap='RdGy')
+ax.set_aspect('equal')
+plt.show()
+
+```
+
+```{python}
+#| label: fig-curvanormal3
+#| fig-cap: "Curvas de nivel de la densidad Normal bidimensional si los dos componentes no son independientes, $\\mu_1=1$, $\\mu_2=3$, $\\Sigma_{11}=1.125$, $\\Sigma_{22}=0.5$ y $\\Sigma_{12}=0.375$. Esto implica en particular que su correlación es $\\rho_{X_1 X_2}=0.5$."
+
+import numpy as np
+from scipy import stats
+from scipy.stats import multivariate_normal
+from matplotlib import pyplot as plt
+mu = [3, 2]
+A = [[1.125, 0.375],
+     [0.375, 0.5]]
+w, v = np.linalg.eigh(A)
+cov = stats.Covariance.from_eigendecomposition((w, v))
+rv = multivariate_normal(mu, cov)
+x = np.linspace(0, 6, 100)
+y = np.linspace(-1, 5, 100)
+X, Y = np.meshgrid(x, y)
+Z = rv.pdf(np.dstack((X, Y)))
+fig, ax = plt.subplots()
+plt.contour(X, Y, Z, 20, cmap='RdGy')
+ax.set_aspect('equal')
+plt.show()
+
+```
+#### Caso $n$-dimensional
+
+:::{#def-normalndim}
+Consideremos $\vec{\mu}=(\mu_1,\ldots,\mu_n)$ en $\mathbb{R}^n$ y una matriz
+$\Sigma$ $n\times n$ simétrica y definida positiva.
+
+La variable $n$-dimensional $X=(X_1,\ldots,X_n)$ sigue una distribución
+Normal $n$-dimensional con parámetros $\vec{\mu}$ y $\Sigma$ si su
+densidad es
+$$x\in \mathbb{R}^n\mapsto \frac 1 {(2\pi|\Sigma| )^{n/2}}e^{-\frac 1 2 (x-\vec{\mu})^T\Sigma^{-1}(x-\vec{\mu})}.$$
+:::
+
+Se puede comprobar que la media de cada $X_i$ es $\mu_i$ y que $\Sigma$
+es la matriz de covarianza de $X$.
+
+Acabamos el tema con una propiedad fundamental de la distribución Normal
+$n$-dimensional, llamada propiedad de reproductividad de la distribución
+Normal.
+
+:::{prp-comblinealNormal}
+Si $X=(X_1,\ldots,X_n)\sim{\cal N}(\vec{\mu},\Sigma)$, para todos
+números reales $a_1,\ldots,a_n$, se cumple que
+$$a_1X_1+a_2X_2+\ldots+a_nX_n\mbox{ sigue una distribución Normal.}$$
+:::
+
+¿Podríais caracterizar su media y su varianza?
+
+Se deduce en particular de la proposición que las distribuciones
+marginales de una variable Normal $n$-dimensional son todas normales.
