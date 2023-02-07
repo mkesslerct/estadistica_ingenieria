@@ -1,0 +1,672 @@
+# Muestreo y distribuciones muestrales
+
+## Introducción
+
+Estamos interesados en modelizar un fenómeno que presenta un aspecto aleatorio. Para plantear y contestar preguntas sobre probabilidades de sucesos asociados, buscamos disponer de un modelo para la distribución de los valores de la variable de interés. Iremos construyendo nuestro conocimiento sobre esta distribución al recopilar una muestra de valores, que iremos recogiendo al repetir un experimento.
+
+
+### Ejemplos {.unnumbered}
+- Disponemos de una moneda para tirar a cara o cruz, pero queremos asegurarme de que no está trucada. Para contestar a esta pregunta, planteamos el modelo siguiente: si la variable $X$ recoge el resultado de experimento que consiste en tirar una vez la moneda, puede tomar los valores $c$ (Cara) o $+$ (Cruz) con las probabilidades: $\mathbb{P}[X=c]=p$ y $\mathbb{P}[X=+]=1-p.$ La cantidad $p$ es por lo tanto la probabilidad de que salga cara, y es un parámetro de nuestro modelo. En el caso en que confiamos en que la moneda no está trucada, el parámetro $p$ tomará el valor $1/2$. Para sacar información sobre $p$ y comprobar en particular que la moneda no está trucada, repetiremos un cierto número de veces el experimento.
+- Para las próximas elecciones generales, queremos determinar la proporción de gente que tiene intención de ir a votar, es decir queremos estimar la tasa de participación. El censo electoral para España tiene unos 35 millones de personas. Es claramente imposible entrevistar a todas las personas del censo, pero puedo realizar una encuesta para conseguir una muestras de respuestas. Planteamos por lo tanto un modelo simple correspondiente al experimento de escoger al azar a una persona censada: si $X$ es la respuesta a la pregunta "Tiene intención de ir a votar?", puede tomar dos valores 1 ó 0 que codifican las respuestas "Sí" o "No" respectivamente. Llamamos $p$ la tasa de intención de voto, es decir que $\mathbb{P}(X = 1) = p$. Quieremos estimar $p$, y lo haremos repetiendo el experimento de escoger una persona al azar en el censo y preguntarle si tiene intención de ir a votar.
+- El índice de audiencias manda en la programación de televisión. Pero ¿cómo saben cuántos espectadores vieron un partido dado o un programa determinado? Claramente, no preguntan a todos los potenciales espectadores. En realidad, una encuesta se realiza de manera automática y continua: una empresa especializada llamada Kantar media, [enlace a su página web](https://www.kantar.com/es), ha escogido al azar unos 6000 hogares  que representan unas 20000 personas de entre un total de más de 40 000 000 espectadores potenciales. En cada uno de estos hogares, instala un aparato llamado ``audímetro'' que registra cuál es el programa que se está viendo en cada momento.
+- Queremos conocer la concentración de un determinado producto en una solución. Pensamos que un modelo razonable para la distribución de los valores proporcionados por nuestro aparato de medición sea una distribución normal con media $\mu$ y desviación típica $\sigma$ desconocidas. El centro de esta distribución, es decir $\mu$, será por lo tanto lo más representativo de la concentración que intento determinar.  Para estimar $\mu$, repetiremos la medición varias veces. 
+
+Pero surge una pregunta evidente:
+
+**Pregunta** ¿Cómo sabemos que nuestra estimación es fiable? ¿Por qué limitándose a unas 20000 personas, se puede extropolar el resultado con confianza a una población de decenas de millones? Además está claro que el resultado que obtengo depende de la muestra particular que haya escogido, si hubiera escogido otra muestra, habría obtenido otro resultado. Este hecho se llama la variabilidad muestral.
+
+Para contestar a esta pregunta debemos procurar estudiar la variabilidad muestral, es decir conocer la distribución de los valores que toma una cantidad calculada a partir de una muestra concreta, como la proporción por ejemplo, respecto a todas las muestras que podría extraer. Si esta distribución presenta poca dispersión, tendremos bastante confianza en que el proceso de estimación es poco sensible a la muestra concreta escogida, puesto que la probabilidad de que otra muestra haya arrojado un valor muy distinto será pequeña.
+
+Una manera de realizar este estudio de la variabilidad muestral es a través de simulaciones realizadas con el ordenador. Podemos simular la extracción repetida de muestras de tamaño 20000 de una población. Supongamos por ejemplo, que consideramos la retransmisión en España de la final de la copa del Mundo 2022 que consiguió una cuota de casí 70%, entre los 17000000 espectadores en ese momento, fuente  [noticia en rtve.es](https://www.rtve.es/rtve/20221219/audiencias-gran-final-mundial-catar/2412248.shtml). Supongamos que la proporción de espectadores que vieron la final fue realmente 0. 7. Vamos a definir un vector con 17000000 elementos de los cuales el 70%, es decir 11900000, son "1"s, y el 30%, es decir 5100000, son "0"s. Este vector representará la "población" de todos los espectadores en este momento. Los "1"s representan las personas que vieron la final por la tele.  Escogeremos al azar una muestra de 20000 elementos entre los elementos del vector población y calcularemos la proporción de "1"s en esta muestra. Comprobaremos si está cerca de la proporción de "1"s en la población, que vale 0.7.
+
+```{python}
+#| echo: true
+import numpy as np
+from numpy.random import default_rng
+poblacion = np.repeat([1, 0], [11900000,  5100000])
+rng = default_rng(314159)
+p_muestra =  rng.choice(poblacion, 20000, replace=False).mean()
+p_muestra
+```
+
+Para esta muestra concreta, la proporción muestral de "1"s es muy próxima a la proporción poblacional, por lo que nuestra estimación usando una muestra de "solo" 20000 personas nos da muy buen resultado.
+
+::: {.callout-note appearance="simple"}
+## Nota
+- En el trozo de código anterior, hemos fijado la semilla de la secuencia de números pseudoaleatorios que se van a generar con el generador aleatorio de `numpy`. Podemos escogerla como una cantidad fácil de recordar. El fijar la semilla permite reproducir simulaciones aunque impliquen la generación de números aleatorios.
+- Para calcular la proporción muestral de "1"s, hemos usado la media muestral, puesto que la suma de los valores en la muestra es igual al número de "1"s que presenta.
+:::
+
+Para convencernos de que este buen comportamiento es lo esperable para muestras de este tamaño, vamos a repetir muchas veces (1000 veces por ejemplo), la extracción de una muestra de 20000 personas en la población. Para hacerlo, procuramos vectorizar la operación para evitar un bucle en Python que es más lento que usar el código optimizado de numpy.
+
+```{python}
+#| echo: true
+p_muestras = np.zeros(1000)
+for i in range(1000):
+    p_muestras[i] =  rng.choice(poblacion, size=20000, replace=False).mean()
+print(p_muestras[:10])
+```
+
+Podemos ahora representar un histograma de las 10000 proporciones muestrales obtenidas y calcular algún percentil asociado.
+
+```{python}
+#| label: fig-histograma-phat
+#| fig-cap: Histograma de los valores de la proporción muestral para las 10000 muestras extraidas.
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+import matplotlib.pyplot as plt
+fig, ax = plt.subplots()
+ax.hist(p_muestras, bins=16, linewidth=1, edgecolor='white')
+ax.set_xlabel("$\\hat{p}$")
+ax.set_ylabel("Frecuencias")
+ax.set_xlim(0.6, 0.8)
+plt.show()
+```
+
+Comprobamos en el histograma que todas las muestras simuladas llevan a una estimación de la proporción muy próxima a la proporción poblacional. De hecho, `r round(100 * ((fdae <- ecdf(p_muestras))(0.71) - fdae(0.69)), 1)`% de las muestras presentan un error menor de 1 punto respecto al valor poblacional y `r round(100 * ((fdae <- ecdf(p_muestras))(0.705) - fdae(0.695)), 1)`% de las muestras un error menor que medio punto.
+
+Puesto que escoger una muestra de 20000 personas da tan buen resultado,
+podríamos preguntarnos si podríamos ahorrarnos algo y extraer una
+muestra más pequeña. Repitamos por ejemplo el estudio simulado con
+muestras de sólo 500 personas. El histograma que obtenemos aparece en la
+figura @fig-phat500. Observamos que en este caso el histograma es
+muchísimo más chato, y que la dispersión de los valores de $\hat p$ es
+mucho mayor: es más probable, al escoger una muestra de 500, que la
+proporción muestral esté bastante alejado del objetivo 0.7.
+
+```{python}
+#| echo: true
+#| label: fig-phat500
+#| fig-cap: Histograma de los valores de la proporción muestral para las 10000 muestras  de tamaño 500 extraidas.
+#| warning: false
+p_muestras = np.zeros(1000)
+for i in range(1000):
+    p_muestras[i] =  rng.choice(poblacion, size=500, replace=False).mean()
+fig, ax = plt.subplots()
+ax.hist(p_muestras, bins=16, linewidth=1, edgecolor='white')
+ax.set_xlabel("$\\hat{p}$")
+ax.set_ylabel("Frecuencias")
+ax.set_xlim(0.6, 0.8)
+plt.show()
+
+```
+
+En conclusión, este estudio de simulación nos lleva a tener confianza en la precisión de nuestra estimación si extraemos una muestra de 20000 personas para aproximar la proporción en una población de 17000000 personas. En este tema exploraremos esta misma idea de estudiar la "distribución en el muestreo" no solamente a través de simulaciones sino gracias a la obtención de resultados teóricos manipulando probabilidades. 
+
+
+
+Introducimos dos términos fundamentales en estadística:
+
+Cualquier cantidad calculada a partir de las observaciones de una
+muestra se llama **estadístico**. La distribución de los valores que
+puede tomar un estadístico respecto a todas las muestras de tamaño $n$
+que se podría extraer se llama **distribución muestral** de este
+estadístico.
+
+## Muestra
+
+Formalizamos el contexto y introducimos el concepto de muestra:
+
+Consideramos un experimento aleatorio y una v.a $X$.[^3]. Al querer
+obtener información sobre algún parámetro del modelo que hemos escogido
+para la distribución de los valores de $X$, vamos a repetir el
+experimento $n$ veces de manera independiente y consideramos las
+variables $X_1$ "valor de $X$ obtenido en la primera realización del
+experimento", $\ldots$, $X_n$ "valor de $X$ obtenido en la $n$-ésima
+realización del experimento". Las variables $X_1,\ X_2,\ldots,X_n$ son
+independientes y claramente la distribución de cada variable $X_i$
+coincide con la distribución de $X$. En este caso decimos que
+$(X_1,X_2,\ldots,X_n)$ constituye una *muestra aleatoria simple* de la
+distribución de $X$.
+
+## La media muestral
+
+Supongamos que nos interesamos por el valor $\mu$, la media de la v.a
+$X$. Escogeremos una muestra, y calcularemos la media de esta muestra,
+llamada media muestral. Para controlar lo próximo que estará su valor de
+$\mu$, consideramos el experimento que consiste en extraer una muestra
+aleatoria simple de la distribución de $X$, la media muestral es la
+variable aleatoria (su valor depende de la muestra escogida)
+$$\bar{X}=\frac {X_1+\cdots+X_n}{n}.$$ ¿Qué podemos decir de la
+distribución de los valores que puede tomar $\bar{X}$? Empezaremos por
+estudiar cuál será el centro y la dispersión de esta distribución.
+
+### Esperanza y varianza de $\bar{X}$ {#sec-esperanza-y-varianza}
+
+#### Esperanza
+
+Tenemos que
+$$\mathbb{E}[\bar{X}]=\mathbb{E}[\frac{X_1+\cdots+X_n}{n}]=\frac 1 n \mathbb{E}[X_1+\cdots+X_n] =\frac 1 n (\mathbb{E}[X_1]+\cdots+\mathbb{E}[X_n]).$$
+Puesto que la distribución de cada $X_i$ es la misma que la distribución
+de $X$, deducimos que $\mathbb{E}[X_1]=\cdots=\mathbb{E}[X_n]=\mu$, y
+$$\mathbb{E}[\bar{X}]=\frac 1 n (n\cdot \mu)= \mu,$$ es decir que el centro de
+la distribución de la media muestral coincide con el centro de la
+distribución de $X$.
+
+#### Varianza
+
+Utilizando la fórmula de propagación de los errores, ver @eq-propagacion,
+obtenemos que
+$$\mathop{var}[\bar{X}]=\mathop{var}[\frac{X_1+\cdots+X_n}{n}]=\frac 1 {n^2} \mathop{var}[X_1+\cdots+X_n] =\frac 1 {n^2} (\mathop{var}[X_1]+\cdots+\mathop{var}[X_n]),$$
+lo que implica que
+$$\mathop{var}(\bar{X})=\frac {n\sigma^2}{n^2}=\frac {\sigma^2} n,$$ o
+de forma equivalente $$\sigma_{\bar{X}}=\frac \sigma {\sqrt n}.$$ ¡La
+dispersión que presentan los valores de $\bar{X}$ es $\sqrt{n}$ más
+pequeña que la dispersión de $X$!
+
+#### Consecuencia práctica
+
+Quiero realizar una medición con un aparato. El experimento aleatorio es
+"llevar a cabo una medición", mientras que la variable $X$ es "valor
+proporcionado por el aparato".
+
+Los valores de $X$ variarán pero lo deseable es que su centro $\mu$
+coincida con el valor exacto de la cantidad que busco determinar: si
+$\mathbb{E}[X]=$ valor exacto, decimos que el aparato es exacto.
+
+Por otra parte, queremos que los valores proporcionen presenten la menor
+dispersión posible: si $\sigma=\sigma_X$ es pequeña, decimos que el
+aparato es preciso. Tenemos entonces varios casos posibles, tal como
+está ilustrado en la Figura @fig-diana, con la analogía de la medición con un disparo en
+una diana: el centro de la diana representa el valor exacto de lo que
+buscamos determinar\...
+
+```{python}
+#| label: fig-diana
+#| fig-cap: "Analogía de la medición con un disparo en una diana"
+#| fig-width: 16
+
+import numpy as np
+from numpy.random import default_rng
+import matplotlib.pyplot as plt
+import matplotlib.patches as mpatches
+rng = default_rng(314159)
+h_offset = 0.03
+v_offset = - 8
+cxy = (0, 0)
+def add_target(cxy, ax):
+    for r in range(1, 7):
+        circA = mpatches.Circle(
+            cxy,
+            r,
+            linestyle='solid',
+            edgecolor='b',
+            facecolor='none'
+        )
+        ax.add_patch(circA)
+def add_shots(cxy, sigma, number, rng, ax):
+    points = np.array(cxy) + sigma * rng.normal(size=(number, 2)) 
+    ax.plot(points[:, 0], points[:,1], 'o')
+
+centers = np.array([(i * 14, 0) for i in range(4)])
+sigma = [0.5, 2, 0.5, 3]
+delta_shots = np.array([[4, 6],
+                        [0, 0],
+                        [0, 0],
+                        [-1.5, 7],
+])
+label = [
+    'Preciso pero\n  no exacto',
+    'Exacto pero no\n  preciso',
+    'Preciso y\n exacto',
+    'Ni exacto ni\n   preciso',
+]
+fig, ax = plt.subplots()
+for i, cxy in enumerate(centers):
+    add_target(cxy, ax)
+    add_shots(cxy + delta_shots[i,:], sigma[i], 10, rng, ax)
+    ax.text(
+        cxy[0] ,
+        cxy[1] + v_offset,
+        label[i],
+        fontweight='bold',
+        va='center',
+        ha='center',
+        )
+
+ax.set_xlim(-8, 50)
+ax.set_ylim(-10, 8)
+ax.set_aspect('equal')
+ax.get_xaxis().set_visible(False)
+ax.get_yaxis().set_visible(False)
+plt.show()
+
+```
+Si nuestro aparato de medición no es exacto, podemos intentar calibrarlo
+para corregir la desviación sistemática que presenta. En cambio, si no
+es preciso, tiene difícil arreglo. Sin embargo exista una manera de
+mejorar la precisión de un aparato de medición: basta con repetir un
+número suficiente de veces la medición y proporcionar la media de los
+valores obtenidos: la desviación típica de los valores que
+proporcionaría con este método es $\sqrt{n}$ veces más pequeña que la de
+los valores proporcionados si me limito a una medición.
+
+### Distribución de la media muestral
+
+En la subsección anterior, hemos caracterizado la media y la desviación
+típica de la distribución de los valores de la media muestral $\bar{X}$.
+Hay que enfatizar el hecho de que estos resultados se obtienen sin
+hipótesis sobre la forma de la distribución de $X$. ¿Podemos decir algo
+más sobre la distribución de los valores de $\bar{X}$, ahora que sabemos
+cuáles son su centro y su dispersión?
+
+#### Si la distribución de $X$ es Normal {#sec-xbarnormal}
+
+Si hemos modelizado la v.a $X$ por una distribución Normal
+$\mathcal{N} (\mu,\sigma^2)$ y consideramos una muestra aleatoria simple
+de $X$, sabemos por la reproductividad de la distribución Normal que
+$X_1+X_2+\cdots+X_n$ sigue también una distribución normal. Se cumple
+por lo tanto
+
+::: prop
+Si $X\sim \mathcal{N}(\mu,\sigma^2)$, y si $\bar{X}$ es la media
+muestral basada en una muestra aleatoria simple de la distribución de
+$X$, $$\bar{X}\sim \mathcal{N}(\mu,\frac {\sigma^2} n),$$ o, de manera
+equivalente,
+$$\frac{\bar{X}-\mu} {\sigma/\sqrt{n}} \sim \mathcal{N}(0,1).$$
+:::
+
+Como ejemplo, consideremos un aparato de medición que proporciona
+valores que se distribuyen según una Normal, con una media de 120 y una
+desviación típica de 12. Por la propiedad de la distribución Normal, el
+95% de los valores están entre $\mu-2\sigma$ y $\mu-2\sigma$, es decir
+entre 96 y 144. En cambio, si repito 9 veces la medición y proporciono
+la media de estas nueve mediciones, el 95% de los valores que obtendría
+con este procedimiento se encontrarían entre $\mu-2\sigma/\sqrt{n}$ y
+$\mu-2\sigma/\sqrt{n}$, es decir entre 112 y 128, lo que implica una
+precisión mucho mayor.
+
+#### Si la distribución de $X$ es desconocida o no es normal
+
+Si la distribución de $X$ es desconocida, no podemos hacer milagros: no
+podemos decir nada exacto sobre la distribución de $\bar{X}$, excepto
+sobre su media y su desviación típica, ver sección
+@sec-esperanza-y-varianza). Sin embargo, si el tamaño
+muestral $n$ es grande, se sabe que esta distribución se puede aproximar
+por una distribución Normal.
+
+::: {#thm-tcl}
+*Teorema Central del Límite*  
+Consideremos
+$(X_1,\ldots,X_n)$ una muestra aleatoria simple de la distribución de
+$X$ con media $\mu$ y varianza $\sigma^2$. Si $n$ es "suficientemente"
+grande, se puede aproximar la distribución de $\bar{X}$ por una Normal
+con media $\mu$ y varianza $\sigma^2/ n$:
+$$\bar{X}\sim \mathcal{N}(\mu,\frac {\sigma^2} n)\mbox{ aproximadamente}.$$
+:::
+
+¿Cuando se considera que $n$ es "suficientemente" grande? No hay por
+desgracia ninguna respuesta universal, depende de la forma de la
+distribución de $X$: si ésta no es muy diferente de una distribución
+Normal, no hace falta un $n$ muy grande para que la aproximación de la
+distribución de la media muestral por una Normal sea satisfactoria. En
+cambio, si es muy distinta de una distribución Normal, será necesario
+una muestra grande. Se suele considerar como indicación que $n$ mayor de
+30 es suficiente en la mayoría de los casos (pero no es más que una
+indicación\...)
+
+Por otra parte, este teorema, fundamental en estadística, explica la
+importancia de la distribución Normal: aparece de manera natural,
+asociada a cualquier distribución, si consideramos la distribución de la media muestral, o de la suma de realizaciones independientes. En particular, si un error de medición se puede considerar como la suma de muchas pequeñas perturbaciones independientes, el Teorema Central del Límite implica que la distribución de sus valores es aproximadamente Normal.
+
+## La varianza muestral
+
+Consideremos ahora un experimento al que asociamos una v.a $X$ cuya
+distribución de valores modelizamos por una Normal con media $\mu$ y
+varianza $\sigma^2$. Repetimos $n$ veces el experimento y obtenemos una
+m.a.s $(X_1,X_2,\ldots,X_n)$ de la distribución de $X$. ¿Qué podemos
+decir de la distribución de la varianza muestral
+$$s^2=\frac n {n-1}(\overline{X^2}-(\bar{X})^2)?$$ Es posible demostrar
+la proposición siguiente
+
+::: {# prp-varmuestral}
+1.  Las v.a $\bar{X}$ y $s^2$ son independientes.
+
+2.  La densidad de $(n-1)s^2/\sigma^2$ es proporcional a
+    $$x^{(n-1)/2}e^{-x/2},\quad\mbox{si $x>0$.}$$ La distribución
+    correspondiente se llama $\chi^2$ (ji-cuadrado) con $(n-1)$ grados
+    de libertad. Escribimos
+    $$\frac{(n-1)s^2}{\sigma^2}\sim \chi^2_{n-1}.$$ En general, una v.a.
+    $X$ sigue una distribución $\chi^2$ con $k\in \mathbb{N}$ grados de libertad
+    si su densidad es proporcional a
+    $$x\mapsto x^{k/2}e^{-x/2},\quad\mbox{si $x>0$.}$$
+:::
+
+En la figura @fig-denschi2, se representa la densidad de una distribución
+$\chi^2$ con distintos grados de libertad.
+
+::: center
+![Densidad de la distribución $\chi^2$ con $k=3$, 10 y 30 grados de
+libertad (respectivamente de izquierda a
+derecha)](figures/densidadchi2.png){#fig-denschi2 width="10cm"}
+:::
+```{python}
+#| label: fig-denschi2
+#| fig-cap: "Densidad de la distribución $\\chi^2$ con $k=3$, 10 y 30 grados de libertad (respectivamente de izquierda a derecha)"
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import chi
+fig, ax = plt.subplots()
+x = np.linspace(0, chi(30).ppf(0.99), 200)
+for df in [3, 10, 30]:
+    ax.plot(x, chi(df).pdf(x))
+plt.show()
+```
+## Distribución t de Student
+
+En la @sec-xbarnormal, hemos utilizado el estadístico 
+$$ Z=\frac{\bar{X}-\mu}{\sigma/\sqrt{n}},$${#eq-z}
+que sigue una distribución
+Normal estándar si $\bar{X}$ es la media de una muestra aleatoria simple
+de una distribución Normal $\mathcal{N}(\mu,\sigma^2)$.
+
+Si desconocemos el valor de $\sigma$, lo estimaremos por $S$ la
+desviación típica muestral
+$$S=\sqrt{\frac{n}{n-1}(\overline{X^2}-(\bar{X})^2)}.$$ El estadístico
+que resulta de sustituir en [(@eq-z)] $\sigma$ por $S$ es
+$$T=\frac{\bar{X}-\mu}{S/\sqrt{n}}.$$
+
+::: {#def-tstudent}
+Consideramos $(X_1,\ldots,X_n)$ una muestra aleatoria simple de una
+distribución $\mathcal{N}(\mu,\sigma^2)$, sea $\bar{X}$ la media
+muestral, la distribución de los valores de
+$$T=\frac{\bar{X}-\mu}{S/\sqrt{n}}$$ se llama distribución t de Student
+con $n-1$ grados de libertad. Escribimos $T\sim t_{n-1}$.
+:::
+
+La distribución de $T$ depende por lo tanto del tamaño $n$ de la
+muestra, a través de los llamados "grados de libertad". Se puede
+demostrar que la densidad $F_{t_{k}}$ de la distribución t de Student
+con $k$ grados de libertad admite la siguiente expresión:
+$$f_{t_k}(t)\propto \frac 1 {(1+t^2/p)^{(p+1)/2}},\quad -\infty<t<\infty,$$
+donde el símbolo $\propto$ significa "es proporcional a", es decir que
+existe una constante $K$ tal que
+$f_{t_k}(t)=K \frac 1 {(1+t^2/p)^{(p+1)/2}}.$ Por las propiedades de una
+función de densidad se puede deducir que la constante es
+$$K=\frac {\Gamma(\frac{p+1} 2)}{\Gamma(\frac{p} 2)}\frac 1 {\sqrt{p\pi}},$$
+donde $\Gamma$ denota la función Gamma[^4].
+
+La distribución t tiene colas más pesadas que la distribución Normal, lo
+que es intuitivamente natural puesto que, al obtenerse $T$ sustituyendo
+$\sigma$ por $S$, el denominador de $T$ presenta ahora también
+variabilidad. Esta variabilidad en el denominador resulta en que $T$
+puede tomar con más probabilidad valores más extremos. Sin embargo, si
+los grados de libertad aumentan, la variabilidad de $S$ disminuye, y la
+distribución t de Student asociada se parece más a una Normal.
+
+En la figura @fig-densidadstud, se representa la densidad de la
+distribución $T$ de Student para varios valores de los grados de
+libertad.
+
+```{python}
+#| label: fig-densidadstud
+#| fig-cap: "Densidad de la distribución t de Student con 1, 3, 10 y 150 grados de libertad respectivamente (de la densidad más chata a la más puntiaguda)"
+
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy.stats import t
+fig, ax = plt.subplots()
+x = np.linspace(t(1).ppf(0.03), t(1).ppf(0.97), 200)
+for df in [1, 3, 10, 150]:
+    ax.plot(x, t(df).pdf(x))
+plt.show()
+```
+## La proporción muestral
+
+Hay situaciones en las que la v.a $X$ de interés tan sólo puede tomar el
+valor 0 ó 1, éste último con la probabilidad $p$, pensamos por ejemplo,
+en el experimento que consiste en producir una pieza con una máquina que
+produce una proporción $p$ de defectuosos, $X$ toma el valor 1 si la
+pieza es defectuosa, y 0 si la pieza es correcta, o en el ejemplo del
+sondeo para estimar la tasa de participación antes de unas elecciones.
+Para sacar información sobre $p$, repetiremos el experimento $n$ veces
+de manera independiente, contaremos el número $N$ de veces que la v.a
+$X$ ha tomado el valor 1, es decir que fabricamos $n$ piezas con la
+máquina y contamos el número $N$ de defectuosas, o preguntaremos a $n$
+personas si tienen intención de ir a votar, para los dos ejemplos
+concretos que hemos mencionado. La proporción de "Unos" en la muestra se
+llama la proporción muestral y la denotamos por $\hat{p}$. Está claro
+que tenemos $$\hat{p}=\frac N n.$$
+
+### Cálculos exactos para la distribución de $\hat{p}$
+
+El número de "Unos" en la muestra es el número de veces que ha salido
+"1" en $n$ realizaciones independientes del experimento, su distribución
+es por lo tanto Binomial de parámetros $n$ y $p$, la probabilidad de que
+salga "1" en una realización del experimento: $$N\sim B(n,p).$$ Cálculos
+exactos para la distribución de $\hat{p}$ se podrán realizar utilizando
+que $\hat{p}=N/n$ y el hecho que $N\sim B(n,p)$, tal como viene
+ilustrado en el ejemplo siguiente:
+
+::: {exm-controlp}
+Cuando está bien ajustada, una máquina produce piezas con sólo 1% de
+defectuosos. Para realizar un control de la calidad de la producción, se
+extrae diariamente una muestra de 100 piezas, y se calcula la proporción
+muestral de defectuosos. Si la máquina está bien ajustada, ¿cuál es la
+probabilidad de que, en una de estas muestras, haya más de 2% de
+defectuosos?
+
+Queremos calcular $$\mathbb{P}(\hat{p}>0.02)=\mathbb{P}(\frac N {100} >0.02)=\mathbb{P}(N>2),$$
+siendo $N\sim B(100,0.01)$ si la máquina está bien ajustada. Tenemos
+
+\begin{align}
+\mathbb{P}(N>2)&=1-\mathbb{P}(N\leq 2)=1-[\mathbb{P}(N=0)+\mathbb{P}(N=2)+\mathbb{P}(N=3)]\\
+&1-[\binom{100}{0}0.01^0 0.99^{100}+
+\binom{100}{1}0.01^1 0.99^{99}+
+\binom{100}{2}0.01^2 0.99^{98}]\simeq 0.08
+\end{align}
+
+ Por lo tanto, si la máquina está bien ajustada, sólo hay
+una probabilidad de 0.08 de observar 3 o más piezas defectuosas en una
+muestra de 100.
+
+En particular, si un día observo 3 piezas defectuosas en la muestra que
+he extraído, hay dos posibilidades: a) la máquina está bien ajustada
+pero he tenido mala suerte (sólo había 8 posibilidades entre 100 de que
+esto ocurriera), b) en realidad es un síntoma de que la máquina está mal
+ajustada\... Este simple ejemplo ilustra la idea básica del control
+estadístico de calidad.
+:::
+
+### Distribución aproximada de $\hat{p}$
+
+Los cálculos exactos que hemos descrito en el apartado anterior se
+pueden volver muy laboriosos si se necesita evaluar un gran número de
+probabilidades individuales. En el caso en que se cumplen las
+condiciones de aproximación de la distribución Binomial, la distribución
+de $N$ se puede aproximar por una Normal $\mathcal{N}(np,np(1-p))$, y
+por lo tanto $\hat{p}$ sigue aproximadamente una distribución Normal con
+media $np/n=p$ y varianza $np(1-p)/n^2=p(1-p)/n$:
+$$\mbox{Si $np>5$, $n(1-p)>5$}\quad \hat{p}\sim\mathcal{N}(p,\frac {p(1-p)} n),\quad\mbox{aproximadamente}$$
+Esta propiedad de aproximación justifica en particular las formas de
+campanas de Gauss que aparecen para los histogramas de $\hat{p}$ en la introducción, ver Figuras @fig-histograma-phat y @fig-phat500.
+
+Notar por otra parte que para el ejemplo del apartado anterior no se
+cumplen las condiciones de aproximación\...
+
+## Introducción a las gráficas de control
+
+Conocer las distribuciones muestrales de algunos estadísticos destacados
+como la media muestral, la varianza muestral o la proporción muestral ha
+propiciado que se propongan procedimientos de control estadístico de
+calidad en contextos industriales. Veremos en esta sección una
+introducción a las gráficas de control, en una versión algo
+simplificada, pero que permite ilustrar sus fundamentos.
+
+Las gráficas de control permiten comprobar de manera continua que se
+mantiene constante la calidad de una producción, favoreciendo la
+intervención rápida en el caso en que se detecta que ésta se deteriora.
+
+### Gráfica de control $\bar{X}$.
+
+Consideremos el contexto siguiente: una empresa identifica la
+concentración en CaCO3 como una característica importante de la calidad
+de su producto. Idealmente esta concentración debería ser igual a 55,
+pero la variabilidad es inevitable. Sin embargo se asume que, en
+condiciones normales de producción los valores de la concentración se
+distribuyen según una distribución aproximadamente Normal con desviación
+típica $\sigma=8$. Para controlar la calidad de la producción, analiza 4
+envases de producto, calculando a continuación la media de los cuatro
+valores obtenidos. En la tabla siguiente, se recogen los datos
+correspondientes a veinte controles.
+
+::: center
+   Muestra n${{}^o}$   $\bar{x}$   Muestra n${{}^o}$   $\bar{x}$
+  ------------------- ----------- ------------------- -----------
+           1             54.0             11             53.1
+           2             59.1             12             61.1
+           3             54.0             13             61.5
+           4             56.5             14             67.7
+           5             60.5             15             64.9
+           6             56.0             16             67.6
+           7             47.3             17             66.9
+           8             51.7             18             67.1
+           9             62.9             19             73.5
+          10             64.7             20             66.4
+:::
+
+¿Cómo comprobar que la calidad de la producción sigue conforme con los
+criterios fijados? es decir, ¿cómo detectar que el instrumento de
+producción se ha desajustado por ejemplo? Si representamos la secuencia
+de los valores calculados para $\bar{x}$ en los controles consecutivos,
+obtenemos la gráfica de la Figura @fig-mu0, donde también se ha dibujado una línea horizontal
+para indicar la concentración ideal 55. Parece sin duda que la tensión
+de los monitores va aumentando y alejándose del objetivo 55, pero ¿cómo
+definir una regla que nos sirva de señal de alarma?
+
+```{python}
+#| label: fig-mu0
+#| fig-cap: "Valores consecutivos de $\\bar{x}$, ejemplo de la concentración en NaCO3."
+#| warning: false
+#| fig-width: 10
+#| fig-height: 7
+import numpy as np
+from matplotlib import pyplot as plt
+conc_means = np.array(
+    [54.0, 53.1, 59.1, 61.1, 54.0,
+     61.5, 56.5, 67.7, 60.5, 64.9,
+     56.0, 67.6, 47.3, 66.9, 51.7,
+     67.1, 62.9, 73.5, 64.7, 66.4,]
+)
+n = 4
+mu = 55
+sigma =81
+samples = 1 + np.arange(len(conc_means))
+error = 3 * sigma / np.sqrt(n)
+fig, ax = plt.subplots()
+ax.plot(samples, conc_means, 'bo', markersize=8)
+ax.set_xlim(0, len(conc_means) + 1)
+ax.set_ylim(30, 80)
+ax.axhline(mu)
+ax.set_xlabel('Muestra')
+ax.set_ylabel('Media de la muestra')
+plt.show()
+```
+
+Formalicemos el contexto: consideramos la v.a $X$= "concentración de
+NaCO3". Sabemos que $X\sim\mathcal{N}(\mu,\sigma^2)$ con $\sigma=8$.
+También sabemos que en condiciones normales de producción, se debe
+cumplir que $\mu=55$. Si escojemos al azar cuatro monitores en la
+producción de una hora, y llamamos $\bar{X}$ la media de las tensiones
+correspondientes, sabemos que los valores de $\bar{X}$ se distribuyen
+según una Normal de media $\mu$ y de desviación típica
+$\sigma_{\bar{X}}=\sigma/\sqrt{n}$, es decir $8/2=4$. En particular si
+$\mu$ es efectivamente igual a 55, se espera que el $99.7\%$ de los
+valores de $\bar{X}$ se encontrarán entre $\mu-3\sigma_{\bar{X}}$ y
+$\mu+3\sigma_{\bar{X}}$, es decir entre 60.4 y 49.6.
+
+Por consiguiente, si para una muestra, observamos un valor de $\bar{X}$
+fuera de este rango de valores, es razonable pensar que el proceso de
+producción se ha desajustado, puesto que sólo había una probabilidad de
+3 entre 1000 que esto ocurriera, siendo el proceso bien ajustado (es
+decir siendo $\mu$ igual a 55).
+
+Realizar una gráfica de control $\bar{X}$ consiste por lo tanto,
+suponiendo que los valores de la variable que queremos controlar siguen
+aproximadamente una Normal y que conocemos su desviación típica, en
+representar en una gráfica los valores de $\bar{X}$ que vamos
+obteniendo, junto con tres líneas horizontales:
+
+-   la línea objetivo, en nuestro caso $\mu=55$,
+
+-   el límite de control superior en $\mu+3\sigma/\sqrt{n}$, en nuestro
+    caso, 60.4.
+
+-   el límite de control superior en $\mu-3\sigma/\sqrt{n}$, en nuestro
+    caso, 49.6.
+
+En la Figura @fig-mu1,
+se representa la gráfica de control para este ejemplo. A partir de la
+muestra número 14 se detecta que el proceso está fuero de control, y que
+la calidad se ha deteriorado.
+
+```{python}
+#| label: fig-mu1
+#| fig-cap: "Ejemplo de gráfica de control $\\bar{x}$."
+#| warning: false
+import numpy as np
+from matplotlib import pyplot as plt
+conc_means = np.array(
+    [54.0, 53.1, 59.1, 61.1, 54.0,
+     61.5, 56.5, 67.7, 60.5, 64.9,
+     56.0, 67.6, 47.3, 66.9, 51.7,
+     67.1, 62.9, 73.5, 64.7, 66.4,]
+)
+n = 4
+mu = 55
+sigma =8
+samples = 1 + np.arange(len(conc_means))
+error = 3 * sigma / np.sqrt(n)
+fig, ax = plt.subplots()
+ax.plot(samples, conc_means, 'bo', markersize=8)
+ax.set_xlim(0, len(conc_means) + 1)
+ax.set_ylim(30, 80)
+ax.axhline(mu)
+ax.axhline(mu + error, linestyle='dashed')
+ax.axhline(mu - error, linestyle='dashed')
+ax.set_xlabel('Muestra')
+ax.set_ylabel('Media de la muestra')
+plt.show()
+```
+### Gráfica de control $\hat{p}$
+
+En algunas situaciones, la calidad de la producción no se mide a tráves
+de una variable $X$ sino a través de la proporción de defectuosos
+producidos. En estos casos se monitora la calidad utilizando una gráfica
+de control $\hat{p}$.
+
+Para llevar a cabo el control utilizando las mismas ideas que para la
+gráfica de control $\bar{X}$, recurrimos a la distribución muestral de
+$\hat{p}$. Sabemos que si $np>5$ y $n(1-p)>5$, ésta se puede aproximar
+por una Normal:
+$$\hat{p}\sim\mathcal{N}(p,\frac {p(1-p)}{n},\mbox{ aproximadamente.}$$
+La gráfica de control $\hat{p}$ se realizará por lo tanto dibujando en
+la gráfica tres líneas horizontales:
+
+-   la línea objetivo,
+
+-   el límite de control superior en
+    $p+3\frac {\sqrt{p(1-p)}} {\sqrt{n}}$,
+
+-   el límite de control superior en
+    $p-3\frac {\sqrt{p(1-p)}} {\sqrt{n}}$, en nuestro caso.
+
+### Otra señal de alarma
+
+Existen otras posibles señales de alarma para decidir si un proceso está
+fuera de control. Una de ellas corresponde a dibujar la línea objetivo y
+concluir que la máquina está mal ajustada si se observan nueve puntos
+consecutivos por debajo(o por encima) de la línea objetivo. La
+probabilidad de falsa alarma, es decir concluir erróneamente que el
+proceso está fuera de control es del orden de 2 entre 1000.
+
+[^3]: En algunos casos, este experimento aleatorio consistirá en escoger
+    al azar un individuo de una población muy grande, y $X$ será el
+    valor de la variable de interés para este individuo concreto.
+    Llamaremos entonces media de $X$ la media *poblacional* y su
+    varianza, la varianza *poblacional*
+
+[^4]: La función Gamma tiene la expresión siguiente: para cualquier real
+    $\alpha>0$, $\Gamma(\alpha)=\int_{0}^\infty t^{\alpha-1}e^{-t}dt.$

@@ -50,7 +50,6 @@ $X$/$Y$ | 120 | 130 | 140 | 150
 0 | 0.03 | 0.1 | 0.15 | 0.2
 1 | 0.05 | 0.06 | 0.1 | 0.1
 2 | 0.21 | 0 | 0 | 0
------ | ------ | ------ | ------ | -----
 :::
 
 Deducimos en particular de esta tabla que la probabilidad que $X$ tome
@@ -90,17 +89,15 @@ Se suele representar en la misma tabla de la f.p.p. conjunta de la
 manera siguiente:
 
 ::: center
-|-----|-----|-----|-----|-----|-----|
-|     |     |     |     |     |$f(X)$|
-|-----|-----|-----|-----|-----|-----|
-|$X/Y$|120  |130  |140  |150  |
-|-----|-----|-----|-----|-----|-----|
-|0    |0.03 |0.1  |0.15 |0.2  |0.48 |
-|1    |0.05 |0.06 |0.1  |0.1  |0.31 |
-|2    |0.21 |0    |0    |0    |0.21 |
-|---- |---- |-----|-----|-----|-----|
-|$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
-|---- |---- |-----|-----|-----|-----|
+ | |  |  |  | $f(X)$
+----- | ------ | ------ | ------ | -----
+$X$/$Y$ | 120 | 130 | 140 | 150|
+----- | ------ | ------ | ------ | -----
+0 | 0.03 | 0.1 | 0.15 | 0.2|0.48
+1 | 0.05 | 0.06 | 0.1 | 0.1|0.31 
+2 | 0.21 | 0 | 0 | 0       |0.21 
+----- | ------ | ------ | ------ | -----
+$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
 :::
 
 ### Esperanza
@@ -260,16 +257,15 @@ probabilidad de $X$ condicionada a $Y=130$. Recordemos que la tabla de
 las f.p.p conjunta y marginales de $(X,Y)$ era
 
 ::: center
-|-----|-----|-----|-----|-----|-----|
-|     |     |     |     |     |$f(X)$|
-|-----|-----|-----|-----|-----|-----|
-|$X/Y$|120  |130  |140  |150  |
-|0    |0.03 |0.1  |0.15 |0.2  |0.48 |
-|1    |0.05 |0.06 |0.1  |0.1  |0.31 |
-|2    |0.21 |0    |0    |0    |0.21 |
-|---- |---- |-----|-----|-----|-----|
-|$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
-|---- |---- |-----|-----|-----|-----|
+ | |  |  |  | $f(X)$
+----- | ------ | ------ | ------ | -----
+$X$/$Y$ | 120 | 130 | 140 | 150|
+----- | ------ | ------ | ------ | -----
+0 | 0.03 | 0.1 | 0.15 | 0.2|0.48
+1 | 0.05 | 0.06 | 0.1 | 0.1|0.31 
+2 | 0.21 | 0 | 0 | 0       |0.21 
+----- | ------ | ------ | ------ | -----
+$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
 :::
 
 Por lo tanto $f_{X|Y=130}$ toma los valores:
@@ -290,6 +286,7 @@ Sea $(X,Y)$ una v.a continua con densidad conjunta $f_{XY}$.
 Consideramos un valor $y$ para el cual $f_Y(y)>0$. La función de
 densidad de $X$ condicionada a $Y=y$ está definida por
 $$f_{X|Y=y}(x)=\frac {f_{XY}(x,y)}{f_Y(y)}.$$ 
+
 :::{.callout-note}
 La densidad de $Y$
 condicionada a $X$ se obtiene intercambiando los papeles de $X$ e $Y$ en
@@ -440,16 +437,15 @@ Volvamos al ejemplo de la sección
 @sec-definicionfpp, su función puntual de probabilidad es
 
 ::: center
-|-----|-----|-----|-----|-----|-----|
-|     |     |     |     |     |$f(X)$|
-|-----|-----|-----|-----|-----|-----|
-|$X/Y$|120  |130  |140  |150  |
-|0    |0.03 |0.1  |0.15 |0.2  |0.48 |
-|1    |0.05 |0.06 |0.1  |0.1  |0.31 |
-|2    |0.21 |0    |0    |0    |0.21 |
-|---- |---- |-----|-----|-----|-----|
-|$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
-|---- |---- |-----|-----|-----|-----|
+ | |  |  |  | $f(X)$
+----- | ------ | ------ | ------ | -----
+$X$/$Y$ | 120 | 130 | 140 | 150|
+----- | ------ | ------ | ------ | -----
+0 | 0.03 | 0.1 | 0.15 | 0.2|0.48
+1 | 0.05 | 0.06 | 0.1 | 0.1|0.31 
+2 | 0.21 | 0 | 0 | 0       |0.21 
+----- | ------ | ------ | ------ | -----
+$f_Y$ | 0.29 | 0.16 | 0.25 | 0.3 | 
 :::
 
 Para calcular la covarianza de $X$ e $Y$ necesitamos por una parte
@@ -507,7 +503,8 @@ $X_j$.
     que $$Var(X+Y)=Var(X)+Var(Y)+2cov(X,Y).$$ En el caso particular en
     el que $X$ e $Y$ son independientes, esta relación se simplifica,
     dando lugar a la fórmula de propagación de los errores:
-    $$Var(X+Y)=Var(X)+Var(Y),$$ puesto que $cov(X,Y)=0$.
+    $$Var(X+Y)=Var(X)+Var(Y),$${#eq-propagacion}
+    puesto que $cov(X,Y)=0$.
 
 ## Algunos modelos de v.a. multidimensional
 

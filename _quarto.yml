@@ -22,6 +22,8 @@ book:
     - 01-exploracion.qmd
     - 02-probabilidad.qmd
     - 03-variable.qmd
+    - 04-variables-II.qmd
+    - 05-muestreo.qmd
     - 06-estimacion.qmd
     - references.qmd
 

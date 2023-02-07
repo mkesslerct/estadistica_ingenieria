@@ -315,7 +315,7 @@ parámetro.
 Supongamos que queremos estimar la media $\mu$ de una v.a. $X$ cuya
 distribución es Normal con una desviación típica igual a 2 unidades, es
 decir $X\sim \mathcal{N}(\mu,4)$. Para ello, extraigo una muestra de
-tamaño 4, y estimo $\mu$ por el valor de $\bar{X}$. Por el tema 5, ver
+tamaño 4, y estimo $\mu$ por el valor de $\bar{X}$. Por la
 @sec-xbarnormal, sabemos que la distribución de $\bar{X}$ es
 $\mathcal{N}(\mu,\sigma^2/n)$ es decir $\mathcal{N}(\mu,1)$. Por la
 propiedad de la distribución Normal, ver
@@ -363,11 +363,11 @@ confianza para la media $\mu$ se realiza siguiendo los siguientes pasos.
 -   Dibujo en la densidad del estadístico
     $\frac {\bar{X}-\mu} {\sigma/\sqrt{n}}$, una región central que
     represente el $100(1-\alpha)\%$ del área total, tal como viene
-    ilustrado en la @fig-densidad-estadistico-Z.
+    ilustrado en la @fig-densz.
 
 ```{python}
-#| label: fig-densidad-estadistico-Z
-#| fig-cap: Región central con un área $1 - \alpha$ en la densidad de una Normal estándar. 
+#| label: fig-densz
+#| fig-cap: "Región central con un área $1 - \\alpha$ en la densidad de una Normal estándar." 
 #| warning: false
 #| fig-width: 10
 #| fig-height: 7
@@ -434,7 +434,7 @@ es decir las que proporcionan intervalos equivocados.
 
 ```{python}
 #| label: fig-intervalos
-#| fig-cap: Los intervalos de confianza al 95% correspondientes a 20 muestras de tamaño 4. La media que se busca estimar es $\mu=2$.
+#| fig-cap: "Los intervalos de confianza al 95% correspondientes a 20 muestras de tamaño 4. La media que se busca estimar es $\\mu = 2$."
 #| warning: false
 #| fig-width: 10
 #| fig-height: 7
@@ -538,11 +538,11 @@ basándonos en el estadístico $\frac {\bar{X}-\mu} {S/\sqrt{n}}$:
 
 -   Dibujo en la densidad del estadístico $T$ una región central que
     represente el $100(1-\alpha)\%$ del área total, tal como viene
-    ilustrado en la @fig-densidad-estadistico-T.
+    ilustrado en la @fig-denst.
 
 ```{python}
-#| label: fig-densidad-estadistico-T
-#| fig-cap: Región central con un área $1 - \alpha$ en la densidad de una t de Student. 
+#| label: fig-denst
+#| fig-cap: "Región central con un área $1 - \\alpha$ en la densidad de una t de Student."
 #| warning: false
 #| fig-width: 10
 #| fig-height: 7
