@@ -14,7 +14,7 @@ book:
   search: true
   repo-url: https://github.com/mkesslerct/estadistica_ingenieria
   repo-actions: [edit]
-  downloads: [pdf, epub]
+  downloads: [pdf]
   cover-image:  statsclouds.png
 
   chapters:
@@ -37,6 +37,8 @@ format:
   pdf:
     documentclass: scrreprt
     echo: false
+    fig-dpi: 600
+    fig-format: "pdf"
 
 
 

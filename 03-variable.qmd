@@ -105,7 +105,7 @@ o igual a $t$, i.e. $$F_X(t)=\mathbb{P}(X\leq t).$$
 Para calcular $F_X(t)=\mathbb{P}(X\leq t)$, debemos considerar los intervalos
 definidos por los valores posibles de $X$ es decir 0, 1, 2 y 3 que
 inducen los cinco intervalos para $t$: $t<0$, $0\leq t<1$, $1\leq t<2$,
-$2\leq t<3$ y $t>3$.
+$2\leq t<3$ y $t\geq 3$.
 
 Si $t<0$, el suceso $(X\leq t)$ es el suceso imposible puesto que todos
 los valores que puede tomar $X$ son mayores o igual que 0. Por lo tanto,
@@ -114,12 +114,9 @@ $F_X(t)=%
 solamente si $X$ toma el valor 0. Deducimos
 $F_X(t)=\mathbb{P}(X\leq t)=\mathbb{P}(X=0)=1/8$. Si $1\leq t<2$, el suceso $(X\leq t)$
 se cumple si y solamente si $X$ toma el valor 0 ó 1, es decir
-$F_X(t)=\mathbb{P}(X\leq t)=\mathbb{P}[(X=0)\cup (X=1)]=%
-\mathbb{P}[X=0]+\mathbb{P}[X=1]=1/8+3/8=1/2$. Si $2\leq t<3$, el suceso $(X\leq t)$ se
-cumple si y solamente si $X$ toma el valor 0, 1 ó 2, es decir
-$F_X(t)=\mathbb{P}(X\leq  t)=\mathbb{P}[X=0]+\mathbb{P}%
-[X=1]+\mathbb{P}[X=2]=1/2+3/8=7/8$. Finalmente, si $t>3$, el suceso $(X\leq t)$
-es el suceso seguro puesto que todos los valores que puede tomar $X$ son
+$F_X(t)=\mathbb{P}(X\leq t)=\mathbb{P}[(X=0)\cup (X=1)]= \mathbb{P}[X=0]+\mathbb{P}[X=1]=1/8+3/8=1/2$. 
+Si $2\leq t<3$, el suceso $(X\leq t)$ se cumple si y solamente si $X$ toma el valor 0, 1 ó 2, es decir
+$F_X(t)=\mathbb{P}(X\leq  t)=\mathbb{P}[X=0]+\mathbb{P} [X=1]+\mathbb{P}[X=2]=1/2+3/8=7/8$. Finalmente, si $t>3$, el suceso $(X\leq t)$ es el suceso seguro puesto que todos los valores que puede tomar $X$ son
 menores o igual que 3. Por lo tanto $F_X(t)=\mathbb{P}(X\leq t)=1$.
 
 La gráfica de $F_X$ en este ejemplo es
@@ -219,8 +216,8 @@ apartado 1.2. Los valores posibles de $X$ son 0, 1, 2 y 3; por lo tanto
     solamente si cumple 
 
 \begin{align}
-    \bullet& 0\leq f(x)\quad \mbox{para }x=x_1,\ldots,x_n,\ldots\\
-    \bullet& \sum_{x_i}f_X(x_i)=1.
+    0\leq f(x)\quad \mbox{para }x=x_1,\ldots,x_n,\ldots\\
+    \sum_{x_i}f_X(x_i)=1.
 \end{align}
 
 ### Características de una variable discreta
@@ -278,35 +275,44 @@ La varianza de una v.a. discreta $X$, designada por $\mathop{var} X$ o
 $\sigma^2_X$, está definida por $$\mathop{var}(X)=\mathbb{E}[(X-\mathbb{E}[X])^2].$$
 :::
 
-Por la definición @def-esperanzaf, deducimos que $\mathop{var}(X)$ se puede calcular como
+Por la @def-esperanzaf, deducimos que $\mathop{var}(X)$ se puede calcular como
 $$\mathop{var}(X)=\sum_{x_i}(x_i-\mathbb{E}[X])^2\mathbb{P}(X=x_i).$$ Por otra parte, se suele
 calcular la varianza utilizando la fórmula equivalente siguiente:
 
-**Fórmula equivalente para el cálculo de la varianza.** Tenemos
-$$\mathop{var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2.$$ : 
+::: {.callout-tip}
+## Fórmula equivalente para el cálculo de la varianza.
+Tenemos
+$$\mathop{var}(X)=\mathbb{E}[X^2]-(\mathbb{E}[X])^2.$$ 
+:::
 
+Se demuestra con unas pocas manipulaciones:
 \begin{align}
 \mathop{var}(X)&=&\sum_{x_i}(x_i-\mathbb{E}[X])^2\mathbb{P}(X=x_i)\\
-&=&\sum_{x_i}(x_i^2-2x_i\mathbb{E}[X]+\mathbb{E}[X]^2)\mathbb{P}(X=x_i)\\
-&=&\sum_{x_i}x_i^2\mathbb{P}(X=x_i)-\sum_{x_i}2x_i\mathbb{E}[X]\mathbb{P}(X=x_i)+\sum_{x_i}\mathbb{E}[X]^2\mathbb{P}(X=x_i)\\
-&=&\sum_{x_i}x_i^2\mathbb{P}(X=x_i)-2\mathbb{E}[X]\sum_{x_i}x_i\mathbb{P}(X=x_i)+\mathbb{E}[X]^2\sum_{x_i}\mathbb{P}(X=x_i)\\
-&=&\mathbb{E}[X^2]-2\mathbb{E}[X]\mathbb{E}[X]+\mathbb{E}[X]^2\\
-&=&\mathbb{E}[X^2]-\mathbb{E}[X]^2\\
+&=&\sum_{x_i}(x_i^2-2x_i\mathbb{E}[X]+(\mathbb{E}[X])^2)\mathbb{P}(X=x_i)\\
+&=&\sum_{x_i}x_i^2\mathbb{P}(X=x_i)-\sum_{x_i}2x_i\mathbb{E}[X]\mathbb{P}(X=x_i)+\sum_{x_i}(\mathbb{E}[X])^2\mathbb{P}(X=x_i)\\
+&=&\sum_{x_i}x_i^2\mathbb{P}(X=x_i)-2\mathbb{E}[X]\sum_{x_i}x_i\mathbb{P}(X=x_i)+(\mathbb{E}[X])^2\sum_{x_i}\mathbb{P}(X=x_i)\\
+&=&\mathbb{E}[X^2]-2\mathbb{E}[X]\mathbb{E}[X]+(\mathbb{E}[X])^2\\
+&=&\mathbb{E}[X^2]-(\mathbb{E}[X])^2\\
 \end{align}
 
 Finalmente, la desviación típica se define como la raíz cuadrada de la
 varianza $$\sigma_X=\sqrt{\sigma_X^2}.$$ Será la medida que calcularemos
 para dar cuenta de la dispersión de la distribución: cuanto más pequeña
 sea la desviación típica, más concentrada estará la distribución
-alrededor de su media. En particular, si la desviación típica de $X$ es
+alrededor de su media.
+
+:::{.callout-note}
+Si la desviación típica de $X$ es
 nula, deducimos por la primera fórmula para el cálculo de la varianza,
 que todos los valores de $X$ son iguales: $X$ sólo puede tomar un valor,
 y lo toma con probabilidad 1.
+:::
 
 Por otra parte, es bueno resaltar que la desviación típica se expresa en
 las mismas unidades que la variable $X$.
 
 ::: {callout-note}
+## Momentos
 En la fórmula equivalente para la varianza aparecen las cantidades
 $\mathbb{E}[X^2]$ y $\mathbb{E}[X]$. En general para un entero $k$, llamamos a
 $\mathbb{E}[X^k]$ el momento de orden $k$. Así la media es el momento de
@@ -419,10 +425,11 @@ probabilidad de que ocurra $A$ en el experimento simple. Concluimos
 $$X\sim {\mathcal B}(10,0.01).$$
 
 ##### Propiedades {#sec-propiedades-1}
+Una distribución ${\mathcal{B}}(n,p)$ tiene las siguientes propiedades:
 
 -   Valores posibles: $0,1,2,\ldots,n$.
 
--   [ ] Distribución - Función puntual de probabilidad.
+-   Distribución - Función puntual de probabilidad.
     $i=0,1,\ldots,n\quad f_X(i)=\mathbb{P}(X=i).$ Para calcular estas
     probabilidades, introduzcamos los sucesos:
 
@@ -463,13 +470,17 @@ $$X\sim {\mathcal B}(10,0.01).$$
     $$f_X(i)=\mathbb{P}(X=i)=( \begin{array}{c}n \\ i 
       \end{array}) p^i (1-p)^{n-i},$$ donde $$( \begin{array}{c} n\\ i 
       \end{array})=\frac {n!}{i!\cdot(n-i)!},$$ y se utiliza la
-    convención $0!=1$.\
-    Nota: ¿se cumple que $\sum_{i=1}^n ( \begin{array}{c} n\\ i 
-      \end{array})p^i(1-p)^{n-i}=1$? La respuesta es sí, por el binomio
-    de Newton: $(a+b) ^n=\sum_{i=1}^n ( \begin{array}{c} n\\ i 
-      \end{array})a^i(b)^{n-i}$, y por lo tanto
-    $$\sum_{i=1}^n ( \begin{array}{c} n\\ i 
-      \end{array})p^i(1-p)^{n-i}=(p+1-p)^n=1.$$
+    convención $0!=1$.
+
+:::{.callout-note}
+## ¿Se cumple que $\sum_{i=1}^n ( \begin{array}{c} n\\ i \end{array})p^i(1-p)^{n-i}=1$? 
+
+La respuesta es sí, por el binomio
+de Newton: $(a+b) ^n=\sum_{i=1}^n ( \begin{array}{c} n\\ i 
+    \end{array})a^i(b)^{n-i}$, y por lo tanto
+$$\sum_{i=1}^n ( \begin{array}{c} n\\ i 
+    \end{array})p^i(1-p)^{n-i}=(p+1-p)^n=1.$$
+:::
 
 -   Esperanza y varianza:\
     Es posible demostrar que, si $X\sim {\mathcal B}(n,p)$,
@@ -484,17 +495,14 @@ consideramos, al igual que para una distribución binomial, un
 experimento simple con una situación dicotómica, ocurre $A$ o $A^C$ con
 probabilidades $p$ y $1-p$ respectivamente. Estamos dispuestos a
 realizar este experimento simple un cierto número de veces hasta que
-ocurra $A$. Introducimos la variable $X$:"Número de veces que debemos
+ocurra $A$. Introducimos la variable $X$: "Número de veces que debemos
 realizar el experimento simple hasta que ocurra $A$ por primera vez".\
 La variable $X$ sigue una distribución geométrica de parámetro $p$.
 Escribimos $$X\sim \mathcal{G}eo(p)$$
 
 ##### Propiedades {#sec-propiedades-2}
 
-.
-
 -   $X$ puede tomar los valores $1,2,\ldots$.
-
 -   Función puntual de probabilidad de $X$: queremos calcular $\mathbb{P}(X=i)$
     para $i\in \mathbb{N}^*$.\
     Introducimos los sucesos: $A_1$="ocurre $A$ en la primera
@@ -542,9 +550,9 @@ $$X\sim {\mathcal P}(\lambda).$$
     comprobar que
     $\sum_{i=0}^{+\infty} \frac{\lambda^i e^{-\lambda}}{i!}=1$, si
     utilizamos el hecho de que la suma de la serie de potencias
-    $\sum_{i=0}^{+\infty}\frac{x^i}{i!}=e^x$.
+    $\sum_{i=0}^{+\infty}\frac{x^i}{i!}$ es $e^x$.
 
--   Esperanza y varianza.\
+-   Esperanza y varianza.  
     Es fácil comprobar repitiendo cálculos similares a los del punto
     anterior, que la esperanza de una distribución de Poisson de
     parámetro $\lambda$, es, tal como se anunció en la definición,
@@ -582,19 +590,20 @@ posibles de $X$ es más probable que se encuentre $X$.
 Para una v.a continua $X$ existe una función $f_X$ positiva, tal que,
 para todos $a$ y $b$, $a\leq b$,
 $$\mathbb{P}(a\leq X\leq b)=\int_a^b f_X(x)dx.$$ La función $f_X$ se llama la
-función de densidad de la v.a $X$. Notar que se trata de una
+función de densidad de la v.a $X$.  
+Notar que se trata de una
 terminología coherente con la analogía mencionada anteriormente entre
 probabilidad y peso: para un cuerpo no homogéneo, el peso de una parte
 de este cuerpo se calcula integrando la densidad en el volumen
 correspondiente.
 
-**Nota:**
-
--   Al ser $f_X$ una función positiva, y
-    $\mathbb{P}(a\leq X\leq b)=\int_a^b f_X(x)dx.$, la probabilidad de que $X$
-    esté entre $a$ y $b$ corresponde al área debajo de la curva de $f_X$
-    comprendida entre $a$ y $b$, tal como está ilustrado en la figura
-    siguiente:
+:::{.callout-note}
+Al ser $f_X$ una función positiva y
+$\mathbb{P}(a\leq X\leq b)=\int_a^b f_X(x)dx$, la probabilidad de que $X$
+esté entre $a$ y $b$ corresponde al área debajo de la curva de $f_X$
+comprendida entre $a$ y $b$, tal como está ilustrado en la figura
+siguiente:
+:::
 
 ```{python}
 #| label: fig-curvadensidad
@@ -616,7 +625,7 @@ ax.set_xticks([norm.ppf(0.6), norm.ppf(0.9)])
 ax.set_xticklabels([r'$a$', r'$b$'])
 plt.show()
 ```
-
+Por otra parte, son pertinentes las siguientes observaciones:
 
 -   Si disponemos de un conjunto de datos con una variable $X$,
     generados a partir de realizaciones de un experimento, y si nuestra
@@ -648,11 +657,15 @@ ax.get_yaxis().set_visible(False)
 ax.set_xlabel('')
 plt.show()
 ```
--   El área total debajo de la curva de $f_X$ debe corresponder a la
+
+:::{callout-note}
+El área total debajo de la curva de $f_X$ debe corresponder a la
     probabilidad de que $X$ tome un valor real, y es igual a 1:
     $$\int_{-\infty}^{+\infty} f_X(x)dx=1.$$
+:::
 
--   Si $X$ es una v.a continua, la probabilidad de que tome un valor
+:::{callout-note}
+Si $X$ es una v.a continua, la probabilidad de que tome un valor
     dado $a$ es nula, puesto que la integral de $f_X$ entre $a$ y $a$ es
     cero: la distribución de una v.a continua sólo asigna probabilidades
     positivas a intervalos de valores y no a puntos individuales. En
@@ -661,12 +674,13 @@ plt.show()
     $$\mathbb{P}(a\leq X\leq b)=\mathbb{P}(a<X\leq b)=\mathbb{P}(a<X<b)=\mathbb{P}(a\leq X <b).$$ ¡Por
     supuesto este tipo de igualdades no es válida en general para una
     v.a discreta!
+:::
 
 #### Propiedades {#sec-propiedades-4}
 
 ##### Relaciones entre $f_X$ y $F_X$.
 
-La función de distribución acumulada de $X$ es, ver sección
+La función de distribución acumulada de $X$, ver 
 @sec-func-de-distr, calcula para todo real $t$ la
 probabilidad de que $X$ tome un valor menor o igual que $t$:
 $F_X(t)=\mathbb{P}(X\leq t)$. Por la definición de la función de densidad $f_X$
@@ -675,12 +689,12 @@ $F_X$ es una primitiva de $f_X$, o equivalentemente, $f_X$ se puede
 calcular como la derivada, en los puntos donde existe, de la función de
 distribución acumulada $t\mapsto F_X(t)$.
 
-##### Condiciones para que una función $f$ sea la función de densidad de una v.a continua $X$. {#sec-condiciones-densidad}
+##### Condiciones para que una función $f$ sea la función de densidad de una v.a continua $X$ {#sec-condiciones-densidad}
 
 Está claro que, para que una función $f$ sea la función de densidad de
 una v.a continua $X$, es necesario que se cumplan las dos condiciones:
 
-1.  $f(x)\geq 0,\quad\mbox{para todo $x\in \mathbb{R}$},$
+1.  $f(x)\geq 0$, para todo $x\in \mathbb{R}$,
 
 2.  $\int_{-\infty}^{+\infty} f(x)dx=1.$
 
@@ -715,7 +729,7 @@ ax.set_xlabel('')
 plt.show()
 ```
 
-Notar que por la gráfica de esta función de densidad, comprobamos que la
+Notar que, por la gráfica de esta función de densidad, comprobamos que la
 probabilidad de que $X$ pertenezca a un intervalo de números negativos,
 por ejemplo $[-2,-3]$ es nula (la densidad de probabilidad es nula en
 $\mathbb{R}^{-}$), o que es mucho menos probable que un dispositivo dure entre
@@ -739,7 +753,7 @@ Sea $X$ una variable con densidad $f$, definimos la media de $X$,
 también llamada esperanza o valor esperado, como
 $$\mu_X=\mathbb{E}[X]=\int_{-\infty}^{+\infty} x\cdot f(x)dx.$$ Es una medida de
 centro de la distribución si ésta es relativamente simétrica, se
-interpreta como el centro de gravedad de la distribución, ver figura
+interpreta como el centro de gravedad de la distribución, ver 
 @fig-esperanza.
 Otra vez es coherente con la analogía entre el peso y la probabilidad.
 
@@ -805,16 +819,16 @@ valores de $X$ respecto a su media.
 #### Un ejemplo
 
 Calculemos la duración media y la desviación típica en el ejemplo de la
-duración de los dispositivos electrónicos de la sección
+duración de los dispositivos electrónicos de la
 @sec-ejemplo_dura. Tenemos que 
 
 \begin{align}
 \mathbb{E}[X]=\int_{-\infty}^{+\infty}x\cdot f_X(x)dx&=\int_{-\infty}^{0}x\cdot f_X(x)dx+\int_{0}^{+\infty}x\cdot f_X(x)dx\\
 &=0+\int_{0}^{+\infty}x\cdot e^{-x}dx\\
-&=1,
+&=1.
 \end{align}
 
- hemos descompuesto la integral inicial según los
+Hemos descompuesto la integral inicial según los
 intervalos de definición de $f_X$, sustituido la expresión de $f_X$ en
 las integrales resultantes, y calculado por partes la última integral
 que aparece. La duración media de los dispositivos es por lo tanto de
@@ -844,7 +858,7 @@ dada por: $$f_X(x)=\left\{ \begin{array}{ll}
  \frac 1 {(b-a)}&\text{si $a\leq x\leq b$,}\\
 0&\text{en otro caso.}
 \end{array} \right.$$ La representación gráfica de $f_X$ se encuentra en
-la figura @fig-uniforme. Una v.a $X$ que tenga esta función de
+la @fig-uniforme. Una v.a $X$ que tenga esta función de
 densidad se llama una v.a uniforme entre $a$ y $b$. Lo denotaremos por
 $$X\sim {\mathcal U}([a,b]).$$
 
@@ -911,7 +925,7 @@ clientes en una cola.
      \lambda e^{-\lambda x}&\text{si $x>0$}\\
     0&\text{en otro caso.}
     \end{array} \right.$$ Su gráfica es parecida a la del ejemplo de la
-    sección @sec-ejemplo_dura. De hecho, resulta que la densidad de
+     @sec-ejemplo_dura. De hecho, resulta que la densidad de
     este ejemplo es la densidad de una distribución exponencial de
     parámetro $\lambda$.
 
@@ -922,8 +936,7 @@ clientes en una cola.
     En particular, tenemos que $\mathbb{P}(X > t)=e^{-\lambda t}$.
 
 -   *Esperanza y varianza*. Demostramos de la misma manera que para el
-    ejemplo de la sección
-    @sec-ejemplo_dura, utilizando la integración por partes
+    ejemplo de la @sec-ejemplo_dura, utilizando la integración por partes
     que $$\mathbb{E}[X]=1/\lambda,\quad\quad \mathop{var}(X)=1/\lambda^2.$$
 
 -   *Propiedad de falta de memoria de la distribución exponencial.* La
@@ -938,7 +951,8 @@ clientes en una cola.
     la probabilidad de que $X$ sea mayor que 1 minuto: ¡el hecho de
     saber que ya he esperado 3 minutos no cambia la probabilidad de que
     todavía tenga que esperar otro minuto más! Es decir, para todos
-    $t_1>0,\ t_2>0$, $$\mathbb{P}(X>t_1+t_2| X> t_1)=\mathbb{P}(X>t_2).$$ Por la
+    $t_1>0,\ t_2>0$, $$\mathbb{P}(X>t_1+t_2| X> t_1)=\mathbb{P}(X>t_2).$$ 
+    Para comprobarlo, empezamos por escribir, por la
     definición de la probabilidad condicionada,
     $$\mathbb{P}(X>t_1+t_2| X> t_1)=\frac {\mathbb{P}((X>t_1+t_2) \cap (X> t_1))}{\mathbb{P}(X> t_1)}.$$
     Por otra parte, puesto que el suceso $(X> t_1+t_2)$ está incluido en
@@ -956,7 +970,7 @@ Sea $\mu$ un número real y $\sigma^2$ un número real positivo, la v.a
 $X$ sigue una distribución Normal de parámetros $\mu$ y $\sigma^2$ si su
 densidad es
 $$f(x)=\frac 1 {\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}},$$
-cuya representación gráfica es la famosa "campana de Gauss", ver Figura
+cuya representación gráfica es la famosa "campana de Gauss", ver 
 @fig-densnorm.
 
 ```{python}
@@ -986,9 +1000,9 @@ procedimientos estadísticos que se llevan a cabo de manera rutinaria
 típicamente presente cuando se modeliza los valores proporcionados por
 un aparato de medición. De hecho, si consideramos los datos de las
 mediciones de la luz por S. Newcomb que estudiamos en el primer tema, ver
-sección @sec-ejempl-newcomb, podemos comprobar que las frecuencias
+ @sec-ejempl-newcomb, podemos comprobar que las frecuencias
 de aparición de los datos experimentales se ajustan bastante bien a un
-modelo Normal. En la figura @fig-newcombfit, se ha ajustado una curva Normal al
+modelo Normal. En la @fig-newcombfit, se ha ajustado una curva Normal al
 histograma de los datos recogidos por Newcomb, después de omitir los dos
 datos atípicos $-44$ y $-2$. Para ello, hemos fijado el valor de $\mu$ y
 $\sigma^2$ basándonos en el centro y la dispersión de la distribución de
@@ -1030,7 +1044,8 @@ plt.show()
 
 -   La curva de la densidad Normal nunca se cruza con el eje $Ox$.
 
--   *Esperanza y varianza:* Es posible comprobar que, si
+-   *Esperanza y varianza:*  
+    Es posible comprobar que, si
     $X\sim {\mathcal N}(\mu,\sigma^2)$,
     $$\mathbb{E}[X]=\mu,\quad \quad \mathop{var}(X)=\sigma^2.$$
 
@@ -1042,7 +1057,7 @@ plt.show()
     aproximaciones numéricas de la integral
     $$\int_a^b \frac 1 {\sqrt{2\pi\sigma^2}} e^{-\frac{(x-\mu)^2}{2\sigma^2}}dx,$$
     para obtener $\mathbb{P}(a<X\leq b)$. Los programas informáticos de análisis
-    de datos como R disponen de algoritmos que permitan calcular para
+    de datos como R o Python disponen de algoritmos que permitan calcular para
     cualquier $t$ la probabilidad $\mathbb{P}(X\leq t)$. También existen
     calculadoras estadísticas.
 
@@ -1057,7 +1072,7 @@ plt.show()
     \mathbb{P}(\mu-3\sigma\leq X\leq \mu+3\sigma)\simeq &0.997,\\
 \end{align}
 
- lo que queda reflejado en la figura
+ lo que queda reflejado en la
     @fig-normal: el
     68% del área debajo de la curva Normal está comprendida entre
     $\mu-\sigma$ y $\mu+\sigma$, el 95% entre $\mu-2\sigma$ y
@@ -1109,21 +1124,18 @@ plt.show()
 ``` 
 
 ##### ¿Cómo calcular probabilidades asociadas a una distribución Normal
+###### Para una distribución $Z\sim{\mathcal N}(0,1)$.
+La distribución Normal con parámetros $\mu=0$ y $\sigma^2=1$ se
+llama distribución Normal estándar. Su función de distribución
+acumulada se denota por $\phi$ y los valores de $\phi$ están
+tabulados. La tabla para valores de $\phi$ está incluida en el
+apéndice de este tema.
 
-\(i\)
-
-:   Para una distribución $Z\sim{\mathcal N}(0,1)$.\
-    La distribución Normal con parámetros $\mu=0$ y $\sigma^2=1$ se
-    llama distribución Normal estándar. Su función de distribución
-    acumulada se denota por $\phi$ y los valores de $\phi$ están
-    tabulados. La tabla para valores de $\phi$ está incluida en el
-    apéndice de este tema.
-
-    Notar que en la tabla sólo aparece valores de $\phi(t)$ para valores
-    positivos de $t$. Para deducir $\phi(t)$ para valores negativos de
-    $t$, utilizamos la simetría de la distribución normal que implica
-    que, para todo $t$, $$\phi(-t)=1-\phi(t).$$ Comprobar con la tabla
-    que sabéis calcular las probabilidades siguientes:
+Notar que en la tabla sólo aparece valores de $\phi(t)$ para valores
+positivos de $t$. Para deducir $\phi(t)$ para valores negativos de
+$t$, utilizamos la simetría de la distribución normal que implica
+que, para todo $t$, $$\phi(-t)=1-\phi(t).$$ Comprobar con la tabla
+que sabéis calcular las probabilidades siguientes:
 
 $\mathbb{P}(Z\leq 2.68)\simeq 0.9963$ | $\mathbb{P}(Z\leq 1.12)\simeq 0.8686$ | $\mathbb{P}(Z\leq -0.9)\simeq 0.1841$
 ------|------|------
@@ -1131,26 +1143,30 @@ $\mathbb{P}(1.1\leq Z\leq 1.3)\simeq 0.04$ | $\mathbb{P}(-0.9\leq Z\leq -0.5)\si
 
  \(ii\)
 
-:   Para una distribución $X\sim{\mathcal N}(\mu,\sigma^2)$.\
-    El cálculo de probabilidades para una distribución Normal con
-    parámetros $\mu$ y $\sigma^2$ se basa en la siguiente propiedad que
-    no demostraremos:
+######   Para una distribución $X\sim{\mathcal N}(\mu,\sigma^2)$.\
+El cálculo de probabilidades para una distribución Normal con
+parámetros $\mu$ y $\sigma^2$ se basa en la siguiente propiedad que
+no demostraremos:
 
-    Si $X\sim {\mathcal N}(\mu,\sigma^2)$, la variable
-    $$Z=\frac {X-\mu}{\sigma}$$ sigue una distribución Normal con media
-    0 y varianza 1.
+:::{.callout-important}
+## Tipificar o estanderizar una variable
+Si $X\sim {\mathcal N}(\mu,\sigma^2)$, la variable
 
-    Pasar de $X\sim {\mathcal N}(\mu,\sigma^2)$ a
-    $Z=\frac {X-\mu}{\sigma}\sim{\mathcal N}(0,1)$ se llama tipificar la
-    variable $X$, y la variable $Z$ se llama la v.a $X$ tipificada.
+$$Z=\frac {X-\mu}{\sigma}$$ sigue una distribución Normal con media
+0 y varianza 1.
 
-    Para calcular una probabilidad relacionada con $X$, reescribiremos
-    el suceso de interés, tipificando la v.a.
+Pasar de $X\sim {\mathcal N}(\mu,\sigma^2)$ a
+$Z=\frac {X-\mu}{\sigma}\sim{\mathcal N}(0,1)$ se llama tipificar o estanderizar la
+variable $X$, y la variable $Z$ se llama la v.a $X$ tipificada.
 
-    Supongamos por ejemplo que $X\sim{\mathcal N}(\mu=1,\sigma^2=0.25)$.
-    Tenemos
-    $$\mathbb{P}(X\leq 1.25)= \mathbb{P}(\frac {X-\mu}{\sigma}\leq \frac {1.25-\mu}{\sigma})=\mathbb{P}(Z\leq \frac {1.25-1}{0.5})=\mathbb{P}(Z\leq 0.5)\simeq 0.69.$$
-    y 
+Para calcular una probabilidad relacionada con $X$, reescribiremos
+el suceso de interés, tipificando la v.a.
+:::
+
+Supongamos por ejemplo que $X\sim{\mathcal N}(\mu=1,\sigma^2=0.25)$.
+Tenemos
+$$\mathbb{P}(X\leq 1.25)= \mathbb{P}(\frac {X-\mu}{\sigma}\leq \frac {1.25-\mu}{\sigma})=\mathbb{P}(Z\leq \frac {1.25-1}{0.5})=\mathbb{P}(Z\leq 0.5)\simeq 0.69.$$
+y 
 
 \begin{align*}
     \mathbb{P}(0.5\leq X\leq 1.5)= \mathbb{P}(\frac {0.5-\mu}{\sigma}\leq \frac {X-\mu}{\sigma}\leq \frac {1.5-\mu}{\sigma})&=\mathbb{P}(\frac {0.5-1}{0.5}\leq Z\leq \frac {1.5-1}{0.5})\\
@@ -1186,7 +1202,7 @@ distribución de una v.a discreta, $X$, que sólo puede tomar valores
 enteros por una v.a continua $W$ que puede tomar cualquier valor real.
 Para conseguir una equivalencia, podemos considerar que un valor entero
 $x$ para la v.a. Binomial $X$ corresponde al intervalo $]x-0.5,x+0.5]$
-para la v.a Normal $W$, tal como está ilustrado en la Figura
+para la v.a Normal $W$, tal como está ilustrado en la 
 @fig-binnormal,
 para unos pocos valores de $X$.
 

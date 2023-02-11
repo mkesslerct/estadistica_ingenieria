@@ -105,7 +105,7 @@ sucesos:
 
 -   El suceso seguro es $S$, el espacio muestral entero.
 
--   El suceso imposible es el conjunto vacío $\empty$
+-   El suceso imposible es el conjunto vacío $\emptyset$
 
 -   Diremos que dos sucesos $A$ y $B$ son incompatibles, si no pueden
     ocurrir a la vez, es decir $A\cap B=\emptyset$ y diremos que los
@@ -168,7 +168,7 @@ ax.get_yaxis().set_visible(False)
 plt.show()
 ```
 
-### Leyes de Morgan
+### Leyes de De Morgan
 
 Para dos sucesos $A$ y $B$, $$(A\cap B)^c=A^c\cup B^c,$$ es decir que,
 afirmar que"no ha ocurrido ($A$ y $B$)" es lo mismo que decir "o bien no
@@ -287,14 +287,14 @@ escogiendo al azar una de las tres posibilidades 1, X, 2\...
 
 *Euro-millón*, el juego consiste en acertar 5 números de una tabla de 50
 (Del nº 1 al nº 50) y además acertar 2 números (estrellas) de una tabla
-de 9 (Del nº 1 al nº 9). Es decir, para tener derecho al primer premio
+de 12 (Del nº 1 al nº 12). Es decir, para tener derecho al primer premio
 hay que acertar 7 números (5 + 2). Para calcular el número de casos
 posibles, tenemos en cuenta que para escoger los 5 primeros números de
 la tabla de 50, tenemos $\binom{50}{5}$ posibilidades, y para cada una
-de estas combinaciones, tenemos $\binom{9} 2$ posibilidades para escoger
+de estas combinaciones, tenemos $\binom{12} 2$ posibilidades para escoger
 las dos estrellas. En total tenemos por lo tanto
-$$\binom{50}{5}\times\binom{9}2=76275360$$ casos posibles, es decir que
-la probabilidad de acertar es de una entre más de 76 millones.
+$$\binom{50}{5}\times\binom{12}{2}=139838160$$ casos posibles, es decir que
+la probabilidad de acertar es de una entre cerca de 140 millones.
 
 En cuanto a premios,  el bote máximo para un acertante del euro-millón es de 
  250 millones de euros! El mayor premio que se ganó con la

@@ -387,8 +387,7 @@ titles = [
     'Bimodal'
 ]
 
-px = 1/plt.rcParams['figure.dpi']  # pixel in inches
-fig, axs = plt.subplots(2, 2, figsize=(800*px, 800*px))  
+fig, axs = plt.subplots(2, 2, figsize=(6, 6))  
 for i, d in enumerate(distributions):
     ax = axs.flatten()[i]
     ax.hist(
@@ -693,8 +692,7 @@ hubble = pd.read_csv(
     decimal=','
 )
 
-px = 1/plt.rcParams['figure.dpi']  # pixel in inches
-fig, axs = plt.subplots(2, 2, figsize=(800*px, 600*px))  
+fig, axs = plt.subplots(2, 2, figsize=(6, 6))  
 axs[0, 0].plot('dias', 'resistencia', 'o', alpha=0.6, data=cemento)
 axs[0, 0].set_xlabel('Días')
 axs[0, 0].set_ylabel('Resistencia')
