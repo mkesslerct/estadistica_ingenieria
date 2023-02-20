@@ -25,6 +25,7 @@ book:
     - 04-variables-II.qmd
     - 05-muestreo.qmd
     - 06-estimacion.qmd
+    - 07-contrastes.qmd
     - references.qmd
 
 bibliography: references.bib

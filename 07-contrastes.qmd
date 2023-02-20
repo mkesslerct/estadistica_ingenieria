@@ -1,0 +1,985 @@
+# Introducción a los contrastes de hipótesis
+
+## Introducción
+
+En el tema anterior, hemos aprendido cómo estimar, es decir, aproximar
+el valor de un parámetro basándonos en las observaciones de una muestra.
+Hay situaciones en las que más que conocer el valor concreto del
+parámetro, queremos tomar una decisión acerca de éste. Formularemos una
+hipótesis sobre el valor del parámetro y la contrastaremos con los datos
+de la muestra para comprobar si éstos la apoyan o la desmienten.
+
+Para ilustrar los conceptos relacionados con los contrastes de
+hipótesis, retomamos el ejemplo visto al final del tema 5 cuando
+describimos la gráfica de control $\bar{X}$: una empresa controla la
+concentración de CaCO3 en su producto. El valor ideal de esta
+concentración es 55. Si llamamos $X$ la concentración de CaCO3 medida en
+un envase, sabemos que es razonable modelizar la distribución de $X$ por
+una distribución Normal de media $\mu$ y desviación típica 8. En el tema
+5, vimos cómo la empresa puede realizar un control de la calidad de su
+producción gracias a una gráfica $\bar{X}$: cada hora toma una muestra
+de 4 envases, mide la concentración de CaCO3 en cada caso y calcula su
+media. Basándose en este valor decide si el proceso de producción está
+en condiciones de correcto funcionamiento, es decir si $\mu=55$.
+
+Para decidir si $\mu=55$ o $\mu\neq 55$, la empresa se fija una regla:
+si $\bar{X}>60.4$ ó $\bar{X}<49.6$, decide que $\mu\neq 55$ y para la
+producción para ajustar el proceso de fabricación.
+
+Este ejemplo contiene todos los ingredientes del contraste de hipótesis
+y pasamos a describirlos en un contexto más general.
+
+## Planteamiento general
+
+### Hipótesis estadística {#sec-hipot-estad}
+
+Una hipótesis estadística es una proposición acerca del valor de un
+parámetro en el modelo considerado. La formulación de un contraste de
+hipótesis pasa siempre por el planteamiento de dos hipótesis:
+
+$$
+\left\{\begin{array}{l}
+H_0:\ \mu=55,\quad \mbox{Hipótesis nula}\\
+H_1:\ \mu\neq 55,\quad \mbox{Hipótesis alternativa}
+\end{array}
+\right.
+$$
+
+Habrá casos en los que nos interesará decidir si el parámetro es mayor
+(o menor) que un valor dado, entonces cambiaremos la formulación de la
+hipótesis alternativa, pero seguiremos, para simplificar, considerando
+la igualdad en la hipótesis nula. Por ejemplo si queremos contrastar si
+$\mu$ es mayor que 55, plantearemos el contraste:
+
+$$
+\left\{\begin{array}{l}
+H_0:\ \mu=55,\\
+H_1:\ \mu > 55,
+\end{array}
+\right.$$ mientras que si queremos decidir si $\mu$ es menor que 55,
+plantearemos $$\left\{\begin{array}{l}
+H_0:\ \mu=55,\\
+H_1:\ \mu < 55,
+\end{array}
+\right.
+$$
+
+De los tres contrastes, el primero se llama contraste bilateral, puesto
+que la hipótesis alternativa comprende tanto valores mayores como
+valores menores que 55, mientras que los dos últimos se llaman
+contrastes unilaterales.
+
+### Regla de decisión
+
+Basándonos en un estadístico $T(X_1,\ldots,X_n)$, es decir en una
+función de las observaciones, determinaremos una región de rechazo $R$.
+Para mi muestra calcularé el valor concreto de $T(X_1,\ldots,X_n)$; si
+este valor pertenece a $R$, rechazaremos $H_0$, es decir afirmaremos que
+los datos apoyan la hipótesis alternativa $H_1$.
+
+En cambio si el valor de $T(X_1,\ldots,X_n)$ no pertenece a $R$,
+aceptaremos $H_0$, diremos que los datos no presentan argumentos en
+contra de la hipótesis nula.
+
+En el ejemplo de los monitores de ordenador, la regla de decisión que se
+había fijado la empresa es: basándose en el estadístico
+$T(X_1,\ldots,X_n)=\bar{X}$, la región de rechazo es
+$R=\{x<49.6\}\cup\{x>60.4\}$.
+
+### Evaluación del error
+
+Al tomar la decisión acerca de la veracidad de $H_0$, podemos cometer
+dos tipos de error:
+
+#### Error de tipo I
+
+Podemos afirmar que $H_0$ es falsa, cuando en realidad es cierta, es
+decir que los datos nos llevan a rechazar $H_0$ cuando ésta es cierta.
+Este tipo de error se llama error de tipo I, y, una vez fijada una regla
+de decisión, la probabilidad de cometerlo se denota por $\alpha$, (la
+letra griega "alfa"). Tenemos por lo tanto
+$$\alpha=\mathbb{P}_{H_0}(\mbox{Rechazar }H_0)=\mathbb{P}_{H_0}(T(X_1,\ldots,X_n)\in R)),$$
+donde con la notación $\mathbb{P}_{H_0}$, nos referimos a la probabilidad
+suponiendo que $H_0$ es cierta.
+
+En el ejemplo de la concentración de CaCO3, podemos calcular la
+probabilidad de error de tipo I:
+$$\alpha=\mathbb{P}_{H_0}(\mbox{Rechazar }H_0)=\mathbb{P}_{\mu=55}((\bar{X}<49.6)\cup (\bar{X}>60.4)).$$
+Pero, precisamente, los límites de control en la gráfica $\bar{X}$ se
+fijaron para que, si la máquina está bien ajustada, es decir si
+$\mu=55$, sólo el 3 por 1000 de las muestras deben llevar a un valor de
+$\bar{X}$ fuera de los límites. Deducimos que $\alpha=0.003$.
+
+#### Error de tipo II
+
+El segundo tipo de error se comete cuando admitimos $H_0$ cuando en
+realidad es falsa. Una vez fijada la regla de decisión, la probabilidad
+de cometer un error de tipo II se denota por $\beta$ ( la letra griega
+"beta"). Tenemos
+$$\beta=\mathbb{P}_{H_1}(\mbox{Aceptar }H_0)=\mathbb{P}_{H_1}(T(X_1,\ldots,X_n)\notin R).$$
+El cálculo de $\beta$ sólo se puede hacer si especificamos un valor
+concreto de $\mu$ en la hipótesis alternativa. Para el ejemplo de la
+concentración de CaCO3, podemos por ejemplo calcular $\beta$ cuando en
+realidad $\mu=65$. Tenemos
+$\beta=\mathbb{P}_{\mu=65}(49.6\leq \bar{X}\leq 60.4),$ y sabemos que
+$\bar{X}\sim\mathcal{N}(\mu,\sigma^2/n)$ es decir
+$\bar{X}\sim\mathcal{N}(\mu,(4)^2)$. Tipificamos $\bar{X}$ para calcular
+$\beta$:
+$$\beta=\mathbb{P}_{\mu=65}(\frac{49.6-65}{4}\leq \frac{\bar{X}-65}{4}\leq \frac{60.4-65}{4})\simeq \phi(-2.3)-\phi(-7.7)\simeq 0.13.$$
+
+### Procedimiento {#sec-procedimiento}
+
+Para llevar a cabo un contraste de hipótesis, tendremos que
+
+-   Formular las hipótesis $H_0$ y $H_1$.
+
+-   Fijarnos la probabilidad de error de tipo I, $\alpha$. Al igual que
+    para los contrastes de hipótesis, los valores de $\alpha$ más
+    comunes son 0.05, 0.01 o 0.1. (95%, 99% ó 90% de confianza
+    respectivamente).
+
+-   Escogemos el estadístico de prueba $T(X_1,\ldots, X_n)$ basado
+    generalmente en un estimador del parámetro. Describimos su
+    distribución muestral bajo la hipótesis de que $H_0$ es cierta.
+
+-   Determinamos la región de rechazo $R$ de tal manera que la
+    probabilidad de rechazar $H_0$ cuando ésta es cierta coincida con el
+    valor prefijado de $\alpha$, es decir
+    $$\mathbb{P}_{H_0}(T(X_1,\ldots,X_n)\in R)=\alpha.$$
+
+-   Para nuestra muestra, calculamos el valor concreto del estadístico
+    de prueba $T(X_1,\ldots,X_n)$. Si este valor cae en la región $R$,
+    rechazamos $H_0$ y afirmamos $H_1$, mientras que si no cae en la
+    región $R$, admitimos $H_0$.
+
+## Contraste de hipótesis para la media $\mu$ de una distribución Normal con varianza conocida.
+
+Consideramos una variable $X$, suponemos que su distribución ha sido
+modelizada por una Normal con media $\mu$ y varianza $\sigma^2$.
+Suponemos además que conocemos el valor de la varianza $\sigma^2$.
+
+Queremos llevar a cabo un contraste sobre $\mu$, para ello, extraeremos
+una muestra de tamaño $n$ de la distribución de $X$: $X_1,\ldots,X_n$.
+
+### Hipótesis bilateral
+
+Para construir el contraste para $\mu$ en el caso en que formulamos una
+hipótesis alternativa bilateral, ver el apartado
+[@sec-hipot-estad], seguimos los pasos descritos en la 
+@sec-procedimiento:
+
+-   Formulamos las hipótesis: $$\left\{\begin{array}{l}
+    H_0:\ \mu=\mu_0,\\
+    H_1:\ \mu\neq\mu_0,
+    \end{array}
+    \right.$$ donde $\mu_0$ representa el valor concreto con él que
+    queremos comparar $\mu$. En el ejemplo de los monitores, $\mu_0$
+    vale 55.
+
+-   Nos fijamos el valor de $\alpha$.
+
+-   El estadístico de prueba es la versión tipificada de $\bar{X}$,
+    sabemos por el tema 5 que
+    $$Z_0=\frac {\bar{X}-\mu_0}{\sigma/\sqrt{n}}\sim \mathcal{N}(0,1)\quad\mbox{si $H_0$ es cierto.}$$
+
+-   Podemos ahora especificar la región de rechazo. La probabilidad de
+    que el estadístico de prueba $Z_0$ caiga en $R$ cuando $H_0$ es
+    cierta debe coincidir con el valor de $\alpha$ que nos hemos fijado.
+    Además queremos que $Z_0$ caiga en $R$ cuando $\mu$ es distinto de
+    $\mu_0$ ( $H_1$ cierta), es decir que corresponderá a valores
+    grandes positivos o negativos de $Z_0$. Por consiguiente fijamos la
+    región de rechazo de la manera siguiente:
+
+```{python}
+#| label: fig-rechazobilateral
+#| fig-cap: "Región de rechazo para hipótesis alternativa bilateral, con un nivel de confianza $100\\times(1 - \\alpha)\\%$." 
+#| warning: false
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+alpha = 0.1
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(norm.ppf(0.001), norm.ppf(0.999), 100)
+interval = (x >= norm.ppf(1 - alpha / 2)) | (x <= norm.ppf(alpha / 2))
+ax.plot(x, norm.pdf(x))
+ax.fill_between(x, norm.pdf(x), alpha=0.4, hatch='//', where=interval)
+xy_right = norm.ppf(1 - alpha / 4), norm.pdf(norm.ppf(1 - alpha / 4)) / 2  
+xytext_right = norm.ppf(1 - alpha / 10), norm.pdf(norm.ppf(1 - alpha / 3)) * 2  
+ax.annotate(
+    r'$\alpha/2$',
+    xy=xy_right,
+    xytext=xytext_right,
+    arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+xy_left = -xy_right[0], xy_right[1]
+xytext_left = -xytext_right[0], xytext_right[1]
+ax.annotate(
+    r'$\alpha/2$',
+    xy=xy_left,
+    xytext=xytext_left,
+    arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([norm.ppf(alpha / 2), 0, norm.ppf(1 - alpha / 2)])
+ax.set_xticklabels([r'$-z_{1-\alpha/2}$', '0', r'$z_{1-\alpha/2}$'])
+plt.show()
+```
+    La región $R$ está formada por los valores menores que
+    $-z_{1-\alpha/2}$ o mayores que $z_{1-\alpha/2}$.
+
+-   Nos queda calcular, para nuestra muestra, el valor concreto del
+    estadístico de prueba $Z_0$. Si pertenece a $R$, rechazaremos $H_0$
+    y afirmaremos $H_1$, mientras que si no pertenece a $R$, admitiremos
+    $H_1$.
+
+### Hipótesis unilateral
+
+En el caso en que hemos planteado una hipótesis unilateral, los pasos
+que seguimos son los mismos que en el apartado anterior con la salvedad
+de la determinación de $R$:
+
+-   Si la hipótesis alternativa es $H_1:\ \mu > \mu_0$, la región de
+    rechazo será la indicada en la @fig-zalfder.
+
+```{python}
+#| label: fig-zalfder
+#| fig-cap: "Región de rechazo para hipótesis alternativa unilateral a la derecha, con un nivel de confianza $100\\times(1 - \\alpha)\\%$." 
+#| warning: false
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+alpha = 0.1
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(norm.ppf(0.001), norm.ppf(0.999), 100)
+interval = (x >= norm.ppf(1 - alpha))
+ax.plot(x, norm.pdf(x))
+ax.fill_between(x, norm.pdf(x), alpha=0.4, hatch='//', where=interval)
+xy_right = norm.ppf(1 - alpha / 4), norm.pdf(norm.ppf(1 - alpha / 4)) / 2  
+xytext_right = norm.ppf(1 - alpha / 10), norm.pdf(norm.ppf(1 - alpha / 3)) * 2  
+ax.annotate(
+    r'$\alpha$',
+    xy=xy_right,
+    xytext=xytext_right,
+    arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([0, norm.ppf(1 - alpha)])
+ax.set_xticklabels([ '0', r'$z_{1-\alpha}$'])
+plt.show()
+```
+    es decir que se rechazará $H_0$ si el valor del estadístico de
+    prueba $Z_0$ es mayor de $z_{1-\alpha/2}$.
+
+-   Si la hipótesis alternativa es $H_1:\ \mu < \mu_0$, la región de
+    rechazo será la indicada en @fig-zalfizq.
+
+```{python}
+#| label: fig-zalfizq
+#| fig-cap: "Región de rechazo para hipótesis alternativa unilateral a la izquierda, con un nivel de confianza $100\\times(1 - \\alpha)\\%$." 
+#| warning: false
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+alpha = 0.1
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(norm.ppf(0.001), norm.ppf(0.999), 100)
+interval = (x <= norm.ppf(alpha))
+ax.plot(x, norm.pdf(x))
+ax.fill_between(x, norm.pdf(x), alpha=0.4, hatch='//', where=interval)
+xy_left = - norm.ppf(1 - alpha / 4), norm.pdf(norm.ppf(1 - alpha / 4)) / 2  
+xytext_left = -norm.ppf(1 - alpha / 10), norm.pdf(norm.ppf(1 - alpha / 3)) * 2  
+ax.annotate(
+    r'$\alpha$',
+    xy=xy_left,
+    xytext=xytext_left,
+    arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([-norm.ppf(1 - alpha), 0])
+ax.set_xticklabels([ r'$- z_{1-\alpha}$', '0'])
+plt.show()
+```
+    es decir que se rechazará $H_0$ si el valor del estadístico de
+    prueba $Z_0$ es menor de $-z_{1-\alpha/2}$.
+
+### Ejemplos
+
+#### Hipótesis alternativa bilateral {#sec-hipot-altern-bilat}
+
+En un proceso de producción, la longitud de los artículos producidos se
+modeliza a través de una distribución Normal con media $\mu$. Por
+experiencia acerca del proceso, se cuantifica su desviación típica en
+$\sigma=1$. En condiciones de funcionamiento correcto, se espera que la
+longitud media de los artículos sea 50mm. Para comprobar la calidad se
+decide tomar una muestra de 10 artículos que resultan tener una longitud
+media $\bar{X}$ igual a 51mm. Basándonos en esta muestra, ¿qué podemos
+decir acerca del funcionamiento del proceso?
+
+La variable que introducimos asociada al experimento "producir una
+pieza", es $X$="longitud de la pieza producida". Planteamos las
+hipótesis $$\left\{\begin{array}{l}
+H_0:\ \mu=50,\\
+H_1:\ \mu\neq 50.
+\end{array}
+\right.$$ Decidimos trabajar al 95% de confianza, que es el nivel
+estándar de confianza, es decir que nos fijamos $\alpha=0.05$.
+
+El estadístico de prueba es
+$Z_0=\frac {\bar{X}-\mu_0}{\sigma/\sqrt{n}}$, que sigue una distribución
+Normal estándar si $H_0$ es cierta.
+
+Las fronteras de la región de rechazo son
+$-z_{1-\alpha/2}=-z_{0.975}=-1.96$ y $-z_{1-\alpha/2}=1.96$.
+
+Basándonos en la muestra, calculamos el valor de $Z_0$:
+$$Z_0=\frac{51-50}{1/\sqrt{10}}\simeq 3.162.$$ Puesto que $Z_0$
+pertenece a $R$, rechazamos $H_0$ y afirmamos al 95% de confianza que el
+proceso está desajustado.
+
+#### Hipótesis alternativa unilateral
+
+Creo que un aparato de medición de una señal sobrevalora su valor real.
+Para comprobarlo pienso realizar 5 mediciones de una señal simple cuyo
+valor sé es igual a 10000. Considerando que la distribución de los
+valores medidos se puede modelizar por una Normal con desviación típica
+igual a 500, llevar a cabo el contraste para comprobar si el valor
+central de los valores medidos es superior a 10000, si he encontrado un
+valor promedio de 10300 para las 5 mediciones de la muestra.
+
+El experimento aleatorio es "realizar la medición de la señal", y la v.a
+$X$="valor proporcionado por el aparato". Modelizamos $X$ por una
+distribución $\mathcal{N}(\mu,\sigma^2)$ con $\sigma=500$.
+
+Planteamos las hipótesis $$\left\{\begin{array}{l}
+H_0:\ \mu=10000,\\
+H_1:\ \mu >10000,
+\end{array}
+\right.$$
+
+El estadístico es $Z_0$, al igual que en el ejemplo anterior, pero la
+región de rechazo está constituida por los valores mayores que
+$z_{1-\alpha}=z_{0.95}=1.64$.
+
+Para mi muestra, el valor de $Z_0$ es
+$$Z_0=\frac{10300-10000}{500/\sqrt{5}}\simeq 1.34.$$
+
+Deducimos que $Z_0$ no pertenece a $R$, por lo que no podemos rechazar
+$H_0$: los datos no contradicen $H_0$.
+
+## Concepto de p-valor
+
+En el ejemplo de la @sec-hipot-altern-bilat, para el contraste $$\left\{\begin{array}{l}
+H_0:\ \mu=50,\\
+H_1:\ \mu\neq 50,
+\end{array}
+\right.$$ Hemos encontrado que el valor del estadístico de prueba era
+$z_0=3.162$, y hemos rechazado al 95% de confianza la hipótesis nula.
+
+¿Cuál habría sido nuestra decisión si, en lugar de habernos fijado el
+$95\%$ de confianza, hubieramos escogido $90\%$ de confianza?
+
+Por la forma en la que hemos construido la región de rechazo, ésta
+contiene el 5% del área total, y la región de aceptación, es decir el
+complementario de $R$, contiene el 95% del área total. Deducimos por lo
+tanto que la región de rechazo que corresponde al 90% de confianza es
+más grande que la región de rechazo que corresponde la 95% de confianza.
+Será más fácil rechazar $H_0$ al 90% que al 95% de confianza.
+
+Esto corresponde a un hecho general: si rechazamos $H_0$ a un nivel de
+confianza dado, también la rechazaremos para cualquier nivel de
+confianza menor\...
+
+En cambio, si nos preguntamos cuál habría sido nuestra decisión al 99%
+de confianza? La región de rechazo mengua, y para saber si seguimos
+rechazando $H_0$ necesitamos comprobar si el valor de nuestro
+estadístico de prueba sigue encontrándose dentro de la nueva región de
+rechazo. En nuestro ejemplo de la @sec-hipot-altern-bilat, las fronteras de la región de
+rechazo al 99% de confianza son $-z_{1-\alpha/2}=-z_{0.995}=-2.56$ y
+$z_{0.995}=2.56$, puesto que $Z_0$ toma el valor 3.162, también
+rechazamos $H_0$ al 99% de confianza.
+
+Planteado un contraste, y para un valor concreto del estadístico de
+prueba, podemos preguntarnos cuál habría sido la confianza máxima con la
+que rechazaríamos $H_0$ para estos datos. Equivalentemente, podemos
+calcular el valor más pequeño de $\alpha$ que nos lleve a rechazar
+$H_0$.
+
+::: {.callout-important}
+## Qué es el p-valor?
+El valor de $\alpha$ más pequeño que nos lleve a rechazar $H_0$ se llama
+el p-valor de la prueba, y lo denotaremos por $\alpha_0$.
+:::
+
+Para determinar $\alpha_0$, tendremos que considerar la región de
+rechazo que haga de frontera entre las dos decisiones: rechazar $H_0$ y
+aceptar $H_0$. Si en la gráfica de la distribución del estadístico
+$Z_0$, empezamos primero por señalar el valor de $z_0$ obtenido para la
+muestra, esta región de rechazo se obtendrá al hacer coincidir una de
+sus fronteras con $z_0$: para una región de rechazo más grande (es decir
+un $\alpha$ más grande) se rechazará $H_0$ mientras que para una región
+de rechazo más pequeña (es decir un $\alpha$ más pequeño) tendremos que
+aceptar $H_0$. El valor de $\alpha$ correspondiente a esta región $R$ es
+$\alpha_0$.
+
+Lo ilustramos para el ejemplo en él que $z_0=3.162$ en la @fig-pvalor.
+
+```{python}
+#| label: fig-pvalor
+#| fig-cap: "Dibujamos la región de rechazo cuyas fronteras coinciden con el valor del estadístico de prueba." 
+#| warning: false
+from scipy.stats import norm
+from matplotlib import pyplot as plt
+import numpy as np 
+z0 = 3.162
+alpha = 0
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(norm.ppf(0.001), norm.ppf(0.999), 100)
+interval = (x >= z0) | (x <= -z0)
+ax.plot(x, norm.pdf(x))
+ax.fill_between(x, norm.pdf(x), alpha=0.4, hatch='//', where=interval)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([-z0, 0, z0 ])
+ax.set_xticklabels([r'$-z_{0}$', '0', r'$z_{0}$'])
+plt.show()
+```
+Para calcular $\alpha_0$, deducimos del dibujo anterior que
+$$\alpha_0/2=\mathbb{P}(Z\geq 3.162),$$ es decir que
+$\alpha_0=2(1-\phi(3.162))\simeq 0.00156.$.
+
+Deducimos que para el ejemplo, la confianza máxima con la que podríamos
+haber rechazado es $$100(1-\alpha_0)=100(0.99844)=99.84\%.$$ Este
+resultado es coherente con las decisiones que hemos tomado al 95% y al
+99% de confianza.
+
+Cualquier programa de estadística que permita llevar a cabo un contraste
+de hipótesis no solicita del usuario que especifique la confianza, sino
+que directamente le proporciona el p-valor, dejando en sus manos la
+decisión de rechazar o aceptar $H_0$. En general, se suele   considerar el umbral 0.05 como el que lleva a considerar que el efexto es significativo para rechazar $H_0$.
+
+::: {.callout-important}
+## No se debe tomar el umbral 0.05 como dogma absoluto!
+La toma de una decisión sobre la veracidad de $H_0$ debe ser un ejercicio de reflexión que debe tener en cuenta más aspectos que sólo el p-valor y su posición respecto a un umbral. A lo largo de los años, el uso del p-valor se ha impuesto en los trabajos científicos aplicados, pero ha llevado también a una simplificación excesiva de la toma de decisión sobre el resultado de un experimento científico, y en consecuencia una baja reproductibilidad de muchos experimentos. En esta evolución han contribuido la dificultad de interpretación del p-valor, la presión por publicar que puede llevar a una cierta falta de rigor en la aplicación de los procedimientos estadísticos en los experimentos, y el no tener en cuenta el contexto de las hipótesis planteadas.  
+:::
+
+
+## Potencia del test
+
+### Definición
+
+Hemos visto que, a la hora de construir un contraste de hipótesis, lo
+más fácil es controlar la probabilidad de error de tipo I, puesto que la
+región de rechazo se define para que esta probabilidad coincida con el
+valor fijado de $\alpha$. Sin embargo, también es importante saber que,
+si $H_0$ es falsa, nuestro contraste lo detectará con bastante
+probabilidad, es decir que nos llevará a concluir de manera correcta que
+$H_0$ es falsa.
+
+::: {#def-potencia}
+Consideremos $H_1$ la hipótesis alternativa, y $\mu_1$ un valor concreto
+de $\mu$ incluido en los valores contemplados en $H_1$.
+
+La potencia de un test (contraste de hipótesis) contra la alternativa
+$\mu=\mu_1$, es la probabilidad de rechazar $H_0$ cuando ésta es falsa y
+en realidad $\mu=\mu_1$. Es decir
+$$Pot(\mu_1)=\mathbb{P}_{\mu=\mu_1}(Rechazar\ H_0).$$
+:::
+
+Cuanto mayor será la potencia, mejor será el contraste. Se suele
+considerar suficiente una potencia de al menos 0.8
+
+Recordar que el error de tipo II consiste en aceptar $H_0$ cuando en
+realidad ésta es falsa, la relación entre la probabilidad $\beta$ de
+error de tipo II y la potencia es por lo tanto $$\beta=1-Pot(\mu_1).$$
+
+### Cálculo de la potencia
+
+Queremos plantear un contraste sobre la media, por ejemplo en su versión
+bilateral, $$\left\{\begin{array}{l}
+H_0:\ \mu=\mu_0,\\
+H_1:\ \mu\neq\mu_0,
+\end{array}
+\right.,$$ con un cierto nivel de confianza, y planificamos tomar una
+muestra de $n$ observaciones.
+
+Para calcular la potencia de este contraste contra la alternativa
+$\mu=\mu_1$, seguimos los pasos de la realización del contraste hasta la
+definición de la región de rechazo $R$ incluida:
+
+-   Por ejemplo $$\left\{\begin{array}{l}
+    H_0:\ \mu=\mu_0,\\
+    H_1:\ \mu\neq\mu_0,
+    \end{array}
+    \right.,$$ pero podría ser con hipótesis alternativa unilateral
+    también.
+
+-   Nos fijamos $\alpha$.
+
+-   El estadístico de prueba es
+    $Z_0=\frac {\bar{X}-\mu_0}{\sigma/\sqrt{n}}$, que sigue una
+    distribución Normal estándar si $H_0$ es cierta.
+
+-   Construimos la región de rechazo según el tipo de hipótesis
+    alternativa que nos hemos planteado. Por ejemplo si es bilateral, la
+    región es la representada en la @fig-rechazobilateral.
+
+-   A partir de aquí, podemos pasar al cálculo de la potencia: sabemos
+    que $$Pot(\mu_1)=\mathbb{P}_{\mu=\mu_1}(Rechazar\ H_0),$$ es decir que
+    $$
+    Pot(\mu_1)=\mathbb{P}_{\mu=\mu_1}(Z_0\in R).$${#eq-pot}
+    En el caso de una hipótesis
+    alternativa bilateral, esta probabilidad es
+    $$Pot(\mu_1)=\mathbb{P}_{\mu=\mu_1}((Z_0\leq -z_{1-\alpha/2})\cup (Z_0\geq z_{1-\alpha/2})).$$
+    Para calcular la potencia necesitamos por lo tanto conocer la
+    distribución de $Z_0$ cuando $H_0$ no es cierta, sino $\mu=\mu_1$.
+    Para ello, utilizamos la relación siguiente
+    $$Z_0=\frac {\bar{X}-\mu_0}{\sigma/\sqrt{n}}=\frac {\bar{X}-\mu_1}{\sigma/\sqrt{n}}+\frac {\mu_1-\mu_0}{\sigma/\sqrt{n}}.$$
+    Si $\mu=\mu_1$, la variable $\frac {\bar{X}-\mu_1}{\sigma/\sqrt{n}}$
+    sigue una distribución Normal estándar. Deducimos por lo tanto que
+    $$\mbox{Si $\mu=\mu_1$,}\quad Z_0\sim\mathcal{N}(\delta,\,1),$$
+    donde $\delta$ se llama el parámetro de no-centralidad y se define
+    como $$\delta=\frac {\mu_1-\mu_0}{\sigma/\sqrt{n}}.$$ Ésta es la
+    distribución que utilizaremos para calcular la potencia a partir de
+    la expresión en la @eq-pot. Para ello bastará con tipificar la variable
+    $Z_0$ para expresar la probabilidad buscada en términos de $\phi$.
+
+### Ejemplo de cálculo de la potencia
+
+Volvamos al ejemplo de la
+@sec-hipot-altern-bilat, en él que estudiamos la longitud
+media de los artículos producidos. La v.a introducida es $X$="longitud
+de un artículo producido" y hemos supuesto que
+$X\sim\mathcal{N}(\mu,\sigma^2)$, con $\sigma=1$.
+
+Queremos comprobar que la longitud media de los artículos producidos no
+es significativamente distinta de 50mm. Para ello, planificamos llevar a
+cabo el contraste $$\left\{\begin{array}{l}
+H_0:\ \mu=50,\\
+H_1:\ \mu\neq 50,
+\end{array}
+\right.,$$ cogiendo una muestra de 10 piezas, y fijando una confianza
+del 95%.
+
+¿Cuál es la probabilidad de que, si en realidad $\mu=50.5$, y por lo
+tanto $H_0$ es falsa, el contraste que hemos planeado nos permita
+detectar que $H_0$ es falsa, es decir que nos lleve a rechazar $H_0$.
+
+Queremos calcular $Pot(50.5)$. Desarrollamos el contraste hasta la
+determinación de $R$.
+
+-   $$\left\{\begin{array}{l}
+    H_0:\ \mu=50,\\
+    H_1:\ \mu\neq 50,
+    \end{array}
+    \right.$$
+
+-   Nos fijamos $\alpha=0.05$.
+
+-   El estadístico $Z_0=\frac {\bar{X}-\mu_0}{\sigma/\sqrt{n}}$ sigue
+    una distribución Normal estándar si $H_0$ es cierta.
+
+-   La región de rechazo es
+    $R=\{z:\ z<-z_{1-\alpha/2}\ o\ z>z_{1-\alpha/2}\}$ es decir
+    $R=\{z:\ z<-1.96\ o\ z> 1.96\}$.
+
+-   Ahora
+    $$Pot(50.5)=\mathbb{P}_{\mu=\mu_1}(Z_0\in R)=\mathbb{P}_{\mu=\mu_1}((Z_0\leq -1.96)\cup (Z_0\geq 1.96)).$$
+    Sabemos que, si $\mu=\mu_1$, $Z_0\sim\mathcal{N}(\delta,1)$.
+    Calculemos $\delta$:
+    $$\delta=\frac {\mu_1-\mu_0}{\sigma/\sqrt{n}}=\frac {50.5-50}{1/\sqrt{10}}\simeq 1.58.$$
+    Deducimos tipificando que 
+
+\begin{align}
+    Pot(50.5)&=&\mathbb{P}_{\mu=\mu_1}(Z_0\leq -1.96)+\mathbb{P}_{\mu=\mu_1} (Z_0\geq 1.96)\\
+    &=&\mathbb{P}_{\mu=\mu_1}(\frac{Z_0-\delta} 1 \leq \frac{-1.96-\delta} 1 )+\mathbb{P}_{\mu=\mu_1} (\frac{Z_0-\delta} 1 \geq \frac{1.96-\delta} 1)\\
+    &=&\mathbb{P}(Z\leq -3.54)+\mathbb{P}(Z\geq 0.38)\\
+    &=&\phi(-3.54)+(1-\phi(0.38))=1-\phi(3.54)-(1-\phi(0.38))\simeq 0.35.
+\end{align}
+
+Esta potencia es insuficiente, para mejorarla, tendremos que planificar
+un experimento con más observaciones.
+
+### Factores que influyen la potencia
+
+-   Cuanto mayor sea $n$, mayor será la potencia.
+
+-   Cuanto menor sea $\sigma$, mayor será la potencia.
+
+-   Cuanto mayor sea el nivel de confianza, menor será la potencia: si
+    exigimos más confianza, pagamos un precio\...
+
+-   Cuanto más diferencia haya entre $\mu_1$ y $\mu_0$, más fácil será
+    detectar cuando $\mu$ no es igual a $\mu_0$ sino a $\mu_1$, por lo
+    tanto, mayor será la potencia.
+
+## Inferencia para la media
+
+En la presentación del contraste de hipótesis, hemos considerado el caso
+en que el modelo es normal con varianza conocida. En el caso más
+realista en que no se especifica el valor de la varianza como parte del
+modelo, lo estimaremos a partir de la muestra. A continuación
+construimos contrastes de hipótesis para la media de una distribución
+Normal con varianza desconocida.
+
+### Contraste de hipótesis para la media $\mu$ de una distribución Normal con varianza desconocida
+
+#### Construcción
+
+Seguimos los mismos pasos que en el caso en que la varianza es conocida.
+
+-   Planteamos las hipótesis. Por ejemplo para una hipótesis alternativa
+    bilateral: $$\left\{\begin{array}{l}
+    H_0:\ \mu=\mu_0,\\
+    H_1:\ \mu\neq\mu_0,
+    \end{array}
+    \right.$$ donde $\mu_0$ representa el valor concreto con él que
+    queremos comparar $\mu$.
+
+-   Nos fijamos el valor de $\alpha$.
+
+-   El estadístico de prueba es
+    $$T_0=\frac{\bar{X}-\mu_0}{S/\sqrt{n}}\sim t_{n-1}\quad\mbox{si $H_0$ es cierto.}$$
+
+-   Podemos ahora especificar la región de rechazo.
+
+```{python}
+#| label: fig-trechazobilateral
+#| fig-cap: "Región de rechazo para hipótesis alternativa bilateral, con un nivel de confianza $100\\times(1 - \\alpha)\\%$, sobre la media de una distribución Normal con varianza desconocida." 
+#| warning: false
+from scipy.stats import t
+from matplotlib import pyplot as plt
+import numpy as np 
+alpha = 0.1
+rv = t(df=10)
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(rv.ppf(0.001), rv.ppf(0.999), 100)
+interval = (x >= rv.ppf(1 - alpha / 2)) | (x <= rv.ppf(alpha / 2))
+ax.plot(x, rv.pdf(x))
+ax.fill_between(x, rv.pdf(x), alpha=0.4, hatch='//', where=interval)
+xy_right = rv.ppf(1 - alpha / 4), rv.pdf(rv.ppf(1 - alpha / 4)) / 2  
+xytext_right = rv.ppf(1 - alpha / 10), rv.pdf(rv.ppf(1 - alpha / 3)) * 2  
+ax.annotate(
+    r'$\alpha/2$',
+    xy=xy_right,
+    xytext=xytext_right,
+    arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+xy_left = -xy_right[0], xy_right[1]
+xytext_left = -xytext_right[0], xytext_right[1]
+ax.annotate(
+    r'$\alpha/2$',
+    xy=xy_left,
+    xytext=xytext_left,
+    arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([rv.ppf(alpha / 2), 0, rv.ppf(1 - alpha / 2)])
+ax.set_xticklabels([r'$-t_{n - 1, 1-\alpha/2}$', '0', r'$t_{n-1, 1-\alpha/2}$'])
+plt.show()
+```
+La región $R$ está formada por los valores menores que
+$-t_{n-1,1-\alpha/2}$ o mayores que $t_{n-1,1-\alpha/2}$.
+
+-   Nos queda calcular, para nuestra muestra, el valor concreto del
+    estadístico de prueba $T_0$. Si pertenece a $R$, rechazaremos $H_0$
+    y afirmaremos $H_1$, mientras que si no pertenece a $R$, admitiremos
+    $H_1$.
+
+En el caso en que la hipótesis alternativa es unilateral lo único que
+cambia es la región de rechazo:
+
+::: center
+  -------------------------------- --------------------------------
+      $\left\{\begin{array}{l}         $\left\{\begin{array}{l}
+         H_0:\ \mu=\mu_0,\\               H_0:\ \mu=\mu_0,\\
+          H_1:\ \mu<\mu_0,                 H_1:\ \mu>\mu_0,
+            \end{array}                      \end{array}
+              \right.$                         \right.$
+
+  -------------------------------- --------------------------------
+:::
+
+#### Ejemplo
+
+Volvamos al ejemplo de las mediciones visto en la sección anterior,
+queremos contrastar si el centro de los valores proporcionados por el
+aparato es mayor que 10.2, basándonos en las mismas tres mediciones.
+
+Planteamos las hipótesis $$\left\{\begin{array}{l}
+H_0:\ \mu=10.2,\\
+H_1:\ \mu>10.2,
+\end{array}
+\right.$$ Nos fijamos $\alpha= 0.05$, suponiendo que trabajamos con 95%
+de confianza. El estadístico de prueba es
+$$T_0=\frac{\bar{X}-\mu_0}{S/\sqrt{n}}\sim t_{n-1}\quad\mbox{si $H_0$ es cierto.}$$
+La región de rechazo es unilateral : $R=\{t:\ t> t_{n-1,1-\alpha}\}$, la
+frontera siendo $t_{2,0.95}=2.92$.
+
+Para la muestra escogida, el valor del estadístico de prueba es
+$$t_0=\frac{\bar{X}-\mu_0}{S/\sqrt{n}}=\frac{10.24333-10.2}{\sqrt{0.0002333}/\sqrt{3}}\simeq 4.913.$$
+Este valor pertenece a la región de rechazo por lo que deducimos que al
+95% de confianza rechazamos $H_0$.
+
+Notar en particular que deducimos en particular, puesto que hemos
+rechazado $H_0$ al 95% de confianza, que el p-valor es menor que 0.05.
+En realidad, al igual que en el tema 7, caracterizamos el p-valor como
+$$\alpha_0=\mathbb{P}(t>4.913),$$ donde $t$ es una distribución $t$ de Student
+con $2$ grados de libertad. Podemos utilizar una calculadora estadística
+para calcular $\alpha_0$ de manera precisa. Si sólo tenemos una tabla a
+mano, podemos ir probando con distintos niveles de confianza para
+obtener cuotas razonablemente precisas de $\alpha_0$.
+
+Por ejemplo, de la tabla de los cuantiles de la distribución $t$ que se
+encuentra en el apéndice, deduzco que el valor del estadístico de
+prueba, $T_0=4.913$ es mayor que $t_{2,0.975}$ pero menor que
+$t_{2,0.99}$. Deduzco que rechazaría $H_0$ al 97.5% de confianza pero la
+aceptaría al 99% de confianza: el p-valor $\alpha_0$ está comprendido
+entre $0.025$ y $0.01$.
+
+## Inferencia para dos medias
+
+Consideramos ahora situaciones en las que modelizamos dos variables
+$X_1$ y $X_2$ y nos interesa posiblemente comparar sus dos medias, que
+denotamos respectivamente por $\mu_1$ y $\mu_2$.
+
+Extraeremos dos muestras: una correspondiente a la primera variable
+$X_1$ y otra correspondiente a $X_2$. Utilizamos la notación siguiente
+para designar los valores de estas muestras:
+
+::: center
+  ------------ -----------------------------------
+  Muestra 1:   $x_{11},x_{12},\ldots ,x_{1,n_1}$
+  Muestra 2:   $x_{11},x_{12},\ldots ,x_{1,n_2}$
+  ------------ -----------------------------------
+:::
+
+En particular, hemos supuesto que el tamaño de la muestra 1 es $n_1$,
+mientras que el tamaño de la muestra 2 es $n_2$.
+
+Supondremos que hemos modelizado tanto la distribución de $X_1$ como la
+distribución de $X_2$ por Normales,
+$$X_1\sim\mathcal{N}(\mu_1,\sigma_1^2),\quad X_2\sim\mathcal{N}(\mu_2,\sigma_2^2).$$
+
+### Estadísticos muestrales
+
+Al pretender comparar $\mu_1$ y $\mu_2$, nos basaremos en la cantidad
+$\mu_1 -\mu_2$. El estadístico que utilizaremos para estimar esta
+cantidad es $\overline{X_1}-\overline{X_2}$, donde $\overline{X_1}$ y
+$\overline{X_2}$ denotan la media de la primera y de la segunda muestra
+respectivamente. Introducimos también la notación $S_1^2$ y $S_2^2$ para
+designar las varianzas respectivas de las dos muestras.
+
+Pasamos ahora a presentar distintos estadísticos relacionados con
+$\overline{X_1}-\overline{X_2}$ entre los que tendremos que escoger
+según la situación de modelización en la que nos encontremos: ¿conocemos
+$\sigma_1^2$ y $\sigma_2^2$?, ¿las desconocemos pero las suponemos
+iguales? etc\...
+
+#### Caso de varianzas conocidas
+
+Se cumple
+$$\frac {\overline{X_1}-\overline{X_2} -(\mu_1-\mu_2)}{\sqrt{\frac {\sigma_1^2}{n_1}+\frac {\sigma_2^2}{n_2}}}\sim\mathcal{N}(0,1).$$
+
+#### Caso de varianzas desconocidas {#sec-caso-de-varianzas}
+
+##### Si se suponen las varianzas iguales
+Si a la hora de la modelización hemos supuesto
+$\sigma_1^2=\sigma_2^2$, podemos estimar la varianza común
+$\sigma^2$ utilizando las dos muestras. Introducimos
+$$S_0^2=\frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}$$ Utilizaremos
+la distribución
+$$\frac {\overline{X_1}-\overline{X_2} -(\mu_1-\mu_2)}{\sqrt{S_0^2(\frac {1}{n_1}+\frac {1}{n_2})}}\sim {t}_{n_1+n_2-2}.$$
+
+##### Si NO se suponen iguales
+En este caso, no se conoce de manera exacta la distribución muestral
+del estadístico natural
+$\frac {\overline{X_1}-\overline{X_2} -(\mu_1-\mu_2)}{\sqrt{\frac {S_1^2}{n_1}+\frac {S_2^2}{n_2}}}$.
+Sin embargo, se puede utilizar la aproximación siguiente:
+$$\frac {\overline{X_1}-\overline{X_2} -(\mu_1-\mu_2)}{\sqrt{\frac {S_1^2}{n_1}+\frac {S_2^2}{n_2}}}\sim t_k,\quad\mbox{donde $k=\inf(n_1-1,n_2-1).$}$$
+
+### Intervalos y contrastes
+
+La construcción de los intervalos y contrastes para $\mu_1-\mu_2$ se
+realiza siguiendo los mismos principios que para el caso de una media
+sólo.
+
+Para ilustrar esta construcción, nos limitamos por lo tanto a tratar dos
+ejemplos extraidos de problemas de examenes
+
+##### Ejemplo I.
+
+Dos disciplinas de cola para servicio de CPU han sido propuestas por dos
+diseñadores de sistemas operativos. Para compararlas se instalaron en
+dos máquinas test iguales y se midieron los tiempos de espera en cada
+una de ellas de 8 tareas aleatoriamente elegidas:
+
+  --- ------ ------ ------ ------ ------ ------ ------ ------
+   A   2.41   6.50   3.29   1.22   2.59   2.81   5.35   1.78
+   B   2.30   5.86   3.71   1.10   2.34   2.24   5.00   1.95
+  --- ------ ------ ------ ------ ------ ------ ------ ------
+
+Suponiendo que la distribución que sigue cada variable se puede
+aproximar por una Normal, calcular el intervalo de confianza para la
+diferencia entre el tiempo promedio de espera con la disciplina A y el
+tiempo promedio de espera con la disciplina B.
+
+Al sustituir obtenemos $$\mu_A-\mu_B=0.18125\pm 2.0349.$$
+
+##### Ejemplo II.
+
+Una determinada empresa de material fungible puede adquirir los
+cartuchos de tóner de impresora de dos proveedores distintos. Con el fin
+de determinar a que proveedor comprar se toma una muestra de tamaño 12
+de cada uno de los proveedores obteniendo los siguientes resultados
+(número de hojas impresas):
+
+   ------------ ----------------- -------------------
+                  Media muestral   varianza muestral 
+   Proveedor A    5459                111736 
+   Proveedor B    5162               145258
+   ------------ ----------------- -------------------
+
+Si suponemos que las poblaciones son normales con
+varianzas iguales:
+
+1.  Construir un intervalo de confianza para la diferencia entre el
+    número medio de hojas que imprime el cartucho de cada proveedor.
+    (tomar $%
+    \alpha =0.05).$\
+    **Solución:**
+
+    *Introducimos las variables*
+
+    ::: center
+      -------- ---------------------------------------------------
+      $X_A$:   duración de un cartucho de tóner del proveedor A.
+      $X_B$:   duración de un cartucho de tóner del proveedor B
+      -------- ---------------------------------------------------
+    :::
+
+    Del enunciado sabemos que
+    $$X_A\sim \mathcal{N}(\mu_A,\sigma^2),\quad X_B\sim\mathcal{N}(\mu_B,\sigma^2),$$
+    es decir que las dos variables son Normales con varianzas
+    desconocidas pero iguales.
+
+    Para construir el intervalo de confianza al 95%, seguimos los mismos
+    pasos que en el ejemplo anterior, pero ahora el estadístico es
+    $$\frac {\overline{X_A}-\overline{X_B} -(\mu_A-\mu_B)}{\sqrt{S_0^2(\frac {1}{n_A}+\frac {1}{n_B}}}\sim {t}_{n_A+n_B-2},$$
+    con $S_0^2=\frac{(n_A-1)S_A^2+(n_B-1)S_B^2}{n_A+n_B-2}$. Obtenemos
+    por lo tanto que el intervalo de confianza para $\mu_A-\mu_B$ es
+    $$\mu_A-\mu_B=\overline{X_A}-\overline{X_B}\pm t_{n_A+n_B-2,1-\alpha/2}\sqrt{S_0^2(\frac {1}{n_A}+\frac {1}{n_B})}.$$
+    Necesitamos calcular $S_0^2$:
+    $$S_0^2=\frac{(n_1-1)S_1^2+(n_2-1)S_2^2}{n_1+n_2-2}=\frac{(11)111736+11\cdot 145258}{22}\simeq 128497$$
+    Deducimos sustituyendo que el intervalo al 95% de confianza es
+    $$\mu_A-\mu_B=297\pm 302.9.$$
+
+2.  Razonar qué tipo de contraste se debe de realizar con el fin de
+    decidir si la duración media de los cartuchos del proveedor A es
+    mayor que la de los cartuchos del proveedor B. Realizar este
+    contraste. (tomar $\alpha =0.05).$\
+    **Solución:**
+
+    *Queremos plantear el contraste $$\left\{\begin{array}{l}
+    H_0:\ \mu_A=\mu_B,\\
+    H_1:\ \mu_A>\mu_B,
+    \end{array}
+    \right.$$ es decir $$\left\{\begin{array}{l}
+    H_0:\ \mu_A-\mu_B=0,\\
+    H_1:\ \mu_A-\mu_B>0,
+    \end{array}
+    \right.$$*
+
+    Nos fijamos $\alpha=0.05$, el estadístico de contraste es
+    $$\frac {\overline{X_A}-\overline{X_B} -(\mu_A-\mu_B)}{\sqrt{S_0^2(\frac {1}{n_A}+\frac {1}{n_B}}},$$
+    bajo $H_0$, $\mu_A-\mu_B=0$, y este estadístico se simplifica:
+    $$T_0=\frac {\overline{X_A}-\overline{X_B}}{\sqrt{S_0^2(\frac {1}{n_A}+\frac {1}{n_B}}}\sim {t}_{n_A+n_B-2},\quad\mbox{ si $H_0$ es cierta.}$$
+    La región de rechazo es unilateral y es de la forma
+
+```{python}
+#| label: fig-talfder
+#| fig-cap: "Región de rechazo para hipótesis alternativa unilateral a la derecha, con un nivel de confianza $100\\times(1 - \\alpha)\\%$." 
+#| warning: false
+from scipy.stats import t
+from matplotlib import pyplot as plt
+import numpy as np 
+rv = t(df=22)
+alpha = 0.1
+fig, ax = plt.subplots(1, 1)
+x = np.linspace(rv.ppf(0.001), rv.ppf(0.999), 100)
+interval = (x >= rv.ppf(1 - alpha))
+ax.plot(x, rv.pdf(x))
+ax.fill_between(x, rv.pdf(x), alpha=0.4, hatch='//', where=interval)
+xy_right = rv.ppf(1 - alpha / 4), rv.pdf(rv.ppf(1 - alpha / 4)) / 2  
+xytext_right = rv.ppf(1 - alpha / 10), rv.pdf(rv.ppf(1 - alpha / 3)) * 2  
+ax.annotate(
+    r'$\alpha$',
+    xy=xy_right,
+    xytext=xytext_right,
+    arrowprops=dict(facecolor='black', shrink=0.05, width=1, headwidth=5),
+)
+ax.get_yaxis().set_visible(False)
+ax.set_xlabel('')
+ax.set_xticks([0, rv.ppf(1 - alpha)])
+ax.set_xticklabels([ '0', r'$t_{22, 1-\alpha}$'])
+plt.show()
+```
+Su frontera es $t_{n_A+n_B-2,1-\alpha/2}=t_{22,0.95}=1.717$. Nos
+falta calcular el valor concreto del estadístico de contraste
+$$T_0=\frac {\overline{X_A}-\overline{X_B}}{\sqrt{S_0^2(\frac {1}{n_A}+\frac {1}{n_B}}}=\frac {5459- 5162}{\sqrt{128497(\frac {1}{12}+\frac {1}{12})}}=2.0295.$$
+El valor de $T_0$ pertenece a la región de rechazo, deducimos que
+podemos rechazar $H_0$ al 95% de confianza: afirmamos que la
+duración media de los cartuchos del proveedor A es
+significativamente mayor que la de los cartuchos del proveedor B.
+
+## Apéndice 
+
+**Distribución $t$ de Student**
+
+Valores de los cuantiles de la distribución $t$ de Student con $k$
+grados de libertad: para un $0\leq p\leq 1$, el valor $t_{k,p}$
+satisface $\mathbb{P}(t\leq t_{k,p})=p$.
+
+::: center
+  --------- --------------- -------------- --------------- -------------- -------------- -------------- -------------- -------------- -------------- --
+     $k$     $t_{k,0.995}$   $t_{k,0.99}$   $t_{k,0.975}$   $t_{k,0.95}$   $t_{k,0.90}$   $t_{k,0.80}$   $t_{k,0.70}$   $t_{k,0.60}$   $t_{k,0.50}$  
+
+      1         63,657          31,821         12,706          6,314          3,078          1,376          0,727          0,325          0,158      
+      2          9,925          6,965           4,303           2,92          1,886          1,061          0,617          0,289          0,142      
+      3          5,841          4,541           3,182          2,353          1,638          0,978          0,584          0,277          0,137      
+      4          4,604          3,747           2,776          2,132          1,533          0,941          0,569          0,271          0,134      
+      5          4,032          3,365           2,571          2,015          1,476           0,92          0,559          0,267          0,132      
+      6          3,707          3,143           2,447          1,943           1,44          0,906          0,553          0,265          0,131      
+      7          3,499          2,998           2,365          1,895          1,415          0,896          0,549          0,263           0,13      
+      8          3,355          2,896           2,306           1,86          1,397          0,889          0,546          0,262           0,13      
+      9          3,25           2,821           2,262          1,833          1,383          0,883          0,543          0,261          0,129      
+     10          3,169          2,764           2,228          1,812          1,372          0,879          0,542           0,26          0,129      
+     11          3,106          2,718           2,201          1,796          1,363          0,876           0,54           0,26          0,129      
+     12          3,055          2,681           2,179          1,782          1,356          0,873          0,539          0,259          0,128      
+     13          3,012           2,65           2,16           1,771           1,35           0,87          0,538          0,259          0,128      
+     14          2,977          2,624           2,145          1,761          1,345          0,868          0,537          0,258          0,128      
+     15          2,947          2,602           2,131          1,753          1,341          0,866          0,536          0,258          0,128      
+     16          2,921          2,583           2,12           1,746          1,337          0,865          0,535          0,258          0,128      
+     17          2,898          2,567           2,11            1,74          1,333          0,863          0,534          0,257          0,128      
+     18          2,878          2,552           2,101          1,734           1,33          0,862          0,534          0,257          0,127      
+     19          2,861          2,539           2,093          1,729          1,328          0,861          0,533          0,257          0,127      
+     20          2,845          2,528           2,086          1,725          1,325           0,86          0,533          0,257          0,127      
+     21          2,831          2,518           2,08           1,721          1,323          0,859          0,532          0,257          0,127      
+     22          2,819          2,508           2,074          1,717          1,321          0,858          0,532          0,256          0,127      
+     23          2,807           2,5            2,069          1,714          1,319          0,858          0,532          0,256          0,127      
+     24          2,797          2,492           2,064          1,711          1,318          0,857          0,531          0,256          0,127      
+     25          2,787          2,485           2,06           1,708          1,316          0,856          0,531          0,256          0,127      
+     26          2,779          2,479           2,056          1,706          1,315          0,856          0,531          0,256          0,127      
+     27          2,771          2,473           2,052          1,703          1,314          0,855          0,531          0,256          0,127      
+     28          2,763          2,467           2,048          1,701          1,313          0,855           0,53          0,256          0,127      
+     29          2,756          2,462           2,045          1,699          1,311          0,854           0,53          0,256          0,127      
+     30          2,75           2,457           2,042          1,697           1,31          0,854           0,53          0,256          0,127      
+     40          2,704          2,423           2,021          1,684          1,303          0,851          0,529          0,255          0,126      
+     60          2,66            2,39             2            1,671          1,296          0,848          0,527          0,254          0,126      
+     120         2,617          2,358           1,98           1,658          1,289          0,845          0,526          0,254          0,126      
+   $>$ 120       2.576          2.326           1.960          1.645          1.282          0.842          0.524          0.253          0.126      
+  --------- --------------- -------------- --------------- -------------- -------------- -------------- -------------- -------------- -------------- --
+:::
